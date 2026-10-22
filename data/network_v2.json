@@ -934,7 +934,7 @@
    "refs": [
     "De Bievre, PRL 127, 190404 (2021) [citation confirmed via arXiv:2210.02876]",
     "Arvidsson-Shukur, Drori, Yunger Halpern, J. Phys. A 54, 284001 (2021)",
-    "Xu, arXiv:2210.02876 (DFT case: n_A n_B = d)"
+    "Xu, Phys. Lett. A 129529 (2024); arXiv:2210.02876 (DFT case: n_A n_B = d)"
    ]
   },
   {
@@ -1049,7 +1049,7 @@
    "status": "theorem",
    "statement": "No-broadcasting characterizes operational contextuality (broadcastability of a fragment corresponds to the existence of a noncontextual model).",
    "refs": [
-    "PRL 133, 240201 (2024); arXiv:2406.07305"
+    "Jokinen, Weilenmann, Plavala, Pellonpaa, Kiukas, Uola, PRL 133, 240201 (2024); arXiv:2406.07305"
    ]
   },
   {

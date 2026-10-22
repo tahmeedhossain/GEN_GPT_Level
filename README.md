@@ -78,10 +78,13 @@ a kind, a status, and respect the polarity convention. Closing an uncharted matr
 ## Reliability and provenance
 
 - `theorem` edges are literature claims; post-2019 load-bearing results were verified against
-  bibliographic sources during curation (Oct 2026); classic results are cited from standard
-  knowledge — recheck page data before quoting.
-- `derived` edges are proved in `catalog/` and in the paper; they are **not** claimed to be
-  previously unpublished. Run a novelty pass before claiming priority.
+  bibliographic sources during curation (Oct 2026). The paper's bibliography was verified
+  programmatically against Crossref on 2026-10-23: 58/70 exact matches on volume/page/year;
+  the rest are classics Crossref indexes poorly (CHSH 1969, Moyal 1949, ...), kept with their
+  standard citations; two records were corrected from publisher metadata (Xu 2024; Jokinen et al. 2024).
+- `derived` edges are proved in `catalog/` and in the paper; novelty searches for N1, R1, R3, R4
+  (2026-10-23) found no prior statements — nearest neighbors are recorded in the paper's remarks.
+  They are still not *claimed* as firsts; R1/R2 are elementary enough to be folklore.
 - Composed corollaries name the exact edges they compose, so each is auditable in one step.
 - Corrections welcome as issues/PRs; releases record their gap census.
 

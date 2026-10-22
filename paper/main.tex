@@ -319,8 +319,8 @@ $(\ket{01}+\ket{10})/\sqrt2$ supported in the degenerate $\{01,10\}$ block.
 \end{proof}
 
 \begin{remark}
-Proposition~\ref{prop:r1} is elementary and may be folklore; we did not find
-it stated as a classification. It is consistent with experiment: the
+Proposition~\ref{prop:r1} is elementary and may be folklore; a literature
+search (2026-10-23) found no prior statement of the classification. It is consistent with experiment: the
 correlation-driven reversal of heat flow of Micadei \emph{et al.}
 \cite{micadei2019} employs initial coherence $\ket{01}\!\bra{10}$ --- exactly
 a degenerate-block term for equal-frequency qubits, the sole habitat the
@@ -362,7 +362,11 @@ single-copy measurements is Refs.~\cite{werner1989,barrett2002}.
 
 \begin{remark}
 The corollary is an immediate inference from \cite{plavala2024}; we verified
-that it is not stated there explicitly. Note the fragment scope: the
+against that paper that it is not stated there explicitly, and a search for
+follow-up work stating it (2026-10-23) found none. The nearest neighbor
+connects contextuality of steered preparations to constraints on measurement
+incompatibility (\texttt{arXiv:2406.16095}) rather than to Bell-local
+entangled states. Note the fragment scope: the
 contextual fragment contains \emph{all} measurements on the steered side;
 restricted fragments can remain noncontextual --- e.g.\ entangled stabilizer
 states probed by stabilizer measurements admit the local nonnegative Gross
@@ -382,7 +386,9 @@ with $P_0$ and $P_+$, which generate the full qubit algebra, so
 $A\propto\id$. Thus no nontrivial local observable commutes with $\rho$, which
 therefore is not classical on either side \cite{ollivier2001,henderson2001}.
 Together (a) and (b) close the formerly uncharted magic--discord pair in both
-directions: no unconditional edge can connect them.
+directions: no unconditional edge can connect them. (The interplay of
+non-stabilizerness with \emph{entanglement} is actively studied in many-body
+settings \cite{frau2024}; a search found no treatment of the discord pair.)
 \end{example}
 
 \begin{proposition}[Sorkin order of epistricted theories;
@@ -453,7 +459,16 @@ Propositions~\ref{prop:p1}, \ref{prop:r1} and Lemma~\ref{lem:r2} are
 elementary enough to be folklore, and a dedicated novelty pass is advised
 before attributing priority. (iv)~Composed corollaries state exactly which
 recorded theorems they compose, so a reader can audit each in one step.
-(v)~The authors take responsibility for remaining errors and welcome
+(v)~The bibliography was verified programmatically against Crossref on
+2026-10-23: $58$ of $70$ entries matched exactly on volume, page and year; the
+remainder are classic papers that Crossref indexes poorly (e.g.\
+\cite{chsh1969,moyal1949,stueckelberg1960,tsirelson1980,hudson1974}), whose
+standard citations are retained, plus two records corrected from publisher
+metadata \cite{xu2022,nobroadcast2024}. Novelty searches for
+Theorem~\ref{thm:n1}, Proposition~\ref{prop:r1}, Corollary~\ref{cor:r3} and
+Example~\ref{ex:r4} were run the same day; no prior statements were found, and
+the nearest neighbors located are recorded in the corresponding remarks.
+(vi)~The authors take responsibility for remaining errors and welcome
 corrections as repository issues; the graph is versioned, and every release
 records its gap census.
 
@@ -470,7 +485,12 @@ with full proofs); and this paper's source under \texttt{paper/}. The data
 schema is documented in the README; contributions of new edges are expected to
 carry a statement, a reference or proof, a kind, a status and a polarity.
 
-\paragraph{Acknowledgements.} % TODO (author): add acknowledgements/funding as appropriate.
+\paragraph{Acknowledgements.} The curation of the network, the derivations and
+drafting of this paper, the interactive pages and the data files were produced
+with substantial assistance from an AI system (Claude, Anthropic), working
+under the direction of the author, who reviewed the material and takes sole
+responsibility for all claims and any remaining errors.
+% TODO (author): add human acknowledgements/funding if appropriate.
 
 \bibliographystyle{unsrt}
 \bibliography{refs}

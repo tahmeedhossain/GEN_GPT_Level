@@ -2,7 +2,8 @@
 
 \bibitem{wiseman2007}
 H.~M. Wiseman, S.~J. Jones, and A.~C. Doherty.
-\newblock Steering, entanglement, nonlocality, and the {EPR} paradox.
+\newblock Steering, entanglement, nonlocality, and the
+  {E}instein--{P}odolsky--{R}osen paradox.
 \newblock {\em Phys. Rev. Lett.}, 98:140402, 2007.
 
 \bibitem{plavala2016}
@@ -81,7 +82,7 @@ J.~H. Selby, E.~Wolfe, D.~Schmid, A.~B. Sainz, and V.~P. Rossi.
 \newblock Linear program for testing nonclassicality and an open-source
   implementation.
 \newblock {\em Phys. Rev. Lett.}, 132:050202, 2024.
-\newblock arXiv:2204.11905; verify final journal data.
+\newblock arXiv:2204.11905.
 
 \bibitem{spekkens2007}
 R.~W. Spekkens.
@@ -198,10 +199,11 @@ J.~H. Selby, D.~Schmid, E.~Wolfe, A.~B. Sainz, R.~Kunjwal, and R.~W. Spekkens.
 \newblock arXiv:2106.09045.
 
 \bibitem{nobroadcast2024}
-J.~Jokinen et~al.
+P.~Jokinen, M.~Weilenmann, M.~Pl\'avala, J.-P. Pellonp\"a\"a, J.~Kiukas, and
+  R.~Uola.
 \newblock No-broadcasting characterizes operational contextuality.
 \newblock {\em Phys. Rev. Lett.}, 133:240201, 2024.
-\newblock arXiv:2406.07305; author list to be verified before submission.
+\newblock arXiv:2406.07305.
 
 \bibitem{lostaglio2018}
 M.~Lostaglio.
@@ -330,7 +332,7 @@ V.~P. Rossi, D.~Schmid, J.~H. Selby, and A.~B. Sainz.
 \newblock Contextuality with vanishing coherence and maximal robustness to
   dephasing.
 \newblock {\em Phys. Rev. A}, 108:032213, 2023.
-\newblock arXiv:2212.06856; verify final page number.
+\newblock arXiv:2212.06856; doi:10.1103/PhysRevA.108.032213.
 
 \bibitem{wagner2024}
 R.~Wagner, A.~Camillini, and E.~F. Galv\~ao.
@@ -358,6 +360,12 @@ S.~Bravyi and A.~Kitaev.
   ancillas.
 \newblock {\em Phys. Rev. A}, 71:022316, 2005.
 
+\bibitem{frau2024}
+M.~Frau, P.~S. Tarabunga, M.~Collura, M.~Dalmonte, and E.~Tirrito.
+\newblock Nonstabilizerness versus entanglement in matrix product states.
+\newblock {\em Phys. Rev. B}, 110:045101, 2024.
+\newblock arXiv:2404.18768; doi:10.1103/PhysRevB.110.045101.
+
 \bibitem{debievre2021}
 S.~De~Bi\`evre.
 \newblock Complete incompatibility, support uncertainty, and
@@ -372,9 +380,9 @@ D.~R.~M. Arvidsson-Shukur, J.~C. Drori, and N.~Yunger~Halpern.
 \bibitem{xu2022}
 J.~Xu.
 \newblock Kirkwood--dirac classical pure states.
-\newblock {\em arXiv:2210.02876}, 2022.
-\newblock proves De Bi\`evre's DFT conjecture $n_A n_B = d$; journal data to be
-  verified.
+\newblock {\em Phys. Lett. A}, page 129529, 2024.
+\newblock arXiv:2210.02876; doi:10.1016/j.physleta.2024.129529; proves De
+  Bi\`evre's DFT conjecture $n_A n_B = d$.
 
 \bibitem{gurvits2003}
 L.~Gurvits.
