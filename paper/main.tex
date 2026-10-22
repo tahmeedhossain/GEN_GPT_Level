@@ -1,0 +1,478 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\definecolor{linkcol}{rgb}{0.05,0.3,0.45}
+\usepackage[colorlinks=true,linkcolor=linkcol,citecolor=linkcol,urlcolor=linkcol]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\newtheorem{conjecture}{Conjecture}
+
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \rvert}
+\newcommand{\proj}[1]{\lvert #1 \rangle\!\langle #1 \rvert}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\id}{\mathbb{1}}
+
+\title{The Nonclassicality Network: a signed theorem graph for quantum
+foundations with machine-visible open problems}
+
+% TODO (author): fill in name(s), affiliation and email before submission.
+% Consider disclosing AI-assisted drafting/curation if required by the venue's policy;
+% the curation and verification protocol is described in Sec. 6.
+\author{[Author name]\\ \small [Affiliation] \quad [email]}
+\date{October 2026 \quad (v2.4 of the network)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present a curated, typed, signed theorem graph of quantum foundations,
+quantum information, quantum thermodynamics and resource theories, released as
+an open repository with two interactive pages and machine-readable data. Nodes
+are typed (axioms, models, state-operator clusters, process-operator clusters,
+witnesses, effects, tasks); edges are signed relations carrying verbatim
+statements and references, with impossibility (no-go) theorems recorded as
+first-class negative edges, so that the \emph{absence} of an edge always means
+``unsettled'' rather than ``false''. Witnesses are operator-valued nodes paired
+one-to-one with the effects they detect, each carrying structured requirement
+and blindness records; a state$\times$process verdict matrix then enumerates
+open cells mechanically (in the current release, $445$ of $3094$ cells are
+settled). We demonstrate that the structure is generative: closing formerly
+uncharted cells yields several propositions proved here, including a
+dephasing-factorization theorem (covariant processes with time-translation-symmetric
+effects form simplex-embeddable, hence noncontextual, fragments for every input
+state), a classification of time-translation-symmetric bipartite correlations
+(for nondegenerate noninteracting Hamiltonians all such states are
+classical--classical; quantum correlations survive only in degeneracy blocks),
+a composed corollary exhibiting Bell-local yet contextual scenarios from
+Werner states, and independence counterexamples separating magic from discord.
+Fifteen named open problems are registered. The intended use is threefold:
+semi-automated generation of research problems from the gap census; a
+reviewable survey format in which checking the review means auditing
+individually cited edges; and an interactive visualization of the field's
+logical structure. All sources, data and pages are provided for community
+extension.
+\end{abstract}
+
+\section{Introduction}
+
+Quantum foundations is unusually rich in \emph{impossibility} results: Bell's
+theorem, the Kochen--Specker theorem, no-cloning and no-broadcasting, the PBR
+theorem, and the modern no-go theorems of generalized contextuality. It is
+equally rich in \emph{possibility} and \emph{equivalence} results: the
+hierarchy of Bell nonlocality, steering and entanglement
+\cite{wiseman2007}, the equivalences between nonclassicality, incompatibility,
+no-broadcasting, superposition and entangleability in generalized
+probabilistic theories (GPTs)
+\cite{plavala2016,barnum2007,aubrun2021,aubrun2022}, and the equivalences
+tying Wigner negativity to contextuality in odd prime dimensions
+\cite{howard2014} and in continuous variables \cite{booth2022}. These results
+are scattered across subfields that use different formalisms, and simple
+questions of the form ``does property $X$ imply property $Y$, in which
+fragment, for which states and which measurements?'' are surprisingly hard
+to answer from the literature.
+
+This paper introduces a working tool addressed at exactly that difficulty: a
+\emph{signed theorem graph} --- the Nonclassicality Network --- whose design
+goal is that missing knowledge be visible. Three design decisions do the work.
+
+\begin{enumerate}
+  \item \textbf{Three-valued edges.} Between any two concepts the graph
+  distinguishes (i) a positive edge (a theorem asserting the relation), (ii) a
+  negative edge (a theorem asserting the relation \emph{cannot} hold: a no-go,
+  an exclusion, a counterexample), and (iii) no edge, which by convention means
+  \emph{unsettled}. Without (ii), impossibility theorems would be encoded as
+  absences and become indistinguishable from ignorance; a search for open
+  problems would then re-propose closed questions. Negative edges are drawn
+  with inhibition-style flat-bar terminators ($\dashv$) and are filterable.
+
+  \item \textbf{Typed layers with operator-valued witnesses.} Nodes are typed:
+  axioms (including a ``genesis'' family: symplectic structure, epistemic
+  restriction, the Poisson$\to$Moyal lift, the complex unit $i$, and $\hbar$),
+  models, state-operator clusters, process-operator clusters, witnesses,
+  effects, and tasks. Every operational effect is paired one-to-one with the
+  witness (functional, inequality, semidefinite or linear program, protocol)
+  that detects it --- the design principle \emph{no effect without a witness}
+  --- and each witness node carries structured records: what it requires at
+  the model, state and process level, and on which clusters it is provably
+  blind. The recorded exception to strict pairing is threshold stratification:
+  the CHSH functional detects Bell violation, the Tsirelson boundary and PR
+  correlations at thresholds $2$, $2\sqrt2$, $4$
+  \cite{chsh1969,tsirelson1980,pr1994}.
+
+  \item \textbf{Mechanical gap enumeration.} For each witness, a
+  state-cluster$\times$process-cluster matrix is populated from recorded
+  theorems; every unfilled cell is, by construction, an open question. The
+  current release settles $445$ of $3094$ cells; the remaining $2649$ cells,
+  together with $15$ named open problems, constitute a machine-generated
+  research agenda.
+\end{enumerate}
+
+\paragraph{Motivation and intended use.}
+The network was built for three purposes, and the design decisions above map
+onto them directly.
+\emph{(i)~Automating research-idea generation.} Because the absence of an edge
+means ``unsettled'' and never ``false'', the set of open questions is a
+queryable object rather than an impression of the literature: every unfilled
+matrix cell and every missing edge between typed nodes is a candidate theorem,
+pre-sorted by the structure into four closure routes --- compose recorded
+edges, prove directly, exhibit a counterexample, or locate the result in the
+literature. Section~\ref{sec:generated} demonstrates that this loop produces
+nontrivial output: thirteen propositions across three curation rounds, each of
+which began as a specific uncharted cell.
+\emph{(ii)~Reviewing a field as curation.} The graph is a review article in a
+different format: each claim of the review is a single edge carrying a
+verbatim statement, references and a provenance status, so checking the review
+means auditing edges one at a time, and disputing it means objecting to a
+specific edge identifier rather than to a paragraph. Releases are versioned
+and each records its gap census, so the review does not silently decay.
+\emph{(iii)~Visualizing the field.} The layered, signed, filterable pages make
+the logical shape of nonclassicality visible at a glance --- where possibility
+flows, where no-go bars block, which clusters a given witness can never see
+--- and the witness panels answer the operational question ``what is required,
+at model, state and process level, to observe effect $X$?'' interactively.
+The review process is itself the generator: surveying the field in this format
+yields, as a by-product, its own research agenda.
+
+The repository contains two interactive pages over the same data --- a flat
+version (v1) and the layered version (v2) --- documenting the evolution of the
+structure, together with machine-readable JSON carrying a verbatim statement
+and references for every edge. Section~\ref{sec:backbone} summarizes the
+curated backbone. Section~\ref{sec:generated} contains the generative payoff:
+propositions obtained by closing formerly uncharted cells, with proofs.
+Section~\ref{sec:open} lists the registered open problems.
+Section~\ref{sec:protocol} states the curation and verification protocol ---
+what was verified against the literature, what is cited from standard
+knowledge, and what is new here --- and Section~\ref{sec:repo} describes the
+repository.
+
+\section{The curated backbone}\label{sec:backbone}
+
+Two nested classicality boundaries organize the graph. First, for a single GPT
+system the following are equivalent characterizations of
+\emph{nonclassicality} (non-simpliciality of the state cone): the existence of
+incompatible measurements \cite{plavala2016}; the impossibility of universal
+broadcasting \cite{barnum2007}; the existence of ``superposition'' (strong
+incompatibility) \cite{aubrun2022}; and \emph{entangleability}, i.e.\ the
+strict separation of the minimal and maximal tensor products with any other
+nonclassical system --- the resolution of Barker's conjecture
+\cite{aubrun2021,aubrun2022}. Second, and strictly stronger, a prepare--measure
+fragment admits a generalized-noncontextual ontological model
+\cite{spekkens2005,spekkens2008} if and only if it is
+\emph{simplex-embeddable} \cite{schmid2021}; the complete test is a linear
+program \cite{selby2022lp}. The epistricted theories --- Spekkens' toy theory
+\cite{spekkens2007,spekkens2016}, Gaussian quantum mechanics as epistricted
+Liouville mechanics \cite{brs2012}, and the odd-dimensional stabilizer
+subtheory with Gross's nonnegative Wigner function
+\cite{gross2006,catani2017,schmid2022} --- live between the two boundaries:
+they exhibit incompatibility, no-cloning, interference phenomenology and
+steering-like ensembles while remaining noncontextual. The qubit stabilizer
+subtheory is the known anomaly: it admits no nonnegative diagram-preserving
+representation and is state-independently contextual
+\cite{schmid2022,mermin1990,peres1991,cabello2008}.
+
+Beyond this backbone the graph records (with per-edge references in the data
+files): the nonlocality--steering--entanglement hierarchy and its strictness
+\cite{wiseman2007,werner1989,barrett2002,gisin1991}; incompatibility as
+necessary for Bell violations \cite{fine1982} and equivalent to steerability
+\cite{quintino2014,uola2014}; the failure of the Peres conjecture
+\cite{vertesi2014}; the negativity--contextuality equivalences
+\cite{howard2014,booth2022} with the representation-relativity caveat of the
+nonnegative $\Lambda$-polytope model \cite{zurel2020}; contextuality as a
+precondition for entanglement \cite{plavala2024}; the conditional equivalence
+of incompatibility and contextuality when all states are available
+\cite{tavakoli2020} against its unconditional failure \cite{selby2023};
+no-broadcasting as a characterization of operational contextuality
+\cite{nobroadcast2024}; thermodynamic witnesses of contextuality
+\cite{lostaglio2018,perarnau2017,micadei2019}; coherence as asymmetry and its
+thermodynamic role \cite{marvian2014,lostaglio2015}; the genesis decomposition
+(Groenewold--van Hove obstruction and the Moyal deformation
+\cite{groenewold1946,moyal1949,bffls1978,kontsevich2003}; Hudson's theorem
+\cite{hudson1974}; non-quadratic generators as the source of continuous-variable
+universality and negativity \cite{lloyd1999,takagi2018}; local tomography and
+the complex unit \cite{hardywootters2012,renou2021,stueckelberg1960}); the
+almost-quantum obstruction to the no-restriction hypothesis
+\cite{navascues2015,sainz2018}; and the Sorkin hierarchy
+\cite{sorkin1994,sinha2010,dakic2014}.
+
+\section{Propositions generated by closing uncharted cells}\label{sec:generated}
+
+Each result below occupied a cell or node pair with no recorded connecting or
+disconnecting theorem. We state the network provenance (which edges were
+composed) with each item. Results labelled ``derived'' are proved here; we do
+not claim they are absent from the literature, only that we did not find them
+stated (see Sec.~\ref{sec:protocol}).
+
+\subsection{Round 1: boundary corollaries}
+
+\begin{proposition}[Contextuality implies entangleability; provenance
+$A5\circ A3$]\label{prop:p1}
+If a tomographically complete prepare--measure fragment of a GPT system $A$
+fails generalized noncontextuality, then for every nonclassical system $B$
+there exists a consistent composite containing entangled states or entangled
+effects.
+\end{proposition}
+\begin{proof}
+Contextuality implies failure of simplex embeddability \cite{schmid2021},
+hence the state cone of $A$ is not simplicial. By the entangleability of cones
+\cite{aubrun2021,aubrun2022}, the minimal and maximal tensor products of $A$
+with any nonclassical $B$ differ, and any composite beyond the minimal one
+contains entangled elements.
+\end{proof}
+
+The converse fails (the toy theory is nonsimplicial yet noncontextual
+\cite{spekkens2007,schmid2021}), and the unique escape is postulating the
+minimal tensor product: \emph{separable quantum theory} retains Wigner
+negativity, magic and contextuality of its quantum marginals while possessing
+no entangled, steerable or Bell-violating states, and purification
+\cite{cdp2010} fails in it by construction (cones between the minimal and
+maximal tensor product are standard \cite{janotta2014}). A complementary
+necessity direction is the theorem of Pl\'avala and G\"uhne \cite{plavala2024}.
+Similarly, a fragment whose states and effects are diagonal in one basis is
+simplex-embeddable, so basis-independent coherence is necessary for
+contextuality, while epistricted counterexamples
+\cite{spekkens2007,catani2023} and vanishing-coherence contextuality
+\cite{rossi2023} show it is not sufficient and has no threshold; quantitative
+scenario-specific witnesses exist \cite{wagner2024}.
+
+\subsection{Round 2: time-translation symmetry hides contextuality}
+
+Let $H$ be a Hamiltonian with nondegenerate spectrum, $D$ the associated
+energy-dephasing map, and call a state, effect or channel \emph{TTS}
+(time-translation symmetric, covariant) when it commutes with the unitary
+group $U_t=e^{-iHt}$.
+
+\begin{theorem}[Covariant fragments are noncontextual; provenance: uncharted
+cell TTS$\times$covariant]\label{thm:n1}
+Consider any prepare--transform--measure fragment whose transformations $T$
+are covariant and whose effects $E$ are TTS. Then for nondegenerate $H$ the
+fragment's statistics satisfy
+$\tr\!\big(E\,T(\rho)\big)=\tr\!\big(E\,T(D(\rho))\big)$ for every state
+$\rho$; the fragment factors through the commutative energy-diagonal
+subtheory, is simplex-embeddable and hence noncontextual, its Kirkwood--Dirac
+distributions over energy chains are genuine probabilities, and no coherence
+monotone is estimable from it.
+\end{theorem}
+\begin{proof}
+For TTS effects, $U_t^\dagger E U_t=E$, so
+$\tr(E\,T(U_t\rho U_t^\dagger))=\tr(U_t^\dagger E U_t\,T(\rho))=\tr(E\,T(\rho))$
+using covariance of $T$. Averaging over $t$ yields invariance under
+pre-dephasing. For nondegenerate $H$, $D$ maps onto the diagonal (commutative)
+algebra, TTS effects are diagonal, and covariant channels preserve the
+diagonal subalgebra, so the fragment is tomographically equivalent to a
+classical stochastic fragment, which embeds in a simplex with its dual
+effects; noncontextuality follows from the characterization of
+\cite{schmid2021}.
+\end{proof}
+
+Theorem~\ref{thm:n1} says TTS processes do not lack contextuality but
+\emph{hide} it: the hiding map is exactly $D$. Lostaglio's noncontextuality of
+two-point-measurement fluctuation theorems \cite{lostaglio2018} is the special
+case $T=\mathrm{id}$, $E$ the energy projectors, and the no-go of
+\cite{perarnau2017} is the statement that the first projective energy
+measurement implements the dephasing. For degenerate $H$ the factorization is
+only block-wise and covariant fragments can remain contextual (open problem
+SG1). Conversely, the state side carries no blindness at all:
+
+\begin{proposition}[No state-blind cluster for contextuality]\label{prop:n2}
+Every quantum state --- Gibbs states and the maximally mixed state included ---
+violates state-independent contextuality inequalities (the Peres--Mermin
+inequality of \cite{cabello2008}; the Yu--Oh 13-ray inequality
+\cite{yuoh2012}). Consequently, for nondegenerate $H$, any state-independent
+contextuality witness set necessarily contains non-TTS measurements.
+\end{proposition}
+\begin{proof}
+The first statement is the content of state-independence in
+\cite{cabello2008,yuoh2012}. The second follows from Theorem~\ref{thm:n1}:
+a TTS witness set would yield a noncontextual fragment for every state.
+\end{proof}
+
+\subsection{Round 3: new closures}
+
+\begin{proposition}[Symmetric bipartite states of generic noninteracting pairs
+are classically correlated; provenance: uncharted cell
+TTS$\times$correlation clusters]\label{prop:r1}
+Let $H=H_A+H_B$ with nondegenerate total spectrum (all sums $E^A_i+E^B_j$
+distinct). Then every TTS state is classical--classical: zero discord, hence
+separable, unsteerable and Bell-local. Entangled or discordant TTS states
+exist iff the total spectrum is degenerate, and all their quantum correlations
+are supported inside degeneracy blocks.
+\end{proposition}
+\begin{proof}
+Nondegeneracy of the total spectrum forces the eigenbasis of $H$ to be the
+unique product basis $\ket{E^A_i}\otimes\ket{E^B_j}$ (any local degeneracy or
+cross-degeneracy would produce a degenerate sum). A state commuting with a
+nondegenerate $H$ is diagonal in its eigenbasis, hence of the form
+$\sum_{ij}p_{ij}\proj{ij}$, a classical--classical state: zero discord
+\cite{ollivier2001,henderson2001}, separable, and therefore unsteerable and
+Bell-local \cite{wiseman2007}. For the degenerate case, two equal-gap qubits
+admit the TTS maximally entangled state
+$(\ket{01}+\ket{10})/\sqrt2$ supported in the degenerate $\{01,10\}$ block.
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:r1} is elementary and may be folklore; we did not find
+it stated as a classification. It is consistent with experiment: the
+correlation-driven reversal of heat flow of Micadei \emph{et al.}
+\cite{micadei2019} employs initial coherence $\ket{01}\!\bra{10}$ --- exactly
+a degenerate-block term for equal-frequency qubits, the sole habitat the
+proposition allows.
+\end{remark}
+
+\begin{lemma}[TTS measurements are compatible]\label{lem:r2}
+For nondegenerate $H$, any two TTS sharp observables commute (each is a
+function of $H$), and any TTS POVM is a classical post-processing of the
+energy measurement; the whole TTS measurement cluster is jointly measurable.
+Consequently TTS probes admit no incompatibility, hence no steering
+\cite{quintino2014,uola2014} and no Bell violation \cite{fine1982}, and the
+commutativity of the fragment reproves the blindness column of
+Theorem~\ref{thm:n1}.
+\end{lemma}
+\begin{proof}
+$[A,H]=0$ with $H$ nondegenerate forces $A$ diagonal in the energy basis; two
+diagonal operators commute. A POVM with diagonal effects
+$E_k=\sum_i e_{k|i}\Pi_i$ is simulated by measuring $H$ and sampling $k$ from
+$e_{k|i}$.
+\end{proof}
+
+\begin{corollary}[Bell-local yet contextual scenarios; provenance
+$A8\circ B3$]\label{cor:r3}
+There exist bipartite entangled states admitting local hidden variable models
+for all single-copy measurements \cite{werner1989,barrett2002} whose derived
+sequential (remote-state-preparation) scenario, equipped with all measurements
+on the steered side, is preparation-and-measurement contextual. Generalized
+contextuality is therefore a strictly finer detector of composite
+nonclassicality than Bell violation.
+\end{corollary}
+\begin{proof}
+Theorem~1 of \cite{plavala2024} states that a preparation-and-measurement
+noncontextual model for the steered states together with all measurements
+implies separability. The contrapositive applies to every entangled state,
+in particular to Werner states inside the LHV region. Bell locality for all
+single-copy measurements is Refs.~\cite{werner1989,barrett2002}.
+\end{proof}
+
+\begin{remark}
+The corollary is an immediate inference from \cite{plavala2024}; we verified
+that it is not stated there explicitly. Note the fragment scope: the
+contextual fragment contains \emph{all} measurements on the steered side;
+restricted fragments can remain noncontextual --- e.g.\ entangled stabilizer
+states probed by stabilizer measurements admit the local nonnegative Gross
+model \cite{gross2006,schmid2022}. There is no tension between the two
+statements.
+\end{remark}
+
+\begin{example}[Magic and discord are logically independent]\label{ex:r4}
+(a)~$\ket{T}\otimes\ket{0}$, with $\ket{T}$ a canonical non-stabilizer state
+\cite{bravyi2005}, is a pure product state --- zero discord, zero entanglement
+--- yet magic. (b)~$\rho=\tfrac12(\proj{0}\otimes\proj{0}+\proj{+}\otimes\proj{+})$
+is a mixture of stabilizer product states (hence inside the stabilizer
+polytope, non-magic) but has nonzero discord on both sides: if
+$[\rho,A\otimes\id]=0$ then $[P_0,A]\otimes P_0=-[P_+,A]\otimes P_+$, and since
+$P_0,P_+$ are linearly independent both commutators vanish; $A$ then commutes
+with $P_0$ and $P_+$, which generate the full qubit algebra, so
+$A\propto\id$. Thus no nontrivial local observable commutes with $\rho$, which
+therefore is not classical on either side \cite{ollivier2001,henderson2001}.
+Together (a) and (b) close the formerly uncharted magic--discord pair in both
+directions: no unconditional edge can connect them.
+\end{example}
+
+\begin{proposition}[Sorkin order of epistricted theories;
+inheritance]\label{prop:r6}
+Gaussian quantum mechanics and the odd-dimensional stabilizer subtheory
+satisfy the Sorkin truncation $I_3=0$ identically.
+\end{proposition}
+\begin{proof}
+Both are subtheories of quantum theory --- their states, transformations and
+measurements are quantum objects with quantum statistics
+\cite{brs2012,gross2006} --- and $I_3$ vanishes identically in quantum theory
+\cite{sorkin1994}.
+\end{proof}
+
+\begin{conjecture}[SG4]
+The discrete toy (field) theory, which is \emph{not} a quantum subtheory
+(it does not reproduce GHZ-type stabilizer statistics
+\cite{spekkens2007,catani2017}), has an undetermined Sorkin order: define its
+three-path interferometer and compute $I_3$. Either outcome is informative.
+\end{conjecture}
+
+Finally, one formerly uncharted cell is closed by existing literature that the
+graph had not yet absorbed: the Kirkwood--Dirac analogue of Hudson's boundary.
+Pure KD-classical states are characterized by support-uncertainty
+(``complete incompatibility'') conditions \cite{debievre2021}; noncommutation
+alone does not suffice for KD nonpositivity \cite{ady2021}; and for discrete-Fourier
+bases a pure state is KD-classical iff $n_A(\psi)\,n_B(\psi)=d$ \cite{xu2022}.
+
+\section{Registered open problems}\label{sec:open}
+
+The repository registers fifteen named problems; abbreviated here. G1:~a
+steering analogue of the entangleability of cones (with a stated conjecture).
+G2:~quantitative coherence$\to$contextuality bounds, approachable by sweeping
+fragments with the simplex-embedding linear program \cite{selby2022lp}.
+G3:~an even-dimensional magic--contextuality equivalence, obstructed by
+state-independent Pauli contextuality and by the $\Lambda$-polytope model
+\cite{zurel2020}. G4:~completeness of thermodynamic contextuality witnesses
+within thermal operations (sharpened by Theorem~\ref{thm:n1}: probes must
+leave the TTS cluster). G5:~contextuality quantifiers for higher-order
+interference theories \cite{dakic2014}. G6:~which thermodynamic requirements
+force purification-type axioms. G7:~a monogamy calculus between contextuality
+and nonlocality. G8:~NPT bound entanglement and its thermodynamics.
+G9:~a principled measurement-restriction rule for almost-quantum theories
+\cite{navascues2015,sainz2018}. G10:~a complexity-theoretic column for every
+witness (contextuality is a linear program; separability is NP-hard
+\cite{gurvits2003}; quantum-set membership is undecidable \cite{jnvwy2020}).
+SG1:~covariant contextuality inside degeneracy blocks (the failure mode of
+Theorem~\ref{thm:n1}). SG2:~threshold stratification of witness families.
+SG3:~the uncharted-cell program itself ($2649$ cells at this release).
+SG4:~the toy-field-theory Sorkin order (above). SG5:~hidden-contextuality
+activation: do local filters, which activate hidden nonlocality
+\cite{werner1989,barrett2002}, amplify the sequential-scenario contextuality
+of Corollary~\ref{cor:r3}?
+
+\section{Curation and verification protocol}\label{sec:protocol}
+
+Reliability is handled by explicit provenance rather than by implication.
+(i)~Every edge in the data files carries a verbatim statement and references;
+the per-edge reference list, not this paper, is the citation of record for
+compiled results. (ii)~Edges marked \emph{theorem} are literature claims; the
+load-bearing post-2019 results were verified against bibliographic sources
+during curation (October 2026), while classic results (e.g.\
+\cite{hudson1974,groenewold1946,moyal1949,fine1982,werner1989}) are cited from
+standard knowledge and their page data should be rechecked before quotation.
+(iii)~Edges marked \emph{derived} are proved in this paper or in the
+repository catalogs and are \emph{not} claimed to be previously unpublished;
+Propositions~\ref{prop:p1}, \ref{prop:r1} and Lemma~\ref{lem:r2} are
+elementary enough to be folklore, and a dedicated novelty pass is advised
+before attributing priority. (iv)~Composed corollaries state exactly which
+recorded theorems they compose, so a reader can audit each in one step.
+(v)~The authors take responsibility for remaining errors and welcome
+corrections as repository issues; the graph is versioned, and every release
+records its gap census.
+
+\section{Repository}\label{sec:repo}
+
+The repository (\url{https://github.com/tahmeedhossain/GEN_GPT_Level}, served as live pages at \url{https://tahmeedhossain.github.io/GEN_GPT_Level/}) contains:
+\texttt{index.html} (overview and the generated-proposition record);
+\texttt{v1.html} (flat network, 81 edges); \texttt{v2.html} (layered network,
+148 signed edges, witness records, verdict matrix with uncharted-cell census);
+\texttt{data/network\_v1.json} and \texttt{data/network\_v2.json}
+(machine-readable: nodes, signed edges with statements and references, witness
+records, combinations, polarity metadata); \texttt{catalog/} (prose catalogs
+with full proofs); and this paper's source under \texttt{paper/}. The data
+schema is documented in the README; contributions of new edges are expected to
+carry a statement, a reference or proof, a kind, a status and a polarity.
+
+\paragraph{Acknowledgements.} % TODO (author): add acknowledgements/funding as appropriate.
+
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
+\end{document}

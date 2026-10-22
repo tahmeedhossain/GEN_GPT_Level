@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}</style>
+<p style="font-family:ui-monospace,monospace;font-size:12px;margin:10px 16px"><a href="./" style="color:inherit">&#8592; network overview</a></p>
+<title>Quantum Nonclassicality Network</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: five typed columns (axioms · models · states · effects · tasks) on a wide canvas,
+   detail rail on the right, tabs for the edge catalog and the gap list. */
+:root{
+  --bg:#f6f7f5; --panel:#fdfdfc; --card:#ffffff; --fg:#20272b; --muted:#5d6a70; --line:#d8ddd9;
+  --accent:#0e7a6f;          /* theorem teal */
+  --c-thm:#0e7a6f; --c-par:#3f6ea5; --c-cex:#b3382f; --c-der:#b06b2a; --c-opn:#7a5fa0; --c-exa:#5d6a70;
+  --t-axiom:#8a6d1f; --t-model:#0e7a6f; --t-state:#b06b2a; --t-effect:#3f6ea5; --t-task:#7a5fa0;
+  --chipbg:#eef1ee; --hot:#20272b;
+  --disp:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14191a; --panel:#1a2022; --card:#1f2628; --fg:#e6eae7; --muted:#9fb0ab; --line:#32403d;
+  --accent:#4fbdae;
+  --c-thm:#4fbdae; --c-par:#7ea8d6; --c-cex:#e07a6f; --c-der:#d99a5b; --c-opn:#ab93d6; --c-exa:#9fb0ab;
+  --t-axiom:#cdb25e; --t-model:#4fbdae; --t-state:#d99a5b; --t-effect:#7ea8d6; --t-task:#ab93d6;
+  --chipbg:#242d2e; --hot:#e6eae7; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#14191a; --panel:#1a2022; --card:#1f2628; --fg:#e6eae7; --muted:#9fb0ab; --line:#32403d;
+  --accent:#4fbdae;
+  --c-thm:#4fbdae; --c-par:#7ea8d6; --c-cex:#e07a6f; --c-der:#d99a5b; --c-opn:#ab93d6; --c-exa:#9fb0ab;
+  --t-axiom:#cdb25e; --t-model:#4fbdae; --t-state:#d99a5b; --t-effect:#7ea8d6; --t-task:#ab93d6;
+  --chipbg:#242d2e; --hot:#e6eae7; color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14.5px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 48px;}
+.wrap{max-width:1340px;margin:0 auto;}
+header.top{padding-block:26px 14px;border-bottom:1px solid var(--line);}
+h1{font-family:var(--disp);font-weight:500;font-size:clamp(24px,3.4vw,34px);margin:0 0 6px;text-wrap:balance;letter-spacing:.2px;}
+.sub{color:var(--muted);max-width:72ch;margin:0;}
+.sub b{color:var(--fg);font-weight:600;}
+nav.tabs{display:flex;gap:8px;flex-wrap:wrap;padding-block:14px 0;}
+nav.tabs button{font:inherit;font-weight:600;color:var(--muted);background:transparent;border:1px solid var(--line);
+  border-radius:999px;padding:6px 16px;cursor:pointer;}
+nav.tabs button[aria-selected="true"]{color:var(--bg);background:var(--fg);border-color:var(--fg);}
+nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.controls{display:flex;gap:14px;flex-wrap:wrap;align-items:center;padding-block:14px;}
+.controls input[type="search"]{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);
+  border-radius:8px;padding:7px 12px;min-width:220px;}
+.fl{display:flex;gap:4px;align-items:center;font-size:13px;color:var(--muted);cursor:pointer;user-select:none;}
+.fl input{accent-color:var(--accent);}
+.sw{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start;}
+@media (max-width:980px){.main{grid-template-columns:1fr;}}
+.graphbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-x:auto;min-width:0;}
+svg{display:block;}
+.colhead{font-family:var(--mono);font-size:11px;letter-spacing:.14em;fill:var(--muted);}
+.node rect.box{fill:var(--card);stroke:var(--line);rx:7;cursor:pointer;}
+.node.sel rect.box{stroke:var(--hot);stroke-width:1.8;}
+.node.faded{opacity:.22;}
+.node text{font-family:var(--body);font-size:11.5px;fill:var(--fg);pointer-events:none;}
+.node rect.tag{rx:2;}
+.tag.axiom{fill:var(--t-axiom);} .tag.model{fill:var(--t-model);} .tag.state{fill:var(--t-state);}
+.tag.effect{fill:var(--t-effect);} .tag.task{fill:var(--t-task);}
+path.edge{fill:none;stroke-width:1.5;opacity:.4;cursor:pointer;}
+path.edge.thm{stroke:var(--c-thm);} path.edge.par{stroke:var(--c-par);}
+path.edge.cex{stroke:var(--c-cex);stroke-dasharray:6 4;}
+path.edge.der{stroke:var(--c-der);stroke-width:2;}
+path.edge.opn{stroke:var(--c-opn);stroke-dasharray:2 5;}
+path.edge.exa{stroke:var(--c-exa);}
+path.edge.hot{opacity:1;stroke-width:2.6;}
+path.edge.dim{opacity:.07;}
+path.edge.hidden-e{display:none;}
+.mk{stroke:none;} .mk.thm{fill:var(--c-thm);} .mk.par{fill:var(--c-par);} .mk.cex{fill:var(--c-cex);}
+.mk.der{fill:var(--c-der);} .mk.opn{fill:var(--c-opn);} .mk.exa{fill:var(--c-exa);}
+aside.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0;}
+aside.panel h2{font-family:var(--disp);font-size:19px;font-weight:500;margin:0 0 4px;text-wrap:balance;}
+.kchips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 10px;}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;background:var(--chipbg);color:var(--fg);
+  border-radius:4px;padding:2px 7px;}
+.chip.k-thm{color:var(--c-thm);} .chip.k-par{color:var(--c-par);} .chip.k-cex{color:var(--c-cex);}
+.chip.k-der{color:var(--c-der);} .chip.k-opn{color:var(--c-opn);} .chip.k-exa{color:var(--c-exa);}
+.def{color:var(--muted);font-size:13.5px;margin:0 0 10px;}
+.elist{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none;max-height:430px;overflow:auto;}
+.elist li{border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;background:var(--card);}
+.elist li:hover{border-color:var(--muted);}
+.elist .rel{font-size:13px;}
+.elist .rel b{font-weight:600;}
+.stmt{font-size:13.5px;margin:10px 0;}
+.refs{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:0;padding-left:16px;}
+.refs li{margin-bottom:4px;}
+.back{font:inherit;font-size:13px;color:var(--accent);background:none;border:none;padding:0;cursor:pointer;margin-bottom:8px;}
+section.sheet{padding-block:18px;}
+.cat h3{font-family:var(--disp);font-weight:500;font-size:20px;margin:26px 0 10px;}
+table.edges{border-collapse:collapse;width:100%;font-size:13px;}
+table.edges th,table.edges td{border-bottom:1px solid var(--line);padding:8px 10px 8px 0;text-align:left;vertical-align:top;}
+table.edges th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);font-weight:500;}
+table.edges td.id{font-family:var(--mono);color:var(--muted);white-space:nowrap;}
+.tblwrap{overflow-x:auto;}
+table.edges{min-width:720px;}
+.gaps article{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px 18px;margin-bottom:14px;}
+.gaps h3{font-family:var(--disp);font-weight:500;font-size:19px;margin:0 0 6px;}
+.gaps p{margin:6px 0;font-size:14px;}
+.gaps .tagline{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--c-der);}
+.gaps .tagline.open{color:var(--c-opn);}
+.note{color:var(--muted);font-size:13px;max-width:78ch;}
+a{color:var(--accent);}
+@media (prefers-reduced-motion:no-preference){
+  path.edge{transition:opacity .15s,stroke-width .15s;}
+  .node{transition:opacity .15s;}
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<div class="wrap">
+<header class="top">
+  <h1>Quantum Nonclassicality Network</h1>
+  <p class="sub">Axioms, models, state properties, observable effects and tasks of quantum foundations, information, thermodynamics and resource theories, joined by <b>verified theorem edges</b>, counterexamples, derived corollaries and open problems. Click a node to see its edges; click an edge for the exact statement and references.</p>
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="graph">Graph</button>
+    <button role="tab" aria-selected="false" data-tab="edges">Edge catalog</button>
+    <button role="tab" aria-selected="false" data-tab="gaps">Gaps &amp; propositions</button>
+  </nav>
+</header>
+
+<section id="tab-graph" class="sheet">
+  <div class="controls">
+    <input id="search" type="search" placeholder="Find a node (e.g. steering, Wigner)…" aria-label="Find a node">
+    <label class="fl"><input type="checkbox" data-st="theorem" checked><span class="sw" style="background:var(--c-thm)"></span>theorem</label>
+    <label class="fl"><input type="checkbox" data-st="partial" checked><span class="sw" style="background:var(--c-par)"></span>partial</label>
+    <label class="fl"><input type="checkbox" data-st="counterexample" checked><span class="sw" style="background:var(--c-cex)"></span>counterexample</label>
+    <label class="fl"><input type="checkbox" data-st="derived" checked><span class="sw" style="background:var(--c-der)"></span>derived here</label>
+    <label class="fl"><input type="checkbox" data-st="open" checked><span class="sw" style="background:var(--c-opn)"></span>open / conjecture</label>
+  </div>
+  <div class="main">
+    <div class="graphbox" id="graphbox"></div>
+    <aside class="panel" id="panel"></aside>
+  </div>
+  <p class="note" style="margin-top:12px">Dashed red = counterexample (the implication fails). Dotted violet = open problem occupying that edge. Copper = corollary derived in this project (proof in the catalog). Double arrowheads = equivalence. The full statement of every edge, with references, is in the companion catalog.</p>
+</section>
+
+<section id="tab-edges" class="sheet cat" hidden>
+  <p class="note">Every edge with its full statement and references, grouped as in the catalog. A&nbsp;= GPT-level boundaries, B&nbsp;= correlation hierarchy, C&nbsp;= negativity/magic/computation, D&nbsp;= coherence, E&nbsp;= axioms→effects, F&nbsp;= model rows, G&nbsp;= thermodynamics, H&nbsp;= information tasks, I&nbsp;= gaps.</p>
+  <div id="edgetables"></div>
+</section>
+
+<section id="tab-gaps" class="sheet gaps" hidden>
+  <p class="note">P1–P4 are corollaries derived while building the network (proofs in the catalog); G1–G10 are the missing edges proposed as research targets.</p>
+  <div id="gapcards"></div>
+</section>
+</div>
+
+<script>
+const DATA = {
+nodes: [
+{"id":"ax-nosig","type":"axiom","label":"No-signalling","def":"Marginal statistics of one party independent of the other party's setting."},
+{"id":"ax-loctom","type":"axiom","label":"Local tomography","def":"Composite states determined by local measurement statistics."},
+{"id":"ax-purif","type":"axiom","label":"Purification","def":"Every mixed state is the marginal of a pure state, unique up to local reversible transformations (Chiribella-D'Ariano-Perinotti)."},
+{"id":"ax-norestrict","type":"axiom","label":"No-restriction hypothesis","def":"All mathematically well-defined effects (dual cone) are physical measurements."},
+{"id":"ax-ic","type":"axiom","label":"Information causality","def":"m classical bits assisted by correlations transmit at most m bits of accessible information."},
+{"id":"ax-ml","type":"axiom","label":"Macroscopic locality","def":"Coarse-grained correlations of many-particle experiments are classical."},
+{"id":"ax-lo","type":"axiom","label":"Local orthogonality / exclusivity","def":"Sum of probabilities of pairwise exclusive events is at most 1 (Specker / E-principle)."},
+{"id":"ax-sorkin","type":"axiom","label":"No higher-order interference","def":"Sorkin hierarchy truncates at second order (pairwise slit interference only)."},
+{"id":"ax-decoh","type":"axiom","label":"Decoherence to classical","def":"The theory contains a decoherence map onto a classical (simplicial) subtheory."},
+{"id":"m-classical","type":"model","label":"Classical probability (simplex)","def":"State space a simplex; effect cone its dual; unique noncontextual, local, positive theory."},
+{"id":"m-quantum","type":"model","label":"Quantum theory (complex)","def":"Density operators on complex Hilbert space; all POVMs; CP dynamics."},
+{"id":"m-realqm","type":"model","label":"Real-amplitude QM","def":"Quantum theory over real Hilbert spaces with real tensor-product composites."},
+{"id":"m-boxworld","type":"model","label":"Boxworld (GNST)","def":"Maximal no-signalling theory: square state spaces, PR boxes."},
+{"id":"m-spekkens","type":"model","label":"Spekkens toy / epistricted theories","def":"Classical ontic states + epistemic restriction (knowledge balance); convexified it is a nonsimplicial but simplex-embeddable GPT."},
+{"id":"m-stab-odd","type":"model","label":"Odd-d stabilizer subtheory","def":"Stabilizer states/Clifford/Pauli measurements, odd local dimension."},
+{"id":"m-stab-even","type":"model","label":"Qubit (even-d) stabilizer subtheory","def":"Stabilizer states/Clifford/Pauli measurements on qubits."},
+{"id":"m-gaussian","type":"model","label":"Gaussian quantum mechanics","def":"Gaussian states, Gaussian unitaries, quadrature (homodyne) measurements."},
+{"id":"m-sepqt","type":"model","label":"Separable quantum theory (min-tensor QM)","def":"Single systems fully quantum; composite state cone = separable cone (minimal tensor product)."},
+{"id":"m-aq","type":"model","label":"Almost-quantum correlation set","def":"Correlation set Q(1+AB), slightly larger than quantum, satisfying most device-independent principles."},
+{"id":"s-ent","type":"state","label":"Entanglement","def":"State outside the minimal (separable) cone of a composite."},
+{"id":"s-bound","type":"state","label":"Bound (PPT) entanglement","def":"Entangled but undistillable; positive partial transpose."},
+{"id":"s-wneg","type":"state","label":"Wigner negativity","def":"Negativity of the (discrete or CV) Wigner function."},
+{"id":"s-magic","type":"state","label":"Magic (non-stabilizerness)","def":"State outside the stabilizer polytope; resource for state injection."},
+{"id":"s-coh","type":"state","label":"Coherence / superposition","def":"Off-diagonal structure relative to a basis; GPT-level: strong incompatibility (superposition)."},
+{"id":"s-discord","type":"state","label":"Discord","def":"Nonclassical correlations beyond entanglement."},
+{"id":"s-athermal","type":"state","label":"Athermality","def":"Deviation from the thermal (Gibbs) state; resource under thermal operations."},
+{"id":"s-asym","type":"state","label":"Asymmetry (unspeakable coherence)","def":"Noninvariance under a symmetry group; coherence across conserved-quantity eigenspaces."},
+{"id":"s-psiepi","type":"state","label":"psi-epistemic status","def":"Ontological-model property: distinct quantum states with overlapping ontic distributions."},
+{"id":"e-bell","type":"effect","label":"Bell inequality violation","def":"No local-hidden-variable model for space-like separated statistics."},
+{"id":"e-steer","type":"effect","label":"EPR steering","def":"No local-hidden-state model for an assemblage."},
+{"id":"e-incomp","type":"effect","label":"Measurement incompatibility","def":"No joint measurement reproducing the marginals."},
+{"id":"e-ks","type":"effect","label":"KS contextuality (state-independent)","def":"No outcome-deterministic noncontextual value assignment to projective measurements."},
+{"id":"e-ksdep","type":"effect","label":"State-dependent KS contextuality","def":"Violation of a KS-type noncontextuality inequality by a specific state (e.g. KCBS)."},
+{"id":"e-ctx","type":"effect","label":"Generalized (Spekkens) contextuality","def":"No generalized-noncontextual ontological model; GPT form: failure of simplex embeddability."},
+{"id":"e-nobc","type":"effect","label":"No-cloning / no-broadcasting","def":"Impossibility of a map broadcasting all states."},
+{"id":"e-interf2","type":"effect","label":"Second-order interference","def":"Two-path interference phenomenology (fringes, Elitzur-Vaidman, delayed choice)."},
+{"id":"e-interf3","type":"effect","label":"Higher-order interference","def":"Nonzero Sorkin third-or-higher-order interference terms."},
+{"id":"e-weak","type":"effect","label":"Anomalous weak values","def":"Weak values outside the eigenvalue range."},
+{"id":"e-kd","type":"effect","label":"Kirkwood-Dirac nonpositivity","def":"Negativity or imaginarity of the KD quasiprobability of an experiment."},
+{"id":"e-heat","type":"effect","label":"Anomalous work / heat flows","def":"Work or heat statistics impossible for noncontextual / classically correlated processes."},
+{"id":"e-pr","type":"effect","label":"Superquantum (PR) correlations","def":"No-signalling correlations beyond the Tsirelson bound."},
+{"id":"t-di","type":"task","label":"DI randomness & QKD","def":"Device-independent certification from Bell violation."},
+{"id":"t-1sdi","type":"task","label":"One-sided DI QKD","def":"Security from steering with one untrusted party."},
+{"id":"t-bb84","type":"task","label":"BB84 key distribution","def":"Prepare-measure key distribution."},
+{"id":"t-pom","type":"task","label":"Parity-oblivious multiplexing / RAC","def":"Communication games bounded by preparation noncontextuality."},
+{"id":"t-mbqc","type":"task","label":"Universal QC (state injection / MBQC)","def":"Promoting free (stabilizer / Clifford) operations to universality."},
+{"id":"t-disc","type":"task","label":"State-discrimination advantage","def":"Minimum-error discrimination beyond noncontextual bounds."},
+{"id":"t-metro","type":"task","label":"Postselected metrology","def":"Fisher-information advantages from quasiprobability negativity."},
+{"id":"t-witness","type":"task","label":"Entanglement witnessing / separability","def":"Detecting entanglement; complexity of deciding separability."},
+{"id":"t-undecide","type":"task","label":"Deciding the quantum set","def":"Complexity/decidability of membership in quantum correlations."},
+{"id":"t-secondlaws","type":"task","label":"Second laws / work extraction","def":"State conversion under thermal operations; work from coherence and correlations."}
+],
+edges: [
+{"id":"A1","source":"e-incomp","target":"m-classical","kind":"equiv","status":"theorem","statement":"Incompatible measurements exist iff the state space is not a simplex: all measurements of a GPT are compatible iff the theory is classical.","refs":["Plavala, PRA 94, 042108 (2016)","Kuramochi, arXiv:1912.00563 (infinite-dim.)"]},
+{"id":"A2","source":"e-nobc","target":"m-classical","kind":"equiv","status":"theorem","statement":"Generalized no-broadcasting: a GPT admits universal broadcasting iff it is classical; every nonclassical GPT has no-cloning.","refs":["Barnum, Barrett, Leifer, Wilce, PRL 99, 240501 (2007)"]},
+{"id":"A3","source":"m-classical","target":"s-ent","kind":"equiv","status":"theorem","statement":"Entangleability of cones: min and max tensor products of two GPT cones coincide iff one is classical; any two nonclassical GPT systems can be entangled.","refs":["Aubrun, Lami, Palazuelos, Plavala, Geom. Funct. Anal. 31, 181 (2021); arXiv:1911.09663"]},
+{"id":"A4","source":"s-coh","target":"s-ent","kind":"equiv","status":"theorem","statement":"For any two GPTs: (i) each is nonclassical, (ii) each has strong incompatibility ('superposition'), (iii) the pair is entangleable (entangled states or entangled measurements) - all equivalent. Superposition also suffices to run BB84.","refs":["Aubrun, Lami, Palazuelos, Plavala, PRL 128, 160402 (2022); arXiv:2109.04446"]},
+{"id":"A5","source":"e-ctx","target":"m-classical","kind":"equiv","status":"theorem","statement":"A prepare-measure GPT fragment admits a generalized-noncontextual ontological model iff it is simplex-embeddable (state space embeds in a simplex, effects in its dual).","refs":["Schmid, Selby, Wolfe, Kunjwal, Spekkens, PRX Quantum 2, 010331 (2021)","Shahandeh, PRX Quantum 2, 010330 (2021)"]},
+{"id":"A6","source":"e-ctx","target":"e-kd","kind":"equiv","status":"theorem","statement":"Generalized noncontextuality is equivalent to the existence of a nonnegative quasiprobability representation; contextuality = negativity in every such representation.","refs":["Spekkens, PRL 101, 020401 (2008)","Schmid, Selby, Pusey, Spekkens, arXiv:2005.07161"]},
+{"id":"A7","source":"e-ctx","target":"s-ent","kind":"implies","status":"derived","statement":"DERIVED COROLLARY (this work): if any tomographically complete fragment of a GPT system is contextual, the system's cone is nonsimplicial (A5), hence by entangleability of cones (A3) every composite with another nonclassical system supports entangled states (unless the theory postulates the minimal tensor product). Converse fails: Spekkens' toy theory is nonsimplicial (entangleable) yet noncontextual.","refs":["Derived from PRX Quantum 2, 010331 (2021) + GAFA 31, 181 (2021); cf. m-sepqt for the min-tensor escape"]},
+{"id":"A8","source":"s-ent","target":"e-ctx","kind":"necessary","status":"theorem","statement":"Contextuality is a precondition for entanglement: entanglement in a nonlocal scenario can arise only if the sequential scenario obtained by remote state preparation exhibits preparation-and-measurement contextuality; robust absence of entanglement implies absence of contextuality. Noncontextuality inequalities map to entanglement witnesses and vice versa.","refs":["Plavala, Guhne, PRL 132, 100201 (2024); arXiv:2209.09942"]},
+{"id":"A9","source":"e-nobc","target":"e-ctx","kind":"equiv","status":"theorem","statement":"No-broadcasting characterizes operational contextuality (broadcastability of a fragment corresponds to the existence of a noncontextual model).","refs":["PRL 133, 240201 (2024); arXiv:2406.07305"]},
+{"id":"A10","source":"e-incomp","target":"e-ctx","kind":"not_implies","status":"counterexample","statement":"Incompatibility is neither necessary nor sufficient for generalized contextuality: epistricted theories have incompatible measurements yet are noncontextual, and every quantum contextuality proof can be converted to one using only compatible measurements (even a single CV projective measurement suffices).","refs":["Selby, Schmid, Wolfe, Sainz, Kunjwal, Spekkens, PRL 130, 230201 (2023); arXiv:2106.09045","Plavala, arXiv:2601.14067"]},
+{"id":"A11","source":"e-incomp","target":"e-ctx","kind":"equiv","status":"partial","statement":"Conditional equivalence: when ALL quantum states are available as preparations, measurement incompatibility (equivalently steerability) is necessary and sufficient for operational contextuality.","refs":["Tavakoli, Uola, Phys. Rev. Research 2, 013011 (2020)"]},
+{"id":"B1","source":"e-bell","target":"e-steer","kind":"implies","status":"theorem","statement":"Strict hierarchy: Bell nonlocality implies steerability implies entanglement, with strict inclusions at each level (Werner states witness strictness).","refs":["Wiseman, Jones, Doherty, PRL 98, 140402 (2007)","Quintino et al., PRA 92, 032107 (2015)"]},
+{"id":"B1b","source":"e-steer","target":"s-ent","kind":"implies","status":"theorem","statement":"Steering implies entanglement (LHS models exist for all separable states); inclusion strict.","refs":["Wiseman, Jones, Doherty, PRL 98, 140402 (2007)"]},
+{"id":"B2","source":"s-ent","target":"e-bell","kind":"implies","status":"partial","statement":"Gisin's theorem: every PURE bipartite (and multipartite) entangled state violates some Bell inequality. Fails for mixed states.","refs":["Gisin, Phys. Lett. A 154, 201 (1991)","Popescu, Rohrlich, Phys. Lett. A 166, 293 (1992)"]},
+{"id":"B3","source":"s-ent","target":"e-bell","kind":"not_implies","status":"counterexample","statement":"Werner states: entangled mixed states admitting local hidden variable models for all projective measurements, and even for all POVMs.","refs":["Werner, PRA 40, 4277 (1989)","Barrett, PRA 65, 042302 (2002)"]},
+{"id":"B4","source":"s-ent","target":"e-bell","kind":"implies","status":"theorem","statement":"In the measurement-device-independent (semiquantum game) scenario every entangled state outperforms separable ones: 'all entangled states are nonlocal' with quantum inputs.","refs":["Buscemi, PRL 108, 200401 (2012)"]},
+{"id":"B5","source":"s-ent","target":"e-bell","kind":"implies","status":"partial","statement":"Activation: local filtering reveals hidden nonlocality (even genuinely, for states with LHV models for the filtered statistics), and nonlocality can be superactivated by taking many copies.","refs":["Popescu, PRL 74, 2619 (1995)","Hirsch, Quintino, Bowles, Brunner, PRL 111, 160402 (2013)","Palazuelos, PRL 109, 190401 (2012)"]},
+{"id":"B6","source":"e-incomp","target":"e-steer","kind":"equiv","status":"theorem","statement":"One-to-one map: a measurement assemblage is steerable iff the steering party's measurements are incompatible (quantum theory); joint measurability implies an LHS model and vice versa.","refs":["Quintino, Vertesi, Brunner, PRL 113, 160402 (2014)","Uola, Moroder, Guhne, PRL 113, 160403 (2014)","Uola, Budroni, Guhne, Pellonpaa, PRL 115, 230402 (2015)"]},
+{"id":"B7","source":"e-incomp","target":"e-bell","kind":"necessary","status":"partial","statement":"Compatible measurements never violate any Bell inequality (Fine); any incompatible PAIR of dichotomic measurements violates CHSH with a suitable state and partner; but general incompatible SETS need not enable any Bell violation.","refs":["Fine, PRL 48, 291 (1982)","Wolf, Perez-Garcia, Fernandez, PRL 103, 230402 (2009)","Bene, Vertesi, NJP 20, 013021 (2018)","Hirsch, Quintino, Brunner, PRA 97, 012129 (2018)"]},
+{"id":"B8","source":"s-bound","target":"t-witness","kind":"open","status":"open","statement":"OPEN (since 1998): do NPT bound entangled states exist (is PPT necessary for undistillability)? PPT implies undistillable is a theorem.","refs":["Horodecki, Horodecki, Horodecki, PRL 80, 5239 (1998)","DiVincenzo et al., PRA 61, 062312 (2000)"]},
+{"id":"B9","source":"s-bound","target":"e-bell","kind":"implies","status":"counterexample","statement":"Peres conjecture is FALSE: there exist PPT (bound) entangled states violating a Bell inequality; bound entanglement can also be steerable.","refs":["Vertesi, Brunner, Nat. Commun. 5, 5297 (2014)","Moroder, Gittsovich, Huber, Guhne, PRL 113, 050404 (2014)"]},
+{"id":"B10","source":"s-ent","target":"t-witness","kind":"witness","status":"theorem","statement":"A state is entangled iff some entanglement witness detects it (Hahn-Banach); yet deciding separability is NP-hard, so no efficient universal witness exists.","refs":["Horodecki x3, Phys. Lett. A 223, 1 (1996)","Terhal, Phys. Lett. A 271, 319 (2000)","Gurvits, Proc. STOC 2003, 10"]},
+{"id":"B11","source":"e-bell","target":"t-undecide","kind":"witness","status":"theorem","statement":"The quantum correlation set is not closed, and approximating the quantum value of a nonlocal game is undecidable (MIP* = RE); Tsirelson's problem and Connes' embedding conjecture resolved in the negative.","refs":["Slofstra, Forum Math. Pi 7, e1 (2019)","Ji, Natarajan, Vidick, Wright, Yuen, arXiv:2001.04383; CACM 64(11), 131 (2021)"]},
+{"id":"B12","source":"e-bell","target":"t-di","kind":"enables","status":"theorem","statement":"Bell violation certifies randomness expansion and device-independent QKD.","refs":["Pironio et al., Nature 464, 1021 (2010)","Acin et al., PRL 98, 230501 (2007)"]},
+{"id":"B13","source":"e-steer","target":"t-1sdi","kind":"enables","status":"theorem","statement":"Steering certifies one-sided device-independent QKD.","refs":["Branciard, Cavalcanti, Walborn, Scarani, Wiseman, PRA 85, 010301(R) (2012)"]},
+{"id":"B14","source":"s-ent","target":"e-ks","kind":"necessary","status":"theorem","statement":"For multiqubit systems, every logical KS proof requires entangled measurements and every statistical KS proof requires an entangled state; not every entangled state yields one.","refs":["Wright, Kunjwal, Quantum 7, 900 (2023)"]},
+{"id":"B15","source":"e-ks","target":"e-bell","kind":"equiv","status":"partial","statement":"Structural bridges: invertible map between Bell-nonlocality and contextuality scenarios; contextuality can be converted into nonlocality; graph-theoretic (CSW) bounds unify both.","refs":["Wright, Farkas, PRL 131, 220202 (2023)","Cabello, PRL 127, 070401 (2021)","Cabello, Severini, Winter, PRL 112, 040401 (2014)"]},
+{"id":"B16","source":"e-ks","target":"e-bell","kind":"forbids","status":"partial","statement":"Monogamy between contextuality and nonlocality: in combined scenarios the two resources trade off (no-disturbance monogamy).","refs":["Kurzynski, Cabello, Kaszlikowski, PRL 112, 100401 (2014)"]},
+{"id":"C1","source":"s-wneg","target":"e-ksdep","kind":"equiv","status":"theorem","statement":"Odd prime dimension: a qudit state enables violation of a noncontextuality inequality with stabilizer measurements iff its discrete Wigner function is negative ('contextuality supplies the magic').","refs":["Howard, Wallman, Veitch, Emerson, Nature 510, 351 (2014)","Delfosse et al. (rebits), PRX 5, 021003 (2015)"]},
+{"id":"C2","source":"s-wneg","target":"e-ctx","kind":"equiv","status":"theorem","statement":"Continuous variables: contextuality and Wigner negativity are equivalent with respect to CV Pauli (quadrature-displacement) measurements - CV analogue of Howard et al.","refs":["Booth, Chabaud, Emeriau, PRL 129, 230401 (2022)","arXiv:2112.14788 (homodyne version)"]},
+{"id":"C3","source":"s-wneg","target":"t-mbqc","kind":"necessary","status":"theorem","statement":"Nonnegative Wigner functions (odd d; CV) admit efficient classical simulation of the circuit, so Wigner negativity is necessary for quantum speedup in these settings.","refs":["Veitch, Ferrie, Gross, Emerson, NJP 14, 113011 (2012)","Mari, Eisert, PRL 109, 230503 (2012)"]},
+{"id":"C4","source":"s-magic","target":"t-mbqc","kind":"necessary","status":"theorem","statement":"Magic states are the resource promoting fault-tolerant stabilizer operations to universality; quantified by the resource theory of stabilizer computation.","refs":["Bravyi, Kitaev, PRA 71, 022316 (2005)","Veitch, Mousavian, Gottesman, Emerson, NJP 16, 013009 (2014)"]},
+{"id":"C5","source":"m-stab-odd","target":"e-ctx","kind":"forbids","status":"theorem","statement":"The odd-d stabilizer subtheory has a UNIQUE nonnegative diagram-preserving quasiprobability representation - Gross's Wigner function, equivalent to Spekkens' epistricted toy theory - hence it is noncontextual, with a singled-out classical model.","refs":["Schmid, Du, Selby, Pusey, PRL 129, 120403 (2022)","Gross, J. Math. Phys. 47, 122107 (2006)","Catani, Browne, NJP 19, 073035 (2017)"]},
+{"id":"C6","source":"m-stab-even","target":"e-ctx","kind":"implies","status":"theorem","statement":"In all even dimensions no nonnegative diagram-preserving quasiprobability representation of the stabilizer subtheory exists: the qubit stabilizer subtheory is generalized-contextual (and state-independently KS-contextual via the Mermin square).","refs":["Schmid, Du, Selby, Pusey, PRL 129, 120403 (2022)","Mermin, PRL 65, 3373 (1990)"]},
+{"id":"C7","source":"e-ctx","target":"t-mbqc","kind":"necessary","status":"theorem","statement":"Generalized contextuality is a necessary resource for universal quantum computation in the state-injection model (odd d via uniqueness of the Gross representation; qubits via even-d contextuality); KS-contextuality similarly powers MBQC and shallow-circuit advantage.","refs":["Schmid, Du, Selby, Pusey, PRL 129, 120403 (2022)","Howard et al., Nature 510, 351 (2014)","Raussendorf, PRA 88, 022322 (2013)","Anders, Browne, PRL 102, 050502 (2009)","Bravyi, Gosset, Konig, Science 362, 308 (2018)"]},
+{"id":"C8","source":"s-wneg","target":"t-mbqc","kind":"not_implies","status":"counterexample","statement":"CAVEAT: a nonnegative probabilistic hidden-variable model (Bayesian updates on a finite state space) covers universal quantum computation with magic states for qubits and all qudit dimensions. It is not diagram-preserving, so it evades the noncontextuality no-gos - negativity is representation-relative; generalized contextuality is the invariant statement.","refs":["Zurel, Okay, Raussendorf, PRL 125, 260404 (2020)","Zurel, Okay, Raussendorf, Heimendahl, Quantum 8, 1323 (2024)"]},
+{"id":"C9","source":"e-kd","target":"e-ctx","kind":"implies","status":"partial","statement":"KD nonpositivity of suitable experiments implies negativity of every quasiprobability representation, hence contextuality; anomalous weak values are its operational face. Caution: not every KD-negative assignment certifies contextuality once general KD representations are allowed.","refs":["Arvidsson-Shukur et al. (KD review), NJP 2024; arXiv:2403.18899","Schmid, Baldijao, Ying, Wagner, Selby, arXiv:2405.04573"]},
+{"id":"C10","source":"e-weak","target":"e-ctx","kind":"implies","status":"theorem","statement":"Anomalous weak values are proofs of generalized contextuality.","refs":["Pusey, PRL 113, 200401 (2014)"]},
+{"id":"C11","source":"e-kd","target":"t-metro","kind":"enables","status":"theorem","statement":"KD negativity underlies anomalous postselected Fisher information (metrology beyond classical limits); recently argued necessary for quantum-computational advantage.","refs":["Arvidsson-Shukur et al., Nat. Commun. 11, 3775 (2020)","arXiv:2506.08092"]},
+{"id":"C12","source":"e-ctx","target":"t-pom","kind":"enables","status":"theorem","statement":"Preparation contextuality powers parity-oblivious multiplexing (the optimal quantum advantage is a preparation-noncontextuality violation).","refs":["Spekkens, Buzacott, Keehn, Toner, Pryde, PRL 102, 010401 (2009)"]},
+{"id":"C13","source":"e-ctx","target":"t-disc","kind":"enables","status":"theorem","statement":"Contextual advantage for minimum-error state discrimination.","refs":["Schmid, Spekkens, PRX 8, 011015 (2018)"]},
+{"id":"C14","source":"e-ks","target":"e-ksdep","kind":"implies","status":"theorem","statement":"Every KS proof converts to a state-dependent noncontextuality inequality violated by every state (statistical form); state-dependent KS contextuality exists from d=3 (KCBS) and requires a non-chordal compatibility graph.","refs":["Klyachko, Can, Binicioglu, Shumovsky, PRL 101, 020403 (2008)","Kunjwal, Spekkens, PRL 115, 110403 (2015)","Xu, Cabello, PRA 99, 020103(R) (2019)"]},
+{"id":"D1","source":"s-coh","target":"s-ent","kind":"implies","status":"theorem","statement":"Within quantum theory, coherence converts faithfully to entanglement by incoherent operations plus an incoherent ancilla (entanglement generated is bounded by input coherence); coherence likewise activates discord.","refs":["Streltsov, Singh, Dhar, Bera, Adesso, PRL 115, 020403 (2015)","Ma, Yadin, Girolami, Vedral, Gu, PRL 116, 160407 (2016)"]},
+{"id":"D2","source":"s-coh","target":"e-ctx","kind":"necessary","status":"derived","statement":"PROPOSITION (folklore, proof in catalog): a prepare-measure fragment whose states and effects are all diagonal in one basis is simplex-embeddable, hence noncontextual; so every contextuality proof needs basis-independent coherence of the state set. Quantitative witnesses exist in interferometric scenarios (event-graph / MZI inequalities).","refs":["Wagner, Camillini, Galvao, Quantum 8, 1240 (2024)","Plavala, arXiv:2601.14067 (set coherence <-> contextuality confirmation)"]},
+{"id":"D3","source":"s-coh","target":"e-ctx","kind":"not_implies","status":"counterexample","statement":"Coherence does NOT suffice for contextuality: epistricted theories (Spekkens toy, Gaussian, odd-d stabilizer) display superposition-like structure and full two-path interference phenomenology (double slit, Elitzur-Vaidman, delayed choice, quantum eraser) while remaining noncontextual. Only specific further aspects of interference are genuinely nonclassical.","refs":["Spekkens, PRA 75, 032110 (2007)","Catani, Leifer, Schmid, Spekkens, Quantum 7, 1119 (2023)","Catani, Leifer, Scala, Schmid, Spekkens, PRA 2023 (genuinely nonclassical interference)","Catani et al., PRL 2022 (uncertainty relations)"]},
+{"id":"D4","source":"s-coh","target":"e-ctx","kind":"implies","status":"partial","statement":"No coherence threshold: contextuality proofs exist with maximal robustness to dephasing, i.e. arbitrarily small (vanishing) coherence still witnesses contextuality - coherence is necessary but its magnitude is not the resource.","refs":["Rossi, Schmid, Selby, Sainz, PRA 2023; arXiv:2212.06856"]},
+{"id":"D5","source":"s-asym","target":"s-coh","kind":"equiv","status":"theorem","statement":"Unspeakable coherence = asymmetry relative to the group generated by a conserved quantity; Noether-type conservation fails for open covariant dynamics and asymmetry monotones take its place.","refs":["Marvian, Spekkens, Nat. Commun. 5, 3821 (2014)","Marvian, Spekkens, PRA 94, 052324 (2016)"]},
+{"id":"D6","source":"m-realqm","target":"e-bell","kind":"forbids","status":"theorem","statement":"Real-amplitude quantum theory (with real tensor composites) reproduces single-site statistics but fails in quantum networks: a three-party entanglement-swapping Bell test separates complex from real QM, and experiments violate the real-QM bound. Imaginarity is a genuine resource.","refs":["Renou et al., Nature 600, 625 (2021)","Li et al., PRL 128, 040402 (2022)","Chen et al., PRL 128, 040403 (2022)","Wu et al., PRL 126, 090401 (2021)"]},
+{"id":"E1","source":"ax-nosig","target":"e-pr","kind":"not_implies","status":"theorem","statement":"No-signalling alone does not forbid superquantum correlations: PR boxes reach CHSH = 4.","refs":["Popescu, Rohrlich, Found. Phys. 24, 379 (1994)"]},
+{"id":"E2","source":"ax-ic","target":"e-pr","kind":"forbids","status":"partial","statement":"Information causality implies the Tsirelson bound (CHSH <= 2 sqrt 2); whether it carves out exactly the quantum set is OPEN.","refs":["Pawlowski, Paterek, Kaszlikowski, Scarani, Winter, Zukowski, Nature 461, 1101 (2009)"]},
+{"id":"E3","source":"ax-ml","target":"e-pr","kind":"forbids","status":"theorem","statement":"Macroscopic locality bounds correlations to the (strictly larger than quantum) NPA level Q1.","refs":["Navascues, Wunderlich, Proc. R. Soc. A 466, 881 (2010)"]},
+{"id":"E4","source":"ax-lo","target":"e-pr","kind":"forbids","status":"theorem","statement":"Local orthogonality / exclusivity rules out PR boxes and reproduces the quantum (Lovasz-theta) bound of the KCBS contextuality inequality.","refs":["Fritz, Sainz, Augusiak, Brask, Chaves, Leverrier, Acin, Nat. Commun. 4, 2263 (2013)","Cabello, PRL 110, 060402 (2013)","Cabello, Severini, Winter, PRL 112, 040401 (2014)"]},
+{"id":"E5","source":"m-aq","target":"ax-norestrict","kind":"forbids","status":"theorem","statement":"Almost-quantum correlations satisfy the main device-independent principles yet strictly exceed quantum; NO GPT satisfying the no-restriction hypothesis reproduces them - a restriction on measurements is forced.","refs":["Navascues, Guryanova, Hoban, Acin, Nat. Commun. 6, 6288 (2015)","Sainz, Guryanova, Acin, Navascues, PRL 120, 200402 (2018)"]},
+{"id":"E6","source":"ax-purif","target":"s-ent","kind":"implies","status":"theorem","statement":"Purification forces entanglement (purifications of mixed states are entangled) and yields no-cloning, steering of ensembles, probabilistic teleportation, reversible dilation and no-information-without-disturbance; with five further informational axioms it singles out quantum theory.","refs":["Chiribella, D'Ariano, Perinotti, PRA 81, 062348 (2010)","Chiribella, D'Ariano, Perinotti, PRA 84, 012311 (2011)","Masanes, Muller, NJP 13, 063001 (2011)","Hardy, quant-ph/0101012"]},
+{"id":"E7","source":"m-boxworld","target":"e-pr","kind":"implies","status":"theorem","statement":"Boxworld attains maximal no-signalling nonlocality (PR boxes) but all its reversible dynamics are trivial (local operations + permutations): no entanglement swapping, no dynamics-based teleportation.","refs":["Barrett, PRA 75, 032304 (2007)","Gross, Muller, Colbeck, Dahlsten, PRL 104, 080402 (2010)"]},
+{"id":"E8","source":"m-quantum","target":"e-bell","kind":"forbids","status":"theorem","statement":"Locally quantum systems + no-signalling composition force bipartite correlations into the quantum set (Tsirelson bound emerges from local structure alone).","refs":["Barnum, Beigi, Boixo, Elliott, Wehner, PRL 104, 140401 (2010)"]},
+{"id":"E9","source":"ax-sorkin","target":"e-interf3","kind":"forbids","status":"theorem","statement":"Quantum theory has exactly second-order interference (Sorkin hierarchy truncates); experiments bound third-order terms; higher-order interference is excluded by purity principles in GPTs, while 'density cube' theories realize it.","refs":["Sorkin, Mod. Phys. Lett. A 9, 3119 (1994)","Sinha et al., Science 329, 418 (2010)","Barnum, Muller, Ududec, NJP 16, 123029 (2014)","Dakic, Paterek, Brukner, NJP 16, 023028 (2014)"]},
+{"id":"E10","source":"ax-decoh","target":"s-ent","kind":"implies","status":"theorem","statement":"Any nonclassical GPT containing a decoherence mechanism onto classical theory must contain entangled states: entanglement is necessary for emergent classicality.","refs":["Richens, Selby, Al-Safi, PRL 119, 080503 (2017)"]},
+{"id":"E11","source":"s-psiepi","target":"m-quantum","kind":"forbids","status":"theorem","statement":"PBR: preparation-independent psi-epistemic models contradict quantum statistics; maximally psi-epistemic models fail for d>=3 independently of preparation independence; psi-epistemic models without these assumptions do exist.","refs":["Pusey, Barrett, Rudolph, Nat. Phys. 8, 475 (2012)","Barrett, Cavalcanti, Lal, Maroney, PRL 112, 250403 (2014)","Leifer, Maroney, PRL 110, 120401 (2013)","Lewis, Jennings, Barrett, Rudolph, PRL 109, 150404 (2012)"]},
+{"id":"F1","source":"m-spekkens","target":"e-bell","kind":"forbids","status":"theorem","statement":"Spekkens' toy theory reproduces incompatibility, no-cloning, interference, teleportation and dense-coding analogues AND ensemble steering - yet is local, noncontextual and nonnegative: steering phenomenology alone does not certify contextuality or nonlocality.","refs":["Spekkens, PRA 75, 032110 (2007)","Kar, Ghosh, Choudhary, Banik, Mathematics 4, 52 (2016)"]},
+{"id":"F2","source":"m-gaussian","target":"e-steer","kind":"implies","status":"theorem","statement":"Gaussian QM: two-mode squeezed states are EPR-steerable with quadrature measurements, yet the positive Wigner function provides an LHV model for all Gaussian measurements (no Bell violation without non-Gaussian measurements), and the whole subtheory embeds in an epistricted classical theory (noncontextual).","refs":["Wiseman, Jones, Doherty, PRL 98, 140402 (2007)","Banaszek, Wodkiewicz, PRA 58, 4345 (1998)","Bartlett, Rudolph, Spekkens, PRA 86, 012103 (2012)"]},
+{"id":"F3","source":"m-sepqt","target":"s-wneg","kind":"implies","status":"derived","statement":"OBSERVATION (this work): separable quantum theory (quantum marginals, minimal tensor product) retains Wigner negativity, magic and generalized contextuality of single systems while possessing NO entangled states, NO steering and NO Bell violation; purification fails. This is the unique escape route from the derived corollary 'contextuality implies entangleability' - and it pins the burden of forcing entanglement on the composition axiom (purification / beyond-min tensor product).","refs":["Construction standard: min/max tensor products, e.g. Janotta, Hinrichsen, J. Phys. A 47, 323001 (2014)","cf. Aubrun et al., PRL 128, 160402 (2022)"]},
+{"id":"F4","source":"m-boxworld","target":"ax-ic","kind":"forbids","status":"theorem","statement":"Boxworld violates information causality, macroscopic locality and local orthogonality (PR boxes trivialize communication complexity).","refs":["Pawlowski et al., Nature 461, 1101 (2009)","van Dam, arXiv:quant-ph/0501159"]},
+{"id":"F5","source":"m-realqm","target":"ax-loctom","kind":"forbids","status":"theorem","statement":"Real-amplitude QM violates local tomography (composite real systems are not determined by local statistics).","refs":["Araki, Commun. Math. Phys. 75, 1 (1980)","Wootters, in 'Complexity, Entropy and the Physics of Information' (1990)","Renou et al., Nature 600, 625 (2021)"]},
+{"id":"G1","source":"s-athermal","target":"t-secondlaws","kind":"necessary","status":"theorem","statement":"Second laws: under thermal operations, state conversion of (block-)diagonal states is governed by the full family of alpha-Renyi free energies, not the single free energy.","refs":["Brandao, Horodecki, Oppenheim, Renes, Spekkens, PNAS 112, 3275 (2015)"]},
+{"id":"G2","source":"s-coh","target":"t-secondlaws","kind":"implies","status":"theorem","statement":"Coherence is an independent thermodynamic resource: time-translation covariance of thermal operations forbids coherence creation and forces coherence monotones (asymmetry measures) to decay - constraints beyond all free-energy second laws.","refs":["Lostaglio, Jennings, Rudolph, Nat. Commun. 6, 6383 (2015)","Lostaglio, Korzekwa, Jennings, Rudolph, PRX 5, 021001 (2015)","Cwiklinski, Studzinski, Horodecki, Oppenheim, PRL 115, 210403 (2015)"]},
+{"id":"G3","source":"s-coh","target":"t-secondlaws","kind":"not_implies","status":"theorem","statement":"Work-locking: the coherent part of the free energy of an individual system is not extractable as work without a phase reference (it unlocks collectively or with an ancillary reference).","refs":["Korzekwa, Lostaglio, Oppenheim, Jennings, NJP 18, 023045 (2016)"]},
+{"id":"G4","source":"e-heat","target":"e-ctx","kind":"witness","status":"theorem","statement":"Any fluctuation theorem reproducing the two-point-measurement statistics on classical states either admits a work quasiprobability or fails on contextual protocols; negativity of the work quasiprobability is a direct signature of contextuality. Noncontextual bounds exist on average work and heat in sequential-measurement protocols; anomalous heat flow witnesses contextuality.","refs":["Lostaglio, PRL 120, 040602 (2018)","Perarnau-Llobet et al., PRL 118, 070601 (2017)","Arvidsson-Shukur et al., NJP 2024; arXiv:2403.18899","Contextuality in anomalous heat flow, arXiv:2406.09715 (2024)"]},
+{"id":"G5","source":"s-discord","target":"e-heat","kind":"implies","status":"theorem","statement":"Initial quantum correlations can reverse the thermodynamic arrow (heat flows from cold to hot), observed experimentally with NMR spins; KD work distributions reconstructed interferometrically.","refs":["Micadei et al., Nat. Commun. 10, 2456 (2019)","Hernandez-Gomez et al., npj Quantum Inf. 10 (2024)"]},
+{"id":"G6","source":"ax-purif","target":"t-secondlaws","kind":"implies","status":"theorem","statement":"GPT thermodynamics: in sharp theories with purification, the three microcanonical resource theories (RaRe / noisy / unital) are well-posed, state conversion is majorization-governed, and purity resources are DUAL to pure-state entanglement resources - the entanglement-thermodynamics duality generalizes beyond quantum theory.","refs":["Chiribella, Scandolo, NJP 17, 103027 (2015)","Chiribella, Scandolo, NJP 19, 123043 (2017)","Chiribella, Scandolo, arXiv:1608.04459"]},
+{"id":"G7","source":"s-discord","target":"e-nobc","kind":"equiv","status":"theorem","statement":"A bipartite state is locally broadcastable iff it has zero discord (classically correlated): no-local-broadcasting characterizes quantum correlations beyond entanglement.","refs":["Piani, Horodecki, Horodecki, PRL 100, 090502 (2008)","Ferraro et al., PRA 81, 052318 (2010) (discordant states are generic)"]},
+{"id":"H1","source":"s-coh","target":"t-bb84","kind":"enables","status":"theorem","statement":"GPT-level: strong incompatibility ('superposition') in each local theory suffices to run the BB84 key-distribution protocol - key distribution survives even if quantum theory is replaced.","refs":["Aubrun, Lami, Palazuelos, Plavala, PRL 128, 160402 (2022)"]},
+{"id":"H2","source":"e-incomp","target":"t-pom","kind":"enables","status":"theorem","statement":"Measurement incompatibility is the exact resource for quantum advantage in random access codes.","refs":["Carmeli, Heinosaari, Toigo, arXiv:1911.04360 (2020)"]},
+{"id":"H3","source":"e-ctx","target":"t-pom","kind":"enables","status":"theorem","statement":"Contextuality quantifies one-shot classical communication advantage with entanglement assistance.","refs":["Kunjwal, Quantum 6, 839 (2022)"]},
+{"id":"I1","source":"ax-ic","target":"m-quantum","kind":"open","status":"open","statement":"OPEN: no known set of device-independent principles (IC, ML, LO, NANLC...) singles out the quantum correlation set; the almost-quantum set satisfies them (IC unresolved) and obstructs the program; its own GPT status requires violating no-restriction.","refs":["Navascues et al., Nat. Commun. 6, 6288 (2015)","Sainz et al., PRL 120, 200402 (2018)"]},
+{"id":"I2","source":"s-coh","target":"e-ctx","kind":"open","status":"open","statement":"GAP: no quantitative resource translation coherence -> contextuality is known. Wanted: minimal extra structure (tomographic completeness of mutually unbiased fragments? saturated uncertainty relations?) under which a coherence monotone lower-bounds a contextuality robustness. Partial: event-graph witnesses; uncertainty-relation nonclassicality; genuinely nonclassical interference aspects.","refs":["Wagner, Camillini, Galvao, Quantum 8, 1240 (2024)","Catani et al., PRL 2022","Catani et al., PRA 2023"]},
+{"id":"I3","source":"s-magic","target":"e-ctx","kind":"open","status":"open","statement":"GAP (even dimensions): no clean iff between qubit magic and a contextuality/negativity measure; state-independent Pauli contextuality and the Zurel-Okay-Raussendorf model obstruct naive formulations. Known: generalized contextuality is necessary for qubit state injection; cost functions over the Lambda-polytope partially quantify it.","refs":["Schmid, Du, Selby, Pusey, PRL 129, 120403 (2022)","Raussendorf, Browne, Delfosse, Okay, Bermejo-Vega, PRA 95, 052334 (2017)","Zurel, Okay, Raussendorf, PRL 125, 260404 (2020)"]},
+{"id":"I4","source":"e-steer","target":"m-classical","kind":"open","status":"open","statement":"GAP: no GPT-level characterization of which composites exhibit steering (the steering analogue of entangleability of cones). Known: purification implies steering; steering implies incompatibility in broad tensor-product classes; restricted operational theories connect steering to contextuality. Conjecture (this work): every beyond-min composite of nonclassical tomographically-complete GPTs with at least one pure entangled state is steerable.","refs":["Chiribella, D'Ariano, Perinotti, PRA 81, 062348 (2010)","Banik, J. Math. Phys. 56, 052101 (2015)","Jencova, Plavala, PRA 98, 012133 (2018)","Plavala et al., Incompatibility in restricted operational theories, arXiv (2024)"]},
+{"id":"I5","source":"e-heat","target":"e-ctx","kind":"open","status":"open","statement":"GAP: is every contextual process detectable by SOME thermodynamic anomaly (work/heat/entropy-production statistics)? Partial: work-quasiprobability negativity, noncontextual bounds on heat, anomalous heat flow witnesses. Wanted: completeness theorem for thermodynamic contextuality witnesses within thermal operations.","refs":["Lostaglio, PRL 120, 040602 (2018)","arXiv:2403.18899","arXiv:2406.09715"]},
+{"id":"I6","source":"e-interf3","target":"e-ctx","kind":"open","status":"open","statement":"GAP: relation between higher-order (Sorkin) interference and contextuality/negativity measures is uncharted; the contextuality status of density-cube theories is unknown.","refs":["Dakic, Paterek, Brukner, NJP 16, 023028 (2014)","Barnum, Muller, Ududec, NJP 16, 123029 (2014)"]},
+{"id":"I7","source":"ax-sorkin","target":"t-secondlaws","kind":"open","status":"open","statement":"GAP: which thermodynamic requirements (well-posed microcanonics, second laws, Landauer) FORCE purification-like axioms? Partial results for sharp theories with purification and for spectrality+strong symmetry; the converse direction is open.","refs":["Chiribella, Scandolo, NJP 19, 123043 (2017)","Krumm, Barnum, Barrett, Muller, NJP 19, 043025 (2017)"]},
+{"id":"I8","source":"e-ctx","target":"e-bell","kind":"open","status":"open","statement":"GAP: a general monogamy/trade-off theory between single-system contextuality and composite nonlocality (beyond specific no-disturbance scenarios) is missing; the Wright-Farkas scenario map suggests a unified resource calculus is possible.","refs":["Kurzynski, Cabello, Kaszlikowski, PRL 112, 100401 (2014)","Wright, Farkas, PRL 131, 220202 (2023)"]},
+{"id":"I9","source":"s-bound","target":"t-secondlaws","kind":"open","status":"open","statement":"GAP: thermodynamic signature of bound entanglement (work-extraction gap between bound and separable states under LOCC-thermal constraints) is not characterized.","refs":["cf. Oppenheim, Horodecki x3, PRL 89, 180402 (2002) (thermodynamic approach to correlations)"]},
+{"id":"I10","source":"m-quantum","target":"e-ctx","kind":"witness","status":"partial","statement":"Witness infrastructure: failures of noncontextuality are testable by linear programming on accessible GPT fragments, robustly to noise, without incompatibility, without ideal detectors, and (with care) without exact tomographic completeness - 'shadows and subsystems' close the tomographic-incompleteness loophole.","refs":["Selby, Wolfe, Schmid, Sainz, Rossi, arXiv:2204.11905","Selby et al., arXiv:2112.04521","Mazurek et al., Nat. Commun. 7, ncomms11780 (2016)","arXiv:2409.13024 (2024)","Muller, Garner, PRX 13, 041001 (2023)"]}
+]
+};
+
+const GAPS = [
+["P1 · derived","Contextuality implies entangleability","A contextual (tomographically complete) fragment forces a nonsimplicial cone (Schmid-Selby-Wolfe-Kunjwal-Spekkens 2021), hence by entangleability of cones (Aubrun-Lami-Palazuelos-Plavala 2021/22) every beyond-minimal composite with another nonclassical system supports entangled states. Converse fails (Spekkens toy theory); the only escape is postulating the minimal tensor product. Complementary known direction: entanglement requires contextuality (Plavala-Guhne, PRL 132, 100201 (2024))."],
+["P2 · derived","Coherence necessary, never sufficient, no threshold","A fragment diagonal in one basis is simplex-embeddable, hence noncontextual - so contextuality needs basis-independent coherence. Sufficiency fails (epistricted theories reproduce the full two-path interference phenomenology noncontextually, Catani et al. 2023), and no coherence threshold exists (vanishing-coherence contextuality, Rossi et al. 2023). The proposed biconditional 'coherence iff state-dependent contextuality' is false as stated."],
+["P3 · derived","Negativity without entanglement, localized","Separable quantum theory (quantum marginals, minimal tensor product) keeps Wigner negativity, magic and contextuality while having no entangled, steerable or Bell-violating states; purification fails. This realizes the hypothetical 'GPT with Wigner negativity but no entanglement' and pins the burden on the composition axiom."],
+["P4 · derived","Steering is logically independent of contextuality","Steering phenomenology lives inside noncontextual theories (toy theory; Gaussian QM), and contextual theories can be unsteerable (separable QT). Steering implies incompatibility (Banik 2015), but neither direction connects it to contextuality in general."],
+["G1 · open","Steering analogue of entangleability of cones","Characterize exactly which (A, B, composite-cone) triples admit steerable states. Conjecture: every beyond-min composite of nonclassical tomographically complete GPTs with a pure entangled state is steerable. First test: boxworld max-tensor composites; cones interpolating min to max."],
+["G2 · open","Quantitative coherence to contextuality","Find conditions (tomographic completeness of mutually unbiased fragments? saturated uncertainty relations?) under which a coherence monotone lower-bounds contextuality robustness. Computable program: sweep fragments from stabilizer to full QM with the linear-program robustness and map the coherence-contextuality Pareto frontier."],
+["G3 · open","Even-dimensional magic iff contextuality","The odd-d equivalence (Howard et al. 2014) has no qubit counterpart; state-independent Pauli contextuality and the Zurel-Okay-Raussendorf Lambda-polytope model block naive statements. Wanted: a state-dependent measure-level iff for qubits."],
+["G4 · open","Completeness of thermodynamic contextuality witnesses","Within thermal operations, is every contextual state or process detectable by some work, heat or entropy-production statistic? Either answer is significant: a universal thermodynamic detector, or a characterization of thermally invisible contextuality."],
+["G5 · open","Higher-order interference vs contextuality","The contextuality status of Sorkin level-3 theories (density cubes) is unknown. A simplex-embedding analysis of the density-cube state space is a self-contained first computation."],
+["G6 · open","Thermodynamic axiomatics, converse direction","Which minimal thermodynamic demands (well-posed microcanonics, Landauer, second laws) force purification or spectrality? A good-thermodynamics counterexample without purification would be as valuable as a derivation."],
+["G7 · open","Monogamy calculus contextuality vs nonlocality","The invertible scenario map (Wright-Farkas 2023) plus no-disturbance monogamy (Kurzynski-Cabello-Kaszlikowski 2014) suggest one resource splitting between sequential and spatial scenarios. No conserved quantity is known."],
+["G8 · open","NPT bound entanglement; thermodynamics of bound entanglement","Open since 1998 whether NPT undistillable states exist; the work-extraction signature of bound entanglement under LOCC-thermal constraints is untouched."],
+["G9 · open","The quantum set from principles","The almost-quantum set survives all proposed principles and cannot come from any no-restriction GPT (Sainz et al. 2018), so any almost-quantum theory needs a principled measurement-restriction rule; none has been proposed."],
+["G10 · open","A complexity column for every witness","Contextuality is LP-testable on accessible fragments with the tomographic-incompleteness loophole addressed; separability is NP-hard; quantum-set membership is undecidable. The same meta-analysis is missing for steering and for thermodynamic witnesses."]
+];
+
+const COLS = ["axiom","model","state","effect","task"];
+const COLTITLE = {axiom:"AXIOMS", model:"MODELS", state:"STATE PROPERTIES", effect:"EFFECTS", task:"TASKS / WITNESSES"};
+const KINDTXT = {implies:"implies", equiv:"equivalent to", necessary:"necessary for", not_implies:"does not imply",
+  enables:"enables", forbids:"constrains / rules out", witness:"witnessed via", open:"open edge toward"};
+const STCLS = {theorem:"thm", partial:"par", counterexample:"cex", derived:"der", open:"opn", example:"exa", conjecture:"opn"};
+const SVGNS = "http://www.w3.org/2000/svg";
+
+const nodeById = {}; DATA.nodes.forEach(n => nodeById[n.id] = n);
+const byType = {}; COLS.forEach(c => byType[c] = []);
+DATA.nodes.forEach(n => byType[n.type].push(n));
+
+const COLW = 212, BOXW = 178, BOXH = 40, ROWH = 54, TOP = 58, LEFT = 24;
+const maxRows = Math.max(...COLS.map(c => byType[c].length));
+const W = LEFT*2 + COLS.length*COLW - (COLW-BOXW);
+const H = TOP + maxRows*ROWH + 10;
+const pos = {};
+COLS.forEach((c,ci) => byType[c].forEach((n,i) => {
+  pos[n.id] = {x: LEFT + ci*COLW, y: TOP + i*ROWH, col: ci};
+}));
+
+function el(tag, attrs, parent){
+  const e = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function wrap2(text, maxChars){
+  const words = text.split(" "); const lines = [""];
+  for(const w of words){
+    const cur = lines[lines.length-1];
+    if(cur.length === 0) lines[lines.length-1] = w;
+    else if((cur + " " + w).length <= maxChars) lines[lines.length-1] = cur + " " + w;
+    else lines.push(w);
+  }
+  if(lines.length > 2){ lines.length = 2; lines[1] = lines[1].slice(0, maxChars-1) + "…"; }
+  return lines;
+}
+
+const svg = el("svg", {viewBox:`0 0 ${W} ${H}`, width:W, height:H, role:"img",
+  "aria-label":"Typed graph of axioms, models, states, effects and tasks"});
+document.getElementById("graphbox").appendChild(svg);
+
+// arrowhead markers per status
+const defs = el("defs", {}, svg);
+["thm","par","cex","der","opn","exa"].forEach(s => {
+  const m = el("marker", {id:"arr-"+s, viewBox:"0 0 10 10", refX:9, refY:5, markerWidth:7, markerHeight:7, orient:"auto-start-reverse"}, defs);
+  el("path", {d:"M0,0 L10,5 L0,10 z", class:"mk "+s}, m);
+});
+
+// column headers
+COLS.forEach((c,ci) => {
+  const t = el("text", {x: LEFT + ci*COLW, y: 26, class:"colhead"}, svg);
+  t.textContent = COLTITLE[c] + " (" + byType[c].length + ")";
+});
+
+// edges first (under nodes)
+const edgeLayer = el("g", {}, svg);
+const edgeEls = {};
+let sameColSeen = {};
+DATA.edges.forEach(e => {
+  const a = pos[e.source], b = pos[e.target];
+  if(!a || !b) return;
+  let d;
+  const ay = a.y + BOXH/2, by = b.y + BOXH/2;
+  if(a.col === b.col){
+    const x = a.x + BOXW;
+    const key = e.source + "|" + e.target;
+    sameColSeen[key] = (sameColSeen[key]||0) + 1;
+    const bulge = 30 + Math.min(44, Math.abs(by-ay)*0.18) + sameColSeen[key]*9;
+    d = `M ${x} ${ay} C ${x+bulge} ${ay}, ${x+bulge} ${by}, ${x} ${by}`;
+  } else if(b.col > a.col){
+    const sx = a.x + BOXW, tx = b.x;
+    const mx = (sx+tx)/2;
+    d = `M ${sx} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${tx} ${by}`;
+  } else {
+    const sx = a.x, tx = b.x + BOXW;
+    const mx = (sx+tx)/2;
+    d = `M ${sx} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${tx} ${by}`;
+  }
+  const cls = STCLS[e.status] || "exa";
+  const p = el("path", {d, class:"edge "+cls, "marker-end":`url(#arr-${cls})`}, edgeLayer);
+  if(e.kind === "equiv") p.setAttribute("marker-start", `url(#arr-${cls})`);
+  p.addEventListener("click", ev => { ev.stopPropagation(); selectEdge(e.id); });
+  const title = el("title", {}, p);
+  title.textContent = e.id + ": " + nodeById[e.source].label + " → " + nodeById[e.target].label;
+  edgeEls[e.id] = p;
+});
+
+// nodes
+const nodeEls = {};
+DATA.nodes.forEach(n => {
+  const p = pos[n.id];
+  const g = el("g", {class:"node", transform:`translate(${p.x},${p.y})`, tabindex:0, role:"button",
+    "aria-label":n.label}, svg);
+  el("rect", {class:"box", width:BOXW, height:BOXH, rx:7}, g);
+  el("rect", {class:"tag "+n.type, x:0, y:6, width:4, height:BOXH-12, rx:2}, g);
+  const lines = wrap2(n.label, 26);
+  lines.forEach((ln,i) => {
+    const t = el("text", {x:12, y: lines.length===1 ? 24 : 17 + i*14}, g);
+    t.textContent = ln;
+  });
+  g.addEventListener("click", () => selectNode(n.id));
+  g.addEventListener("keydown", ev => { if(ev.key==="Enter" || ev.key===" "){ ev.preventDefault(); selectNode(n.id);} });
+  nodeEls[n.id] = g;
+});
+
+// ---------- state & panel ----------
+let selected = null;       // {type:'node'|'edge', id}
+let hiddenStatuses = new Set();
+const panel = document.getElementById("panel");
+
+function statusFiltered(e){
+  const s = e.status === "conjecture" ? "open" : e.status;
+  return hiddenStatuses.has(s);
+}
+function refreshGraph(){
+  const selNode = selected && selected.type === "node" ? selected.id : null;
+  const selEdge = selected && selected.type === "edge" ? selected.id : null;
+  const selEdgeObj = selEdge ? DATA.edges.find(e => e.id === selEdge) : null;
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  DATA.edges.forEach(e => {
+    const p = edgeEls[e.id]; if(!p) return;
+    p.classList.toggle("hidden-e", statusFiltered(e));
+    const hot = (selNode && (e.source === selNode || e.target === selNode)) || e.id === selEdge;
+    p.classList.toggle("hot", hot);
+    p.classList.toggle("dim", (selNode || selEdge) ? !hot : false);
+  });
+  DATA.nodes.forEach(n => {
+    const g = nodeEls[n.id];
+    let faded = false;
+    if(q) faded = !(n.label.toLowerCase().includes(q) || n.def.toLowerCase().includes(q));
+    else if(selNode) faded = !(n.id === selNode || DATA.edges.some(e => !statusFiltered(e) &&
+      ((e.source === selNode && e.target === n.id) || (e.target === selNode && e.source === n.id))));
+    else if(selEdgeObj) faded = !(n.id === selEdgeObj.source || n.id === selEdgeObj.target);
+    g.classList.toggle("faded", faded);
+    g.classList.toggle("sel", n.id === selNode);
+  });
+}
+function chip(text, cls){ return `<span class="chip ${cls||""}">${text}</span>`; }
+function refsHtml(refs){ return `<ul class="refs">` + refs.map(r => `<li>${r}</li>`).join("") + `</ul>`; }
+
+function renderWelcome(){
+  panel.innerHTML = `<h2>Reading the map</h2>
+  <p class="def">Two classicality boundaries organize everything. <b>Nonclassical</b> (non-simplex) is equivalent to: incompatibility, no-broadcasting, superposition, and entangleability. <b>Contextual</b> (not simplex-embeddable) is strictly stronger: Spekkens-type epistricted theories sit between the two, with incompatibility, interference and steering phenomenology but no negativity, no contextuality, no Bell violation.</p>
+  <p class="def">Select a node to list its edges. The dashed red edges are the counterexamples that kill tempting implications; the dotted violet ones are the open problems; the copper ones are corollaries derived in this project.</p>`;
+}
+function selectNode(id){
+  selected = {type:"node", id};
+  const n = nodeById[id];
+  const inc = DATA.edges.filter(e => (e.source === id || e.target === id) && !statusFiltered(e));
+  panel.innerHTML = `<h2>${n.label}</h2>
+    <div class="kchips">${chip(n.type)}${chip(inc.length + " edges")}</div>
+    <p class="def">${n.def}</p>
+    <ul class="elist">` + inc.map(e => {
+      const other = e.source === id ? nodeById[e.target] : nodeById[e.source];
+      const dir = e.source === id ? "→" : "←";
+      return `<li data-eid="${e.id}"><div class="rel"><b>${dir} ${other.label}</b></div>
+        <div class="kchips">${chip(KINDTXT[e.kind]||e.kind)}${chip(e.status, "k-"+(STCLS[e.status]||"exa"))}${chip(e.id)}</div></li>`;
+    }).join("") + `</ul>`;
+  panel.querySelectorAll("li[data-eid]").forEach(li =>
+    li.addEventListener("click", () => selectEdge(li.getAttribute("data-eid"))));
+  refreshGraph();
+}
+function selectEdge(id){
+  selected = {type:"edge", id};
+  const e = DATA.edges.find(x => x.id === id);
+  const s = nodeById[e.source], t = nodeById[e.target];
+  panel.innerHTML = `<button class="back" id="backbtn">← back</button>
+    <h2>${s.label} <span style="color:var(--muted)">${e.kind === "equiv" ? "⇔" : "→"}</span> ${t.label}</h2>
+    <div class="kchips">${chip(e.id)}${chip(KINDTXT[e.kind]||e.kind)}${chip(e.status, "k-"+(STCLS[e.status]||"exa"))}</div>
+    <p class="stmt">${e.statement}</p>
+    ${refsHtml(e.refs)}`;
+  document.getElementById("backbtn").addEventListener("click", () => selectNode(e.source));
+  refreshGraph();
+}
+svg.addEventListener("click", ev => {
+  if(ev.target === svg){ selected = null; renderWelcome(); refreshGraph(); }
+});
+document.getElementById("search").addEventListener("input", refreshGraph);
+document.querySelectorAll(".controls input[type=checkbox]").forEach(cb => {
+  cb.addEventListener("change", () => {
+    const st = cb.getAttribute("data-st");
+    if(cb.checked) hiddenStatuses.delete(st); else hiddenStatuses.add(st);
+    refreshGraph();
+  });
+});
+
+// ---------- edge catalog tab ----------
+(function(){
+  const groups = {};
+  DATA.edges.forEach(e => {
+    const g = e.id.replace(/[0-9b]+$/, "");
+    (groups[g] = groups[g] || []).push(e);
+  });
+  const names = {A:"A · GPT-level boundaries", B:"B · Correlation hierarchy", C:"C · Negativity, magic, computation",
+    D:"D · Coherence", E:"E · Axioms → effects", F:"F · Model rows", G:"G · Thermodynamics",
+    H:"H · Information tasks", I:"I · Gaps occupying edges"};
+  const host = document.getElementById("edgetables");
+  Object.keys(names).forEach(g => {
+    if(!groups[g]) return;
+    const h = document.createElement("h3"); h.textContent = names[g]; host.appendChild(h);
+    const wrapDiv = document.createElement("div"); wrapDiv.className = "tblwrap"; host.appendChild(wrapDiv);
+    const tb = document.createElement("table"); tb.className = "edges";
+    tb.innerHTML = `<thead><tr><th>ID</th><th>EDGE</th><th>STATUS</th><th>STATEMENT · REFERENCES</th></tr></thead>`;
+    const body = document.createElement("tbody");
+    groups[g].forEach(e => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td class="id">${e.id}</td>
+        <td><b>${nodeById[e.source].label}</b> ${e.kind === "equiv" ? "⇔" : "→"} <b>${nodeById[e.target].label}</b><br>
+          <span class="chip">${KINDTXT[e.kind]||e.kind}</span></td>
+        <td><span class="chip k-${STCLS[e.status]||"exa"}">${e.status}</span></td>
+        <td>${e.statement}${refsHtml(e.refs)}</td>`;
+      body.appendChild(tr);
+    });
+    tb.appendChild(body); wrapDiv.appendChild(tb);
+  });
+})();
+
+// ---------- gaps tab ----------
+(function(){
+  const host = document.getElementById("gapcards");
+  GAPS.forEach(([tag, title, body]) => {
+    const a = document.createElement("article");
+    const open = tag.includes("open");
+    a.innerHTML = `<div class="tagline${open ? " open" : ""}">${tag.toUpperCase()}</div><h3>${title}</h3><p>${body}</p>`;
+    host.appendChild(a);
+  });
+})();
+
+// ---------- tabs ----------
+document.querySelectorAll("nav.tabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", b === btn ? "true" : "false"));
+    ["graph","edges","gaps"].forEach(t => {
+      document.getElementById("tab-"+t).hidden = (t !== btn.getAttribute("data-tab"));
+    });
+  });
+});
+
+renderWelcome();
+refreshGraph();
+</script>

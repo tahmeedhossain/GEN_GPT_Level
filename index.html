@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}</style>
+<title>Nonclassicality Network Pages</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Landing page: two network pages + the theorem-generation record. */
+:root{
+  --bg:#f6f7f5; --panel:#fdfdfc; --card:#ffffff; --fg:#20272b; --muted:#5d6a70; --line:#d8ddd9;
+  --accent:#0e7a6f; --der:#b06b2a; --opn:#7a5fa0; --cex:#b3382f;
+  --chipbg:#eef1ee;
+  --disp:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14191a; --panel:#1a2022; --card:#1f2628; --fg:#e6eae7; --muted:#9fb0ab; --line:#32403d;
+  --accent:#4fbdae; --der:#d99a5b; --opn:#ab93d6; --cex:#e07a6f; --chipbg:#242d2e; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#14191a; --panel:#1a2022; --card:#1f2628; --fg:#e6eae7; --muted:#9fb0ab; --line:#32403d;
+  --accent:#4fbdae; --der:#d99a5b; --opn:#ab93d6; --cex:#e07a6f; --chipbg:#242d2e; color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 56px;}
+.wrap{max-width:1080px;margin:0 auto;}
+header{padding-block:34px 10px;}
+h1{font-family:var(--disp);font-weight:500;font-size:clamp(28px,4vw,40px);margin:0 0 8px;text-wrap:balance;}
+.sub{color:var(--muted);max-width:74ch;margin:0;}
+h2{font-family:var(--disp);font-weight:500;font-size:24px;margin:36px 0 10px;text-wrap:balance;}
+.pages{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:18px;}
+a.pagecard{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:20px 22px;color:var(--fg);text-decoration:none;}
+a.pagecard:hover{border-color:var(--accent);}
+a.pagecard .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted);}
+a.pagecard h3{font-family:var(--disp);font-weight:500;font-size:21px;margin:6px 0 8px;}
+a.pagecard p{margin:0;color:var(--muted);font-size:14px;}
+a.pagecard .go{display:inline-block;margin-top:12px;color:var(--accent);font-weight:600;font-size:14px;}
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px;}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+.step .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--accent);}
+.step p{margin:6px 0 0;font-size:13.5px;color:var(--muted);}
+.tblwrap{overflow-x:auto;margin-top:12px;}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:720px;}
+th,td{border-bottom:1px solid var(--line);padding:9px 12px 9px 0;text-align:left;vertical-align:top;}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);font-weight:500;}
+td.id{font-family:var(--mono);white-space:nowrap;color:var(--muted);}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;background:var(--chipbg);border-radius:4px;padding:2px 7px;white-space:nowrap;}
+.chip.der{color:var(--der);} .chip.thm{color:var(--accent);} .chip.cex{color:var(--cex);} .chip.opn{color:var(--opn);}
+.note{color:var(--muted);font-size:13.5px;max-width:80ch;}
+code{font-family:var(--mono);font-size:.92em;background:var(--chipbg);border-radius:4px;padding:1px 5px;}
+.census{font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:14px 18px;margin-top:14px;}
+ul.plain{padding-left:18px;margin:8px 0;}
+ul.plain li{margin-bottom:6px;font-size:14px;}
+footer{margin-top:40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px;}
+a{color:var(--accent);}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<div class="wrap">
+<header>
+  <h1>Nonclassicality Network</h1>
+  <p class="sub">A curated, signed, typed theorem graph of quantum foundations, information, thermodynamics and resource theories — built so that <b>the absence of an edge means "unknown"</b>, impossibility theorems are first-class signed edges (⊣), and the uncharted cells enumerate open problems. Two pages, one network; below, the record of propositions the structure itself produced.</p>
+  <p class="sub" style="margin-top:10px"><b>Why it exists — three uses:</b> <b>automated research-idea generation</b> (the gap census <i>is</i> the agenda: every gray cell is a candidate theorem with four closure routes); <b>easy reviewing</b> (one claim = one cited, statused edge, so checking the review means auditing edges and disputing it means naming an edge id); and <b>visualization</b> (a field's logical shape — flows, blocks, blind spots — at a glance). The review process is itself the generator: surveying the field this way yields its own research agenda.</p>
+</header>
+
+<div class="pages">
+  <a class="pagecard" href="v1.html">
+    <span class="no">PAGE 1 · FLAT (v1, 2026-10-20)</span>
+    <h3>Theorem graph</h3>
+    <p>5 node types (axioms · models · state properties · effects · tasks), 81 edges with verbatim statements and references; the two-classicality-boundary backbone; gaps G1–G10 and propositions P1–P4.</p>
+    <span class="go">Open page 1 →</span>
+  </a>
+  <a class="pagecard" href="v2.html">
+    <span class="no">PAGE 2 · LAYERED (v2.4, 2026-10-23)</span>
+    <h3>Layered network with witness algebra</h3>
+    <p>7 layers (genesis axioms → models → state clusters → process clusters → witnesses → effects → tasks), 148 signed edges, structured witness records, the state × process verdict matrix with uncharted cells, propositions N1–N2 and R1–R6.</p>
+    <span class="go">Open page 2 →</span>
+  </a>
+</div>
+
+<h2>How the network generates theorems</h2>
+<div class="pipe">
+  <div class="step"><span class="k">1 · SIGNED EDGES</span><p>Possibility theorems (→) and impossibility theorems (⊣) are both recorded; an absent edge therefore means <i>nobody has settled it</i>, never "false."</p></div>
+  <div class="step"><span class="k">2 · ENUMERATE GAPS</span><p>The witness-algebra matrix and the typed layers list every unsettled cell and node pair mechanically.</p></div>
+  <div class="step"><span class="k">3 · CLOSE OR REGISTER</span><p>Each gap is closed by composing recorded edges, by a direct proof, by a counterexample, or by a literature fill — otherwise it is registered as a named open problem.</p></div>
+  <div class="step"><span class="k">4 · RE-RUN</span><p>New edges change the gap census; the loop repeats. Three rounds are recorded below.</p></div>
+</div>
+
+<h2>Generated propositions (three rounds)</h2>
+<div class="tblwrap">
+<table>
+<thead><tr><th>ID</th><th>STATEMENT (SHORT)</th><th>MADE FROM</th><th>STATUS</th></tr></thead>
+<tbody>
+<tr><td class="id">P1</td><td>Contextuality ⇒ entangleability of every beyond-minimal composite; converse fails (toy theory).</td><td>simplex-embedding theorem ∘ entangleability of cones (A5 ∘ A3)</td><td><span class="chip der">derived, round 1</span></td></tr>
+<tr><td class="id">P2</td><td>Basis-independent coherence is necessary for contextuality; never sufficient; no threshold.</td><td>diagonal-fragment embedding + epistricted counterexamples (D2–D4)</td><td><span class="chip der">derived, round 1</span></td></tr>
+<tr><td class="id">P3</td><td>Separable quantum theory: Wigner negativity, magic and contextuality with zero entanglement — the burden sits on the composition axiom.</td><td>min-tensor construction + marginal QM (F3, E13)</td><td><span class="chip der">derived, round 1</span></td></tr>
+<tr><td class="id">P4</td><td>Steering is logically independent of contextuality in both directions.</td><td>toy/Gaussian steering + P3 (F1, F2)</td><td><span class="chip der">derived, round 1</span></td></tr>
+<tr><td class="id">N1</td><td>Covariant processes + TTS effects (nondegenerate H): statistics factor through energy dephasing — noncontextual, KD-positive, coherence-blind for every input. TTS processes <i>hide</i> contextuality.</td><td>covariance + dephasing factorization; special case: Lostaglio's TPM theorem</td><td><span class="chip der">derived, round 2</span></td></tr>
+<tr><td class="id">N2</td><td>Every state, thermal included, violates state-independent contextuality inequalities: contextuality has no state-blind cluster; blindness is process-side only.</td><td>Cabello 2008 + Yu–Oh 2012 + N1 corollary</td><td><span class="chip thm">assembled, round 2</span></td></tr>
+<tr><td class="id">R1</td><td>Nondegenerate noninteracting H: every TTS bipartite state is classical–classical; symmetric quantum correlations live only in degeneracy blocks.</td><td>spectral argument + S2/S7/B1b chain; consistency: Micadei et al.</td><td><span class="chip der">derived, round 3</span></td></tr>
+<tr><td class="id">R2</td><td>TTS measurements have no incompatibility (functions of H / post-processings of the energy measurement) — the effect layer collapses for symmetric probes.</td><td>commutation argument + Fine (B7), steering map (B6)</td><td><span class="chip der">derived, round 3</span></td></tr>
+<tr><td class="id">R3</td><td>Werner-region states: Bell-local for all single-copy measurements, yet their sequential scenario is contextual — contextuality strictly outdetects Bell.</td><td>Plávala–Gühne Thm. 1 ∘ Werner/Barrett (A8 ∘ B3)</td><td><span class="chip der">composed, round 3</span></td></tr>
+<tr><td class="id">R4</td><td>Magic and discord are logically independent: |T⟩⊗|0⟩ (magic, zero discord) and a discordant stabilizer mixture (non-magic) close the cell both ways.</td><td>explicit counterexamples with proof</td><td><span class="chip cex">counterexamples, round 3</span></td></tr>
+<tr><td class="id">R5</td><td>KD-Hudson boundary: pure KD-classical states characterized by support uncertainty; noncommutation insufficient for KD negativity.</td><td>literature fill (De Bièvre 2021; ADY-H 2021; Xu 2022)</td><td><span class="chip thm">literature, round 3</span></td></tr>
+<tr><td class="id">R6</td><td>Gaussian and odd-d stabilizer epistricted theories inherit Sorkin I₃ = 0; the toy field theory's Sorkin order is genuinely open (SG4).</td><td>subtheory inheritance + toy/stabilizer divergence</td><td><span class="chip opn">partial + new gap</span></td></tr>
+<tr><td class="id">GN5</td><td>The beyond-Poisson (O(ħ²), anharmonic) Moyal terms are the generators of Wigner negativity, hence of CV contextuality.</td><td>Groenewold + Hudson + Lloyd–Braunstein + Booth et al.</td><td><span class="chip der">assembled, round 2</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="census"><b>Gap census (v2.4):</b> 445 / 3,094 witness-matrix cells settled · 2,649 uncharted · 35 no-go edges · 96 possibility edges · 10 open edges · named open problems G1–G10, SG1–SG5.</div>
+
+<h2>Still uncharted (examples)</h2>
+<ul class="plain">
+  <li><b>Athermality × contextuality</b> — is there a free-energy budget for contextuality under thermal operations? No theorem either way.</li>
+  <li><b>Hidden-contextuality activation (SG5)</b> — do local filters amplify the sequential-scenario contextuality of Bell-local entangled states as they do hidden nonlocality?</li>
+  <li><b>Covariant dynamics × magic</b> — generation or monotone decay? The two resource theories have never been crossed.</li>
+  <li><b>Sorkin order of the toy field theory (SG4)</b> — I₃ of a non-quantum-subtheory epistricted model is uncomputed.</li>
+</ul>
+
+<footer>
+  <p><b>Source:</b> <a href="https://github.com/tahmeedhossain/GEN_GPT_Level">github.com/tahmeedhossain/GEN_GPT_Level</a> · <b>live pages:</b> <a href="https://tahmeedhossain.github.io/GEN_GPT_Level/">tahmeedhossain.github.io/GEN_GPT_Level</a></p>
+  <p>Repository layout: <code>index.html</code>, <code>v1.html</code>, <code>v2.html</code> (GitHub-Pages ready) · <code>data/network_v1.json</code>, <code>data/network_v2.json</code> (machine-readable, per-edge references and signed polarity) · <code>catalog/</code> (prose catalogs with proofs) · <code>paper/</code> (LaTeX concept paper). Statuses mark provenance: <i>theorem</i> = literature, cited; <i>derived</i> = proved in the catalogs/paper, novelty pass pending; <i>open</i> = registered problem. Nothing here is a substitute for reading the cited papers.</p>
+</footer>
+</div>

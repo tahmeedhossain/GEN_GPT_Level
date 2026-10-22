@@ -1,0 +1,392 @@
+\begin{thebibliography}{10}
+
+\bibitem{wiseman2007}
+H.~M. Wiseman, S.~J. Jones, and A.~C. Doherty.
+\newblock Steering, entanglement, nonlocality, and the {EPR} paradox.
+\newblock {\em Phys. Rev. Lett.}, 98:140402, 2007.
+
+\bibitem{plavala2016}
+M.~Pl\'avala.
+\newblock All measurements in a probabilistic theory are compatible if and only
+  if the state space is a simplex.
+\newblock {\em Phys. Rev. A}, 94:042108, 2016.
+\newblock arXiv:1608.05614.
+
+\bibitem{barnum2007}
+H.~Barnum, J.~Barrett, M.~Leifer, and A.~Wilce.
+\newblock Generalized no-broadcasting theorem.
+\newblock {\em Phys. Rev. Lett.}, 99:240501, 2007.
+
+\bibitem{aubrun2021}
+G.~Aubrun, L.~Lami, C.~Palazuelos, and M.~Pl\'avala.
+\newblock Entangleability of cones.
+\newblock {\em Geom. Funct. Anal.}, 31:181--205, 2021.
+\newblock arXiv:1911.09663.
+
+\bibitem{aubrun2022}
+G.~Aubrun, L.~Lami, C.~Palazuelos, and M.~Pl\'avala.
+\newblock Entanglement and superposition are equivalent concepts in any
+  physical theory.
+\newblock {\em Phys. Rev. Lett.}, 128:160402, 2022.
+\newblock arXiv:2109.04446.
+
+\bibitem{howard2014}
+M.~Howard, J.~Wallman, V.~Veitch, and J.~Emerson.
+\newblock Contextuality supplies the `magic' for quantum computation.
+\newblock {\em Nature}, 510:351, 2014.
+
+\bibitem{booth2022}
+R.~I. Booth, U.~Chabaud, and P.-E. Emeriau.
+\newblock Contextuality and wigner negativity are equivalent for
+  continuous-variable quantum measurements.
+\newblock {\em Phys. Rev. Lett.}, 129:230401, 2022.
+\newblock arXiv:2111.13218.
+
+\bibitem{chsh1969}
+J.~F. Clauser, M.~A. Horne, A.~Shimony, and R.~A. Holt.
+\newblock Proposed experiment to test local hidden-variable theories.
+\newblock {\em Phys. Rev. Lett.}, 23:880, 1969.
+
+\bibitem{tsirelson1980}
+B.~S. Cirel'son.
+\newblock Quantum generalizations of {B}ell's inequality.
+\newblock {\em Lett. Math. Phys.}, 4:93, 1980.
+
+\bibitem{pr1994}
+S.~Popescu and D.~Rohrlich.
+\newblock Quantum nonlocality as an axiom.
+\newblock {\em Found. Phys.}, 24:379, 1994.
+
+\bibitem{spekkens2005}
+R.~W. Spekkens.
+\newblock Contextuality for preparations, transformations, and unsharp
+  measurements.
+\newblock {\em Phys. Rev. A}, 71:052108, 2005.
+
+\bibitem{spekkens2008}
+R.~W. Spekkens.
+\newblock Negativity and contextuality are equivalent notions of
+  nonclassicality.
+\newblock {\em Phys. Rev. Lett.}, 101:020401, 2008.
+
+\bibitem{schmid2021}
+D.~Schmid, J.~H. Selby, E.~Wolfe, R.~Kunjwal, and R.~W. Spekkens.
+\newblock Characterization of noncontextuality in the framework of generalized
+  probabilistic theories.
+\newblock {\em PRX Quantum}, 2:010331, 2021.
+\newblock arXiv:1911.10386.
+
+\bibitem{selby2022lp}
+J.~H. Selby, E.~Wolfe, D.~Schmid, A.~B. Sainz, and V.~P. Rossi.
+\newblock Linear program for testing nonclassicality and an open-source
+  implementation.
+\newblock {\em Phys. Rev. Lett.}, 132:050202, 2024.
+\newblock arXiv:2204.11905; verify final journal data.
+
+\bibitem{spekkens2007}
+R.~W. Spekkens.
+\newblock Evidence for the epistemic view of quantum states: A toy theory.
+\newblock {\em Phys. Rev. A}, 75:032110, 2007.
+
+\bibitem{spekkens2016}
+R.~W. Spekkens.
+\newblock Quasi-quantization: classical statistical theories with an epistemic
+  restriction.
+\newblock In {\em Quantum Theory: Informational Foundations and Foils}.
+  Springer, 2016.
+\newblock arXiv:1409.5041.
+
+\bibitem{brs2012}
+S.~D. Bartlett, T.~Rudolph, and R.~W. Spekkens.
+\newblock Reconstruction of gaussian quantum mechanics from liouville mechanics
+  with an epistemic restriction.
+\newblock {\em Phys. Rev. A}, 86:012103, 2012.
+
+\bibitem{gross2006}
+D.~Gross.
+\newblock Hudson's theorem for finite-dimensional quantum systems.
+\newblock {\em J. Math. Phys.}, 47:122107, 2006.
+
+\bibitem{catani2017}
+L.~Catani and D.~E. Browne.
+\newblock Spekkens' toy model in all dimensions and its relationship with
+  stabiliser quantum mechanics.
+\newblock {\em New J. Phys.}, 19:073035, 2017.
+
+\bibitem{schmid2022}
+D.~Schmid, H.~Du, J.~H. Selby, and M.~F. Pusey.
+\newblock Uniqueness of noncontextual models for stabilizer subtheories.
+\newblock {\em Phys. Rev. Lett.}, 129:120403, 2022.
+\newblock arXiv:2101.06263.
+
+\bibitem{mermin1990}
+N.~D. Mermin.
+\newblock Simple unified form for the major no-hidden-variables theorems.
+\newblock {\em Phys. Rev. Lett.}, 65:3373, 1990.
+
+\bibitem{peres1991}
+A.~Peres.
+\newblock Two simple proofs of the kochen--specker theorem.
+\newblock {\em J. Phys. A}, 24:L175, 1991.
+
+\bibitem{cabello2008}
+A.~Cabello.
+\newblock Experimentally testable state-independent quantum contextuality.
+\newblock {\em Phys. Rev. Lett.}, 101:210401, 2008.
+
+\bibitem{werner1989}
+R.~F. Werner.
+\newblock Quantum states with einstein--podolsky--rosen correlations admitting
+  a hidden-variable model.
+\newblock {\em Phys. Rev. A}, 40:4277, 1989.
+
+\bibitem{barrett2002}
+J.~Barrett.
+\newblock Nonsequential positive-operator-valued measurements on entangled
+  mixed states do not always violate a bell inequality.
+\newblock {\em Phys. Rev. A}, 65:042302, 2002.
+
+\bibitem{gisin1991}
+N.~Gisin.
+\newblock Bell's inequality holds for all non-product states.
+\newblock {\em Phys. Lett. A}, 154:201, 1991.
+
+\bibitem{fine1982}
+A.~Fine.
+\newblock Hidden variables, joint probability, and the bell inequalities.
+\newblock {\em Phys. Rev. Lett.}, 48:291, 1982.
+
+\bibitem{quintino2014}
+M.~T. Quintino, T.~V\'ertesi, and N.~Brunner.
+\newblock Joint measurability, einstein--podolsky--rosen steering, and bell
+  nonlocality.
+\newblock {\em Phys. Rev. Lett.}, 113:160402, 2014.
+
+\bibitem{uola2014}
+R.~Uola, T.~Moroder, and O.~G\"uhne.
+\newblock Joint measurability of generalized measurements implies classicality.
+\newblock {\em Phys. Rev. Lett.}, 113:160403, 2014.
+
+\bibitem{vertesi2014}
+T.~V\'ertesi and N.~Brunner.
+\newblock Disproving the peres conjecture by showing bell nonlocality from
+  bound entanglement.
+\newblock {\em Nat. Commun.}, 5:5297, 2014.
+
+\bibitem{zurel2020}
+M.~Zurel, C.~Okay, and R.~Raussendorf.
+\newblock Hidden variable model for universal quantum computation with magic
+  states on qubits.
+\newblock {\em Phys. Rev. Lett.}, 125:260404, 2020.
+
+\bibitem{plavala2024}
+M.~Pl\'avala and O.~G\"uhne.
+\newblock Contextuality as a precondition for quantum entanglement.
+\newblock {\em Phys. Rev. Lett.}, 132:100201, 2024.
+\newblock arXiv:2209.09942.
+
+\bibitem{tavakoli2020}
+A.~Tavakoli and R.~Uola.
+\newblock Measurement incompatibility and steering are necessary and sufficient
+  for operational contextuality.
+\newblock {\em Phys. Rev. Research}, 2:013011, 2020.
+
+\bibitem{selby2023}
+J.~H. Selby, D.~Schmid, E.~Wolfe, A.~B. Sainz, R.~Kunjwal, and R.~W. Spekkens.
+\newblock Contextuality without incompatibility.
+\newblock {\em Phys. Rev. Lett.}, 130:230201, 2023.
+\newblock arXiv:2106.09045.
+
+\bibitem{nobroadcast2024}
+J.~Jokinen et~al.
+\newblock No-broadcasting characterizes operational contextuality.
+\newblock {\em Phys. Rev. Lett.}, 133:240201, 2024.
+\newblock arXiv:2406.07305; author list to be verified before submission.
+
+\bibitem{lostaglio2018}
+M.~Lostaglio.
+\newblock Quantum fluctuation theorems, contextuality, and work
+  quasiprobabilities.
+\newblock {\em Phys. Rev. Lett.}, 120:040602, 2018.
+
+\bibitem{perarnau2017}
+M.~Perarnau-Llobet, E.~B\"aumer, K.~V. Hovhannisyan, M.~Huber, and A.~Ac\'in.
+\newblock No-go theorem for the characterization of work fluctuations in
+  coherent quantum systems.
+\newblock {\em Phys. Rev. Lett.}, 118:070601, 2017.
+
+\bibitem{micadei2019}
+K.~Micadei et~al.
+\newblock Reversing the direction of heat flow using quantum correlations.
+\newblock {\em Nat. Commun.}, 10:2456, 2019.
+
+\bibitem{marvian2014}
+I.~Marvian and R.~W. Spekkens.
+\newblock Extending noether's theorem by quantifying the asymmetry of quantum
+  states.
+\newblock {\em Nat. Commun.}, 5:3821, 2014.
+
+\bibitem{lostaglio2015}
+M.~Lostaglio, D.~Jennings, and T.~Rudolph.
+\newblock Description of quantum coherence in thermodynamic processes requires
+  constraints beyond free energy.
+\newblock {\em Nat. Commun.}, 6:6383, 2015.
+
+\bibitem{groenewold1946}
+H.~J. Groenewold.
+\newblock On the principles of elementary quantum mechanics.
+\newblock {\em Physica}, 12:405, 1946.
+
+\bibitem{moyal1949}
+J.~E. Moyal.
+\newblock Quantum mechanics as a statistical theory.
+\newblock {\em Proc. Camb. Phil. Soc.}, 45:99, 1949.
+
+\bibitem{bffls1978}
+F.~Bayen, M.~Flato, C.~Fronsdal, A.~Lichnerowicz, and D.~Sternheimer.
+\newblock Deformation theory and quantization. {I}, {II}.
+\newblock {\em Ann. Phys.}, 111:61--110, 111--151, 1978.
+
+\bibitem{kontsevich2003}
+M.~Kontsevich.
+\newblock Deformation quantization of poisson manifolds.
+\newblock {\em Lett. Math. Phys.}, 66:157, 2003.
+
+\bibitem{hudson1974}
+R.~L. Hudson.
+\newblock When is the wigner quasi-probability density non-negative?
+\newblock {\em Rep. Math. Phys.}, 6:249, 1974.
+
+\bibitem{lloyd1999}
+S.~Lloyd and S.~L. Braunstein.
+\newblock Quantum computation over continuous variables.
+\newblock {\em Phys. Rev. Lett.}, 82:1784, 1999.
+
+\bibitem{takagi2018}
+R.~Takagi and Q.~Zhuang.
+\newblock Convex resource theory of non-gaussianity.
+\newblock {\em Phys. Rev. A}, 97:062337, 2018.
+
+\bibitem{hardywootters2012}
+L.~Hardy and W.~K. Wootters.
+\newblock Limited holism and real-vector-space quantum theory.
+\newblock {\em Found. Phys.}, 42:454, 2012.
+
+\bibitem{renou2021}
+M.-O. Renou, D.~Trillo, M.~Weilenmann, T.~P. Le, A.~Tavakoli, N.~Gisin,
+  A.~Ac\'in, and M.~Navascu\'es.
+\newblock Quantum theory based on real numbers can be experimentally falsified.
+\newblock {\em Nature}, 600:625, 2021.
+
+\bibitem{stueckelberg1960}
+E.~C.~G. Stueckelberg.
+\newblock Quantum theory in real {H}ilbert space.
+\newblock {\em Helv. Phys. Acta}, 33:727, 1960.
+
+\bibitem{navascues2015}
+M.~Navascu\'es, Y.~Guryanova, M.~J. Hoban, and A.~Ac\'in.
+\newblock Almost quantum correlations.
+\newblock {\em Nat. Commun.}, 6:6288, 2015.
+
+\bibitem{sainz2018}
+A.~B. Sainz, Y.~Guryanova, A.~Ac\'in, and M.~Navascu\'es.
+\newblock Almost-quantum correlations violate the no-restriction hypothesis.
+\newblock {\em Phys. Rev. Lett.}, 120:200402, 2018.
+
+\bibitem{sorkin1994}
+R.~D. Sorkin.
+\newblock Quantum mechanics as quantum measure theory.
+\newblock {\em Mod. Phys. Lett. A}, 9:3119, 1994.
+
+\bibitem{sinha2010}
+U.~Sinha, C.~Couteau, T.~Jennewein, R.~Laflamme, and G.~Weihs.
+\newblock Ruling out multi-order interference in quantum mechanics.
+\newblock {\em Science}, 329:418, 2010.
+
+\bibitem{dakic2014}
+B.~Daki\'c, T.~Paterek, and {\v C}.~Brukner.
+\newblock Density cubes and higher-order interference theories.
+\newblock {\em New J. Phys.}, 16:023028, 2014.
+
+\bibitem{cdp2010}
+G.~Chiribella, G.~M. D'Ariano, and P.~Perinotti.
+\newblock Probabilistic theories with purification.
+\newblock {\em Phys. Rev. A}, 81:062348, 2010.
+
+\bibitem{janotta2014}
+P.~Janotta and H.~Hinrichsen.
+\newblock Generalized probability theories: what determines the structure of
+  quantum theory?
+\newblock {\em J. Phys. A}, 47:323001, 2014.
+
+\bibitem{catani2023}
+L.~Catani, M.~Leifer, D.~Schmid, and R.~W. Spekkens.
+\newblock Why interference phenomena do not capture the essence of quantum
+  theory.
+\newblock {\em Quantum}, 7:1119, 2023.
+
+\bibitem{rossi2023}
+V.~P. Rossi, D.~Schmid, J.~H. Selby, and A.~B. Sainz.
+\newblock Contextuality with vanishing coherence and maximal robustness to
+  dephasing.
+\newblock {\em Phys. Rev. A}, 108:032213, 2023.
+\newblock arXiv:2212.06856; verify final page number.
+
+\bibitem{wagner2024}
+R.~Wagner, A.~Camillini, and E.~F. Galv\~ao.
+\newblock Coherence and contextuality in a {M}ach--{Z}ehnder interferometer.
+\newblock {\em Quantum}, 8:1240, 2024.
+
+\bibitem{yuoh2012}
+S.~Yu and C.~H. Oh.
+\newblock State-independent proof of kochen--specker theorem with 13 rays.
+\newblock {\em Phys. Rev. Lett.}, 108:030402, 2012.
+
+\bibitem{ollivier2001}
+H.~Ollivier and W.~H. Zurek.
+\newblock Quantum discord: A measure of the quantumness of correlations.
+\newblock {\em Phys. Rev. Lett.}, 88:017901, 2001.
+
+\bibitem{henderson2001}
+L.~Henderson and V.~Vedral.
+\newblock Classical, quantum and total correlations.
+\newblock {\em J. Phys. A}, 34:6899, 2001.
+
+\bibitem{bravyi2005}
+S.~Bravyi and A.~Kitaev.
+\newblock Universal quantum computation with ideal {C}lifford gates and noisy
+  ancillas.
+\newblock {\em Phys. Rev. A}, 71:022316, 2005.
+
+\bibitem{debievre2021}
+S.~De~Bi\`evre.
+\newblock Complete incompatibility, support uncertainty, and
+  {K}irkwood--{D}irac nonclassicality.
+\newblock {\em Phys. Rev. Lett.}, 127:190404, 2021.
+
+\bibitem{ady2021}
+D.~R.~M. Arvidsson-Shukur, J.~C. Drori, and N.~Yunger~Halpern.
+\newblock Conditions tighter than noncommutation needed for nonclassicality.
+\newblock {\em J. Phys. A}, 54:284001, 2021.
+
+\bibitem{xu2022}
+J.~Xu.
+\newblock Kirkwood--dirac classical pure states.
+\newblock {\em arXiv:2210.02876}, 2022.
+\newblock proves De Bi\`evre's DFT conjecture $n_A n_B = d$; journal data to be
+  verified.
+
+\bibitem{gurvits2003}
+L.~Gurvits.
+\newblock Classical deterministic complexity of {E}dmonds' problem and quantum
+  entanglement.
+\newblock In {\em Proc. 35th ACM Symposium on Theory of Computing (STOC)},
+  pages 10--19, 2003.
+
+\bibitem{jnvwy2020}
+Z.~Ji, A.~Natarajan, T.~Vidick, J.~Wright, and H.~Yuen.
+\newblock {MIP}* = {RE}.
+\newblock {\em Commun. ACM}, 64(11):131--138, 2021.
+\newblock arXiv:2001.04383.
+
+\end{thebibliography}

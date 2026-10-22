@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use the Nonclassicality Network, please cite it as below, and cite the original papers referenced on the edges you use."
+title: "Nonclassicality Network: a signed theorem graph for quantum foundations"
+authors:
+  - family-names: "[Fill in]"
+    given-names: "[Fill in]"
+version: "2.4"
+date-released: "2026-10-23"
+license: MIT
+repository-code: "https://github.com/tahmeedhossain/GEN_GPT_Level"
