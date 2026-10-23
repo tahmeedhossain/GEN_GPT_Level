@@ -142,10 +142,18 @@ at model, state and process level, to observe effect $X$?'' interactively.
 The review process is itself the generator: surveying the field in this format
 yields, as a by-product, its own research agenda.
 
-The repository contains two interactive pages over the same data --- a flat
-version (v1) and the layered version (v2) --- documenting the evolution of the
-structure, together with machine-readable JSON carrying a verbatim statement
-and references for every edge. Section~\ref{sec:backbone} summarizes the
+The repository contains four interactive pages over the same data: the flat
+version (v1) and the layered version (v2), preserved unchanged as the record
+of the structure's evolution, and two presentation variants (v1b, v2b) adding
+a plain-language reading with explicit conditions to every edge. The v2b page
+additionally renders detection as state$\to$process$\to$witness
+\emph{pathways} --- a state cluster fires a witness only through a process
+cluster able to see it --- and exposes the generation round of
+Sec.~\ref{sec:generated} as a same-form before/after toggle: the diff between
+the toggled states is exactly the set of generated edges, making the
+demonstration directly inspectable. Machine-readable JSON carries a verbatim
+statement and references for every edge; the version history is tabulated in
+Sec.~\ref{sec:repo}. Section~\ref{sec:backbone} summarizes the
 curated backbone. Section~\ref{sec:generated} contains the generative payoff:
 propositions obtained by closing formerly uncharted cells, with proofs.
 Section~\ref{sec:open} lists the registered open problems.
@@ -343,6 +351,19 @@ $E_k=\sum_i e_{k|i}\Pi_i$ is simulated by measuring $H$ and sampling $k$ from
 $e_{k|i}$.
 \end{proof}
 
+\begin{corollary}[Symmetric probing is blind to composite
+nonclassicality]\label{cor:k18}
+Combine Theorem~\ref{thm:n1}, Proposition~\ref{prop:r1} and
+Lemma~\ref{lem:r2}: an observer restricted to covariant transformations and
+TTS effects (nondegenerate noninteracting $H$) cannot certify entanglement,
+steering or Bell nonlocality of \emph{any} bipartite state --- the accessible
+statistics coincide with those of the dephased, classical--classical shadow
+$D(\rho)$, and the probe set carries no incompatibility. Recorded as pathway
+row K18 on the repository's v2b page, opposite the firing pathway
+``entangled state $\to$ incompatible local settings $\to$ witness violation''
+(row K11).
+\end{corollary}
+
 \begin{corollary}[Bell-local yet contextual scenarios; provenance
 $A8\circ B3$]\label{cor:r3}
 There exist bipartite entangled states admitting local hidden variable models
@@ -474,16 +495,58 @@ records its gap census.
 
 \section{Repository}\label{sec:repo}
 
-The repository (\url{https://github.com/tahmeedhossain/GEN_GPT_Level}, served as live pages at \url{https://tahmeedhossain.github.io/GEN_GPT_Level/}) contains:
-\texttt{index.html} (overview and the generated-proposition record);
-\texttt{v1.html} (flat network, 81 edges); \texttt{v2.html} (layered network,
-148 signed edges, witness records, verdict matrix with uncharted-cell census);
+The repository (\url{https://github.com/tahmeedhossain/GEN_GPT_Level}, served
+as live pages at \url{https://tahmeedhossain.github.io/GEN_GPT_Level/})
+contains: \texttt{index.html} (overview and the generated-proposition record);
+\texttt{v1.html} and \texttt{v2.html} (the flat and layered networks,
+preserved unchanged); \texttt{v1b.html} and \texttt{v2b.html} (presentation
+variants: plain-language reading and conditions on every edge; v2b adds the
+pathway view and the before/after generation toggle);
 \texttt{data/network\_v1.json} and \texttt{data/network\_v2.json}
 (machine-readable: nodes, signed edges with statements and references, witness
-records, combinations, polarity metadata); \texttt{catalog/} (prose catalogs
-with full proofs); and this paper's source under \texttt{paper/}. The data
-schema is documented in the README; contributions of new edges are expected to
-carry a statement, a reference or proof, a kind, a status and a polarity.
+records, combination rows, polarity metadata);
+\texttt{data/plain\_readings.json} (the reading and condition strings keyed
+by edge identifier); \texttt{catalog/} (prose catalogs with full proofs); and
+this paper's source under \texttt{paper/}. The data schema is documented in
+the README; contributions of new edges are expected to carry a statement, a
+reference or proof, a kind, a status and a polarity.
+
+\subsection*{Version history}
+
+Content versions change the theorem graph; presentation variants change only
+how it is read, and any content they add is marked (for v2b: pathway row K11
+extended and row K18 = Corollary~\ref{cor:k18}).
+
+\begin{center}\small
+\begin{tabular}{@{}llp{8.6cm}@{}}
+\toprule
+Version & Date (2026) & Content \\
+\midrule
+v1 & Oct 20 & Flat graph: 5 node types, 81 edges with statements and
+references; backbone of the two classicality boundaries; propositions
+P1--P4; open problems G1--G10. \\
+v2.0 & Oct 21 & Layered form: 7 node types (genesis axioms, models, state
+clusters, process clusters, witnesses, effects, tasks); structured witness
+records; state$\times$process verdict matrix; Theorem~\ref{thm:n1},
+Proposition~\ref{prop:n2}; genesis edges; gaps SG1--SG3. \\
+v2.2--2.3 & Oct 21 & Signed semantics: exclusion kind ($X \Leftrightarrow
+\neg Y$) and hosting kind; impossibility edges drawn on the flat-bar
+(inhibition) footing with polarity filters; machine-readable polarity
+metadata. \\
+v2.4 & Oct 23 & Generation round~3: edges R1--R6 produced from uncharted
+cells (Propositions~\ref{prop:r1}, \ref{prop:r6},
+Lemma~\ref{lem:r2}, Corollary~\ref{cor:r3}, Example~\ref{ex:r4}, and the
+Kirkwood--Dirac literature fill); gaps SG4--SG5; census: 148 edges,
+445/3094 matrix cells settled. \\
+v1b, v2b & Oct 23 & Presentation variants of v1 and v2.4: plain-language
+reading with conditions on every edge (panel and catalog); v2b adds
+state$\to$process$\to$witness pathway overlays, a Pathways tab with a
+directed path finder, the marked pathway rows K11/K18, and the
+before/after toggle isolating R1--R6 --- the same-form demonstration that
+the generated research is exactly the diff. \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \paragraph{Acknowledgements.} The curation of the network, the derivations and
 drafting of this paper, the interactive pages and the data files were produced
