@@ -72,11 +72,17 @@ a{color:var(--accent);}
   <a class="pagecard" href="v1.html">
     <span class="no">PAGE 1 · FLAT (v1, 2026-10-20)</span>
     <h3>Theorem graph</h3>
-    <p>5 node types (axioms · models · state properties · effects · tasks), 81 edges with verbatim statements and references; the two-classicality-boundary backbone; gaps G1–G10 and propositions P1–P4.</p>
+    <p>5 node types (axioms · models · state properties · effects · tasks), 84 edge records (10 of them registered open problems) with verbatim statements and references; the two-classicality-boundary backbone; gaps G1–G10 and propositions P1–P4.</p>
     <span class="go">Open page 1 →</span>
   </a>
+  <a class="pagecard" href="v26.html">
+    <span class="no">PAGE 2 · LAYERED · CURRENT (v2.6, 2026-11-01)</span>
+    <h3>Layered network, round 4</h3>
+    <p>The v2.4 network plus round 4: edges U1–U7 and U5b generated with the literature searched <i>before</i> each proof (156 signed edges); the kind of A5 corrected; scope notes on D2, R2, N1, GN5, R1, R6; SG1 closed, SG5 closed at the level of models, SG6–SG7 registered. Proofs in <code>catalog/network_catalog_v2.6_round4.md</code>.</p>
+    <span class="go">Open page 2 (v2.6) →</span>
+  </a>
   <a class="pagecard" href="v2.html">
-    <span class="no">PAGE 2 · LAYERED (v2.4, 2026-10-23)</span>
+    <span class="no">PAGE 2 · LAYERED (v2.4, 2026-10-23, preserved)</span>
     <h3>Layered network with witness algebra</h3>
     <p>7 layers (genesis axioms → models → state clusters → process clusters → witnesses → effects → tasks), 148 signed edges, structured witness records, the state × process verdict matrix with uncharted cells, propositions N1–N2 and R1–R6.</p>
     <span class="go">Open page 2 →</span>
@@ -103,10 +109,11 @@ a{color:var(--accent);}
   <div class="step"><span class="k">1 · SIGNED EDGES</span><p>Possibility theorems (→) and impossibility theorems (⊣) are both recorded; an absent edge therefore means <i>nobody has settled it</i>, never "false."</p></div>
   <div class="step"><span class="k">2 · ENUMERATE GAPS</span><p>The witness-algebra matrix and the typed layers list every unsettled cell and node pair mechanically.</p></div>
   <div class="step"><span class="k">3 · CLOSE OR REGISTER</span><p>Each gap is closed by composing recorded edges, by a direct proof, by a counterexample, or by a literature fill — otherwise it is registered as a named open problem.</p></div>
-  <div class="step"><span class="k">4 · RE-RUN</span><p>New edges change the gap census; the loop repeats. Three rounds are recorded below.</p></div>
+  <div class="step"><span class="k">4 · RE-RUN</span><p>New edges change the gap census; the loop repeats. Four rounds are recorded below; from round 4 on, the literature is searched <i>before</i> a proof is attempted, so that a known result is recorded as a literature edge (a correction of the curation) and only what is not found is recorded as derived.</p></div>
 </div>
 
-<h2>Generated propositions (three rounds)</h2>
+<h2>Generated propositions (four rounds)</h2>
+<p class="note">Standing relative to the literature (from the review in the combined paper, Sec. 8): most results of rounds 1–3 are compositions of published theorems or elementary arguments — P1, P3, K18, GN5 and R6 are compositions, P2, R1, R2 elementary, R4 counterexamples, R5 a literature fill, N2 an assembly; for N1, R1, R3 and R4 a search on 2026-10-23 found no prior statement, which establishes the absence of a verbatim statement only. Round 4 was run with the literature searched first.</p>
 <div class="tblwrap">
 <table>
 <thead><tr><th>ID</th><th>STATEMENT (SHORT)</th><th>MADE FROM</th><th>STATUS</th></tr></thead>
@@ -115,31 +122,39 @@ a{color:var(--accent);}
 <tr><td class="id">P2</td><td>Basis-independent coherence is necessary for contextuality; never sufficient; no threshold.</td><td>diagonal-fragment embedding + epistricted counterexamples (D2–D4)</td><td><span class="chip der">derived, round 1</span></td></tr>
 <tr><td class="id">P3</td><td>Separable quantum theory: Wigner negativity, magic and contextuality with zero entanglement — the burden sits on the composition axiom.</td><td>min-tensor construction + marginal QM (F3, E13)</td><td><span class="chip der">derived, round 1</span></td></tr>
 <tr><td class="id">P4</td><td>Steering is logically independent of contextuality in both directions.</td><td>toy/Gaussian steering + P3 (F1, F2)</td><td><span class="chip der">derived, round 1</span></td></tr>
-<tr><td class="id">N1</td><td>Covariant processes + TTS effects (nondegenerate H): statistics factor through energy dephasing — noncontextual, KD-positive, coherence-blind for every input. TTS processes <i>hide</i> contextuality.</td><td>covariance + dephasing factorization; special case: Lostaglio's TPM theorem</td><td><span class="chip der">derived, round 2</span></td></tr>
+<tr><td class="id">N1</td><td>Covariant processes + TTS effects (nondegenerate H): statistics factor through energy dephasing — noncontextual (tomographically complete convention, C7), KD-positive, coherence-blind for every input. TTS processes <i>hide</i> contextuality. Sharp: see U1.</td><td>covariance + dephasing factorization; cf. Lostaglio's analysis of the TPM scheme</td><td><span class="chip der">derived, round 2</span></td></tr>
 <tr><td class="id">N2</td><td>Every state, thermal included, violates state-independent contextuality inequalities: contextuality has no state-blind cluster; blindness is process-side only.</td><td>Cabello 2008 + Yu–Oh 2012 + N1 corollary</td><td><span class="chip thm">assembled, round 2</span></td></tr>
-<tr><td class="id">R1</td><td>Nondegenerate noninteracting H: every TTS bipartite state is classical–classical; symmetric quantum correlations live only in degeneracy blocks.</td><td>spectral argument + S2/S7/B1b chain; consistency: Micadei et al.</td><td><span class="chip der">derived, round 3</span></td></tr>
+<tr><td class="id">R1</td><td>Nondegenerate noninteracting H: every TTS bipartite state is classical–classical; symmetric coherence and entanglement live only in degeneracy blocks (discord can arise from mixing blocks, C10).</td><td>spectral argument + S2/S7/B1b chain; consistency: Micadei et al.</td><td><span class="chip der">derived, round 3</span></td></tr>
 <tr><td class="id">R2</td><td>TTS measurements have no incompatibility (functions of H / post-processings of the energy measurement) — the effect layer collapses for symmetric probes.</td><td>commutation argument + Fine (B7), steering map (B6)</td><td><span class="chip der">derived, round 3</span></td></tr>
 <tr><td class="id">R3</td><td>Werner-region states: Bell-local for all single-copy measurements, yet their sequential scenario is contextual — contextuality strictly outdetects Bell.</td><td>Plávala–Gühne Thm. 1 ∘ Werner/Barrett (A8 ∘ B3)</td><td><span class="chip der">composed, round 3</span></td></tr>
 <tr><td class="id">R4</td><td>Magic and discord are logically independent: |T⟩⊗|0⟩ (magic, zero discord) and a discordant stabilizer mixture (non-magic) close the cell both ways.</td><td>explicit counterexamples with proof</td><td><span class="chip cex">counterexamples, round 3</span></td></tr>
 <tr><td class="id">R5</td><td>KD-Hudson boundary: pure KD-classical states characterized by support uncertainty; noncommutation insufficient for KD negativity.</td><td>literature fill (De Bièvre 2021; ADY-H 2021; Xu 2022)</td><td><span class="chip thm">literature, round 3</span></td></tr>
-<tr><td class="id">R6</td><td>Gaussian and odd-d stabilizer epistricted theories inherit Sorkin I₃ = 0; the toy field theory's Sorkin order is genuinely open (SG4).</td><td>subtheory inheritance + toy/stabilizer divergence</td><td><span class="chip opn">partial + new gap</span></td></tr>
-<tr><td class="id">GN5</td><td>The beyond-Poisson (O(ħ²), anharmonic) Moyal terms are the generators of Wigner negativity, hence of CV contextuality.</td><td>Groenewold + Hudson + Lloyd–Braunstein + Booth et al.</td><td><span class="chip der">assembled, round 2</span></td></tr>
+<tr><td class="id">R6</td><td>In Sorkin's setting (orthogonal paths, blocking by projection) Gaussian and odd-d stabilizer subtheories have I₃ = 0; the binary toy theory's Sorkin order is open (SG4). Scope: C11.</td><td>subtheory inheritance + toy/stabilizer divergence</td><td><span class="chip opn">partial + new gap</span></td></tr>
+<tr><td class="id">GN5</td><td>The beyond-Poisson (O(ħ²), anharmonic) Moyal terms are a necessary source of Wigner negativity (quadratic generators preserve Wigner positivity), hence of CV contextuality. Scope: necessity only (C8).</td><td>Groenewold + Hudson + Lloyd–Braunstein + Booth et al.</td><td><span class="chip der">assembled, round 2</span></td></tr>
+<tr><td class="id">U1</td><td>For any H, the covariant/TTS fragment is quantum theory on each eigenspace with a classical label: noncontextual iff H is nondegenerate; six-state preparation contextuality inside a degenerate eigenspace. Closes SG1.</td><td>dephasing identity of N1 (no nondegeneracy needed) + six-state proof</td><td><span class="chip der">derived, round 4</span></td></tr>
+<tr><td class="id">U2</td><td>Generalized contextuality of (states, all measurements) is invariant under invertible filtering: local filters activate hidden Bell nonlocality but not hidden contextuality (the contextuality is there before the filter). Closes SG5 at the level of models.</td><td>explicit transformation of noncontextual models + Plávala–Gühne Thm. 1 + Hirsch et al. 2013</td><td><span class="chip der">derived, round 4</span></td></tr>
+<tr><td class="id">U3</td><td>The odd-d stabilizer subtheory is EPR-steerable (quantum hidden states) though noncontextual: two-basis functional = 2 &gt; 1 + 1/√d.</td><td>maximally entangled stabilizer state + Z/X measurements</td><td><span class="chip der">derived, round 4</span></td></tr>
+<tr><td class="id">U4</td><td>TTS states are magic-free iff H is nondegenerate with a stabilizer eigenbasis.</td><td>spectral argument + finiteness of stabilizer states</td><td><span class="chip der">derived, round 4</span></td></tr>
+<tr><td class="id">U5</td><td>Then covariant probing is blind to magic, while covariant dynamics creates it (the T gate is exp(−iZπ/8)).</td><td>U1(i) ∘ U4</td><td><span class="chip der">derived, round 4</span></td></tr>
+<tr><td class="id">U5b</td><td>Thermal operations generate magic from stabilizer inputs (qubit: necessary and sufficient condition, critical temperatures).</td><td>literature fill: de Oliveira Junior et al., arXiv:2511.13839</td><td><span class="chip thm">literature, round 4</span></td></tr>
+<tr><td class="id">U6</td><td>Zero discord on the steered side ⇒ exactly noncontextual remote-preparation scenario.</td><td>literature (Plávala–Gühne Thm. 2) + direct proof</td><td><span class="chip thm">literature, round 4</span></td></tr>
+<tr><td class="id">U7</td><td>For separable states, remote-preparation contextuality requires steered-side discord, but discord does not imply it (segment vs square of remote preparations).</td><td>counterexample + parity-oblivious multiplexing</td><td><span class="chip cex">counterexample, round 4</span></td></tr>
 </tbody>
 </table>
 </div>
 
-<div class="census"><b>Gap census (v2.4):</b> 445 / 3,094 witness-matrix cells settled · 2,649 uncharted · 35 no-go edges · 96 possibility edges · 10 open edges · named open problems G1–G10, SG1–SG5.</div>
+<div class="census"><b>Gap census (v2.6, 2026-11-01):</b> 469 / 3,094 witness-matrix cells settled · 2,625 uncharted · 156 edges: 45 no-go · 101 possibility · 10 open · 4,049 of 4,186 node pairs unconnected · named open problems G1–G10, SG1–SG7 (SG1 closed; SG5 closed at the level of models).<br><span style="color:var(--muted)">v2.4 (preserved): 445 / 3,094 settled · 148 edges: 40 no-go · 98 possibility · 10 open. (The figures 35 / 96 / 10 shown here before 2026-11-01 were the v2.3 counts.)</span></div>
 
 <h2>Still uncharted (examples)</h2>
 <ul class="plain">
   <li><b>Athermality × contextuality</b> — is there a free-energy budget for contextuality under thermal operations? No theorem either way.</li>
-  <li><b>Hidden-contextuality activation (SG5)</b> — do local filters amplify the sequential-scenario contextuality of Bell-local entangled states as they do hidden nonlocality?</li>
-  <li><b>Covariant dynamics × magic</b> — generation or monotone decay? The two resource theories have never been crossed.</li>
-  <li><b>Sorkin order of the toy field theory (SG4)</b> — I₃ of a non-quantum-subtheory epistricted model is uncomputed.</li>
+  <li><b>Witness-level activation (SG7)</b> — the contextuality verdict is filter-invariant (U2), yet a fixed witness can switch under filtering: how does the contextuality robustness depend on the filter?</li>
+  <li><b>Separable states with contextual remote preparations (SG6)</b> — which steered-side state sets are simplex-embeddable with all effects? The segment is, the square {0,1,+,−} is not.</li>
+  <li><b>Sorkin order of the binary toy theory (SG4)</b> — I₃ of a non-quantum-subtheory epistricted model is uncomputed.</li>
 </ul>
 
 <footer>
   <p><b>Source:</b> <a href="https://github.com/tahmeedhossain/GEN_GPT_Level">github.com/tahmeedhossain/GEN_GPT_Level</a> · <b>live pages:</b> <a href="https://tahmeedhossain.github.io/GEN_GPT_Level/">tahmeedhossain.github.io/GEN_GPT_Level</a></p>
-  <p>Repository layout: <code>index.html</code>, <code>v1.html</code>, <code>v2.html</code> (GitHub-Pages ready) · <code>data/network_v1.json</code>, <code>data/network_v2.json</code> (machine-readable, per-edge references and signed polarity) · <code>catalog/</code> (prose catalogs with proofs) · <code>paper/</code> (LaTeX concept paper). Statuses mark provenance: <i>theorem</i> = literature, cited; <i>derived</i> = proved in the catalogs/paper, novelty pass pending; <i>open</i> = registered problem. Nothing here is a substitute for reading the cited papers.</p>
+  <p>Repository layout: <code>index.html</code>, <code>v1.html</code>, <code>v2.html</code> (v2.4), <code>v26.html</code> (v2.6), <code>v1b.html</code>, <code>v2b.html</code> (GitHub-Pages ready) · <code>data/network_v1.json</code>, <code>data/network_v2.json</code> (v2.4), <code>data/network_v2.6.json</code> (machine-readable, per-edge references and signed polarity) · <code>CHANGELOG.md</code> (versions) · <code>catalog/</code> (prose catalogs with proofs) · <code>paper/</code> (LaTeX concept paper). Statuses mark provenance: <i>theorem</i> = literature, cited; <i>derived</i> = proved in the catalogs/paper, novelty pass pending; <i>open</i> = registered problem. Nothing here is a substitute for reading the cited papers.</p>
 </footer>
 </div>
