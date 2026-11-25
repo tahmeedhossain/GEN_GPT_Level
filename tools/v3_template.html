@@ -1,0 +1,855 @@
+<!--__HEAD__-->
+<title>Nonclassicality Hypergraph</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: seven typed layers in columns (axioms · models · states · processes · witnesses · effects · tasks);
+   binary edges are curves, hyperedges are junction dots with one spoke per premise and one arrow per conclusion;
+   detail rail on the right; tabs: graph / witness algebra / hyperedges / hyperpaths / edge catalog / gaps. */
+:root{
+  --bg:#f6f7f5; --panel:#fdfdfc; --card:#ffffff; --fg:#20272b; --muted:#5d6a70; --line:#d8ddd9;
+  --accent:#0e7a6f;
+  --c-thm:#0e7a6f; --c-par:#3f6ea5; --c-cex:#b3382f; --c-der:#b06b2a; --c-opn:#7a5fa0; --c-exa:#5d6a70; --c-def:#6b7a74;
+  --t-axiom:#8a6d1f; --t-model:#0e7a6f; --t-state:#b06b2a; --t-process:#9a4f7d; --t-witness:#4a6b8a; --t-effect:#3f6ea5; --t-task:#7a5fa0;
+  --chipbg:#eef1ee; --hot:#20272b;
+  --v-fire:#0e7a6f; --v-blind:#b3382f; --v-hide:#b06b2a; --v-mix:#7a5fa0; --v-split:#3f6ea5; --v-unk:#e7eae6; --v-unktxt:#8a948f;
+  --disp:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14191a; --panel:#1a2022; --card:#1f2628; --fg:#e6eae7; --muted:#9fb0ab; --line:#32403d;
+  --accent:#4fbdae;
+  --c-thm:#4fbdae; --c-par:#7ea8d6; --c-cex:#e07a6f; --c-der:#d99a5b; --c-opn:#ab93d6; --c-exa:#9fb0ab; --c-def:#8ea39b;
+  --t-axiom:#cdb25e; --t-model:#4fbdae; --t-state:#d99a5b; --t-process:#d08ab4; --t-witness:#8fb3d4; --t-effect:#7ea8d6; --t-task:#ab93d6;
+  --chipbg:#242d2e; --hot:#e6eae7;
+  --v-fire:#4fbdae; --v-blind:#e07a6f; --v-hide:#d99a5b; --v-mix:#ab93d6; --v-split:#7ea8d6; --v-unk:#232b2c; --v-unktxt:#76857f;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#14191a; --panel:#1a2022; --card:#1f2628; --fg:#e6eae7; --muted:#9fb0ab; --line:#32403d;
+  --accent:#4fbdae;
+  --c-thm:#4fbdae; --c-par:#7ea8d6; --c-cex:#e07a6f; --c-der:#d99a5b; --c-opn:#ab93d6; --c-exa:#9fb0ab; --c-def:#8ea39b;
+  --t-axiom:#cdb25e; --t-model:#4fbdae; --t-state:#d99a5b; --t-process:#d08ab4; --t-witness:#8fb3d4; --t-effect:#7ea8d6; --t-task:#ab93d6;
+  --chipbg:#242d2e; --hot:#e6eae7;
+  --v-fire:#4fbdae; --v-blind:#e07a6f; --v-hide:#d99a5b; --v-mix:#ab93d6; --v-split:#7ea8d6; --v-unk:#232b2c; --v-unktxt:#76857f;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14.5px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 48px;}
+.wrap{max-width:1560px;margin:0 auto;}
+header.top{padding-block:26px 14px;border-bottom:1px solid var(--line);}
+h1{font-family:var(--disp);font-weight:500;font-size:clamp(24px,3.4vw,34px);margin:0 0 6px;text-wrap:balance;letter-spacing:.2px;}
+.sub{color:var(--muted);max-width:80ch;margin:0;}
+.sub b{color:var(--fg);font-weight:600;}
+nav.tabs{display:flex;gap:8px;flex-wrap:wrap;padding-block:14px 0;}
+nav.tabs button{font:inherit;font-weight:600;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 16px;cursor:pointer;}
+nav.tabs button[aria-selected="true"]{color:var(--bg);background:var(--fg);border-color:var(--fg);}
+nav.tabs button:focus-visible, .node:focus-visible, .btn:focus-visible, td:focus-visible, g.hyp:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.controls{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center;padding-block:14px 6px;}
+.controls input[type="search"]{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;min-width:220px;}
+.fl{display:flex;gap:4px;align-items:center;font-size:13px;color:var(--muted);cursor:pointer;user-select:none;}
+.fl input{accent-color:var(--accent);}
+.fl.sep{border-left:1px solid var(--line);padding-left:14px;}
+.fl b{color:var(--fg);font-weight:600;}
+.sw{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;}
+.ctlrow{display:flex;gap:8px 14px;flex-wrap:wrap;align-items:center;padding-bottom:12px;}
+.ctlrow .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start;}
+@media (max-width:1020px){.main{grid-template-columns:1fr;}}
+.graphbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow-x:auto;min-width:0;}
+svg{display:block;}
+.colhead{font-family:var(--mono);font-size:11px;letter-spacing:.14em;fill:var(--muted);}
+.node rect.box{fill:var(--card);stroke:var(--line);rx:7;cursor:pointer;}
+.node.sel rect.box{stroke:var(--hot);stroke-width:1.8;}
+.node.faded{opacity:.22;}
+.node text{font-family:var(--body);font-size:11.5px;fill:var(--fg);pointer-events:none;}
+.tag.axiom{fill:var(--t-axiom);} .tag.model{fill:var(--t-model);} .tag.state{fill:var(--t-state);}
+.tag.process{fill:var(--t-process);} .tag.witness{fill:var(--t-witness);}
+.tag.effect{fill:var(--t-effect);} .tag.task{fill:var(--t-task);}
+path.edge{fill:none;stroke-width:1.5;opacity:.3;cursor:pointer;}
+path.edge.thm{stroke:var(--c-thm);} path.edge.par{stroke:var(--c-par);}
+path.edge.cex{stroke:var(--c-cex);stroke-dasharray:6 4;}
+path.edge.der{stroke:var(--c-der);stroke-width:2;}
+path.edge.opn{stroke:var(--c-opn);stroke-dasharray:2 5;}
+path.edge.exa{stroke:var(--c-exa);}
+path.edge.defn{stroke:var(--c-def);stroke-dasharray:1 4;stroke-linecap:round;}
+path.edge.k-excludes{stroke-dasharray:9 4;}
+path.edge.k-hosts{stroke-dasharray:14 5;}
+path.edge.hot{opacity:1;stroke-width:2.6;}
+path.edge.dim{opacity:.05;}
+path.edge.hidden-e{display:none;}
+.mk{stroke:none;} .mk.thm{fill:var(--c-thm);} .mk.par{fill:var(--c-par);} .mk.cex{fill:var(--c-cex);}
+.mk.der{fill:var(--c-der);} .mk.opn{fill:var(--c-opn);} .mk.exa{fill:var(--c-exa);} .mk.defn{fill:var(--c-def);}
+/* hyperedges */
+g.hyp{--hc:var(--c-exa);cursor:pointer;}
+g.hyp.thm{--hc:var(--c-thm);} g.hyp.par{--hc:var(--c-par);} g.hyp.cex{--hc:var(--c-cex);} g.hyp.der{--hc:var(--c-der);} g.hyp.defn{--hc:var(--c-def);}
+g.hyp path.hsp{fill:none;stroke:var(--hc);stroke-width:1.5;opacity:.42;}
+g.hyp.m-not_always path.hsp{stroke-dasharray:6 4;}
+g.hyp.sig-require path.hsp{stroke-dasharray:2 4;stroke-linecap:round;}
+g.hyp.sig-order path.hsp{stroke-dasharray:9 4;}
+g.hyp circle.jn{fill:var(--hc);stroke:var(--panel);stroke-width:1.4;}
+g.hyp.neg circle.jn{fill:var(--panel);stroke:var(--hc);stroke-width:2;}
+g.hyp circle.jhit{fill:transparent;stroke:none;}
+g.hyp.hot path.hsp{opacity:1;stroke-width:2.7;}
+g.hyp.hot circle.jn{r:5.6;}
+g.hyp.dim{opacity:.1;}
+g.hyp.hidden-e{display:none;}
+aside.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0;}
+aside.panel h2{font-family:var(--disp);font-size:19px;font-weight:500;margin:0 0 4px;text-wrap:balance;}
+.kchips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 10px;}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;background:var(--chipbg);color:var(--fg);border-radius:4px;padding:2px 7px;}
+.chip.k-thm{color:var(--c-thm);} .chip.k-par{color:var(--c-par);} .chip.k-cex{color:var(--c-cex);}
+.chip.k-der{color:var(--c-der);} .chip.k-opn{color:var(--c-opn);} .chip.k-exa{color:var(--c-exa);} .chip.k-defn{color:var(--c-def);}
+.chip.sc{border:1px dashed var(--line);background:transparent;color:var(--muted);}
+.chip.lnk{cursor:pointer;color:var(--accent);}
+.def{color:var(--muted);font-size:13.5px;margin:0 0 10px;}
+.psec{margin:10px 0;}
+.psec h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--muted);margin:0 0 5px;font-weight:500;text-transform:uppercase;}
+.psec ul{margin:0;padding-left:16px;font-size:13px;}
+.psec li{margin-bottom:4px;}
+.nd{color:var(--accent);cursor:pointer;font-weight:600;}
+.nt{color:var(--muted);}
+.elist{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none;max-height:340px;overflow:auto;}
+.elist li{border:1px solid var(--line);border-radius:8px;padding:7px 10px;cursor:pointer;background:var(--card);}
+.elist li:hover{border-color:var(--muted);}
+.elist .rel{font-size:13px;}
+.elist .rel b{font-weight:600;}
+.elist .kchips{margin:6px 0 0;}
+.stmt{font-size:13.5px;margin:10px 0;}
+.refs{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:0;padding-left:16px;}
+.refs li{margin-bottom:4px;}
+.back{font:inherit;font-size:13px;color:var(--accent);background:none;border:none;padding:0;cursor:pointer;margin-bottom:8px;}
+section.sheet{padding-block:18px;}
+.cat h3, h3.sec{font-family:var(--disp);font-weight:500;font-size:20px;margin:26px 0 10px;}
+table.edges{border-collapse:collapse;width:100%;font-size:13px;min-width:720px;}
+table.edges th,table.edges td{border-bottom:1px solid var(--line);padding:8px 10px 8px 0;text-align:left;vertical-align:top;}
+table.edges th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);font-weight:500;}
+table.edges td.id{font-family:var(--mono);color:var(--muted);white-space:nowrap;}
+.tblwrap{overflow-x:auto;}
+.gaps article{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px 18px;margin-bottom:14px;}
+.gaps h3{font-family:var(--disp);font-weight:500;font-size:19px;margin:0 0 6px;}
+.gaps p{margin:6px 0;font-size:14px;max-width:96ch;}
+.gaps .tagline{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--c-der);}
+.gaps .tagline.open{color:var(--c-opn);}
+.note{color:var(--muted);font-size:13px;max-width:92ch;}
+.note b{color:var(--fg);font-weight:600;}
+a{color:var(--accent);}
+/* witness-algebra matrix */
+.mxctl{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:10px;}
+.mxctl select, .mxctl input[type="text"]{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;max-width:100%;}
+.btn{font:inherit;font-weight:600;padding:6px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;}
+.btn.small{font-weight:400;font-size:12.5px;padding:3px 10px;}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-bottom:10px;}
+.legend i{display:inline-block;width:16px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:5px;font:500 10px/14px var(--mono);font-style:normal;text-align:center;color:var(--bg);}
+table.mx{border-collapse:collapse;font-size:11.5px;}
+table.mx th{font-family:var(--mono);font-weight:500;color:var(--muted);padding:4px 6px;}
+table.mx thead th{writing-mode:vertical-rl;transform:rotate(200grad);text-align:left;height:108px;font-size:10.5px;letter-spacing:.04em;}
+table.mx tbody th{text-align:right;white-space:nowrap;font-size:11px;}
+table.mx td{width:30px;height:24px;border:1px solid var(--bg);border-radius:4px;cursor:pointer;text-align:center;font:500 11px/1 var(--mono);color:var(--bg);}
+.v-fire,.v-fireall{background:var(--v-fire);} .v-blind{background:var(--v-blind);} .v-hide{background:var(--v-hide);}
+.v-mixed{background:var(--v-mix);} .v-split{background:var(--v-split);}
+td.v-nal, .legend i.v-nal{background:transparent;box-shadow:inset 0 0 0 2px var(--v-blind);color:var(--v-blind);}
+.v-unk{background:var(--v-unk);}
+td.derived{opacity:.6;}
+td.cur{outline:2px solid var(--hot);outline-offset:1px;}
+#cellnote{margin-top:12px;font-size:13.5px;max-width:96ch;}
+#cellnote b{font-weight:600;}
+#cellnote ul{margin:6px 0 0;padding-left:18px;}
+#cellnote li{margin-bottom:6px;}
+.mxstats{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:8px;max-width:110ch;}
+.chips-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0;}
+.pchip{font-size:12.5px;background:var(--chipbg);border-radius:999px;padding:3px 6px 3px 12px;display:inline-flex;gap:6px;align-items:center;}
+.pchip button{font:inherit;border:none;background:transparent;color:var(--muted);cursor:pointer;padding:0 4px;}
+.rounds{margin:10px 0 0;padding:0;list-style:none;font-size:13.5px;max-width:110ch;}
+.rounds li{padding:7px 0;border-bottom:1px solid var(--line);}
+.rounds .r{font-family:var(--mono);font-size:11px;color:var(--muted);margin-right:8px;}
+.loading{padding:40px 0;color:var(--muted);}
+@media (prefers-reduced-motion:no-preference){ path.edge, g.hyp path.hsp{transition:opacity .15s,stroke-width .15s;} .node, g.hyp{transition:opacity .15s;} }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<!--__DATA__-->
+
+<div class="wrap">
+<header class="top">
+  <h1>Nonclassicality Network III: hypergraph form</h1>
+  <p class="sub">The layered theorem network v2.6 with <b>hyperedges</b>. A statement that needs several nodes at once is one edge that joins all of them: an entangled state <b>and</b> a process that can see entanglement fire the witness; a free state <b>and</b> a free operation cannot create the resource. An ordinary edge is the special case of one premise and one conclusion. Dots are hyperedges: one spoke per premise, one arrow (possibility) or flat bar (no-go) per conclusion. Untick the hyperedge layer to see network v2.6 unchanged. Pages 1, 1b, 2, 2b and 2.6 are preserved.</p>
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="graph">Graph</button>
+    <button role="tab" aria-selected="false" data-tab="algebra">Witness algebra</button>
+    <button role="tab" aria-selected="false" data-tab="hyper">Hyperedges</button>
+    <button role="tab" aria-selected="false" data-tab="paths">Hyperpaths</button>
+    <button role="tab" aria-selected="false" data-tab="edges">Edge catalog</button>
+    <button role="tab" aria-selected="false" data-tab="gaps">Gaps &amp; propositions</button>
+  </nav>
+</header>
+
+<div id="loading" class="loading">Loading the hypergraph…</div>
+
+<section id="tab-graph" class="sheet" hidden>
+  <div class="controls">
+    <input id="search" type="search" placeholder="Find a node (e.g. covariant, Moyal, KD)…" aria-label="Find a node">
+    <label class="fl"><input type="checkbox" id="f-st-theorem" data-st="theorem" checked><span class="sw" style="background:var(--c-thm)"></span>theorem</label>
+    <label class="fl"><input type="checkbox" id="f-st-partial" data-st="partial" checked><span class="sw" style="background:var(--c-par)"></span>partial</label>
+    <label class="fl"><input type="checkbox" id="f-st-cex" data-st="counterexample" checked><span class="sw" style="background:var(--c-cex)"></span>counterexample</label>
+    <label class="fl"><input type="checkbox" id="f-st-derived" data-st="derived" checked><span class="sw" style="background:var(--c-der)"></span>derived here</label>
+    <label class="fl"><input type="checkbox" id="f-st-def" data-st="definition" checked><span class="sw" style="background:var(--c-def)"></span>definitions</label>
+    <label class="fl"><input type="checkbox" id="f-st-open" data-st="open" checked><span class="sw" style="background:var(--c-opn)"></span>open</label>
+    <label class="fl sep"><input type="checkbox" id="f-pol-pos" data-pol="pos" checked>possibility →</label>
+    <label class="fl"><input type="checkbox" id="f-pol-neg" data-pol="neg" checked>no-go ⊣</label>
+  </div>
+  <div class="ctlrow">
+    <span class="lbl">Layers</span>
+    <label class="fl"><input type="checkbox" id="f-layer-bin" data-layer="bin" checked><b>binary edges</b>&nbsp;(v2.6, <span id="n-bin"></span>)</label>
+    <label class="fl"><input type="checkbox" id="f-layer-hyp" data-layer="hyp" checked><b>hyperedges</b>&nbsp;(v3, <span id="n-hyp"></span>)</label>
+    <span class="lbl" style="margin-left:10px">Signatures</span>
+    <label class="fl"><input type="checkbox" id="f-sig-detect" data-sig="detect" checked>detection</label>
+    <label class="fl"><input type="checkbox" id="f-sig-transform" data-sig="transform" checked>transformation</label>
+    <label class="fl"><input type="checkbox" id="f-sig-task" data-sig="task" checked>task</label>
+    <label class="fl"><input type="checkbox" id="f-sig-logic" data-sig="logic" checked>genesis / logic</label>
+    <label class="fl"><input type="checkbox" id="f-sig-require" data-sig="require">requirements</label>
+    <label class="fl"><input type="checkbox" id="f-sig-unary" data-sig="unary">unary records</label>
+    <label class="fl"><input type="checkbox" id="f-sig-order" data-sig="order">complements</label>
+  </div>
+  <div class="main">
+    <div class="graphbox" id="graphbox"></div>
+    <aside class="panel" id="panel"></aside>
+  </div>
+  <p class="note" style="margin-top:12px"><b>Reading the drawing.</b> A curve between two boxes is a binary edge of v2.6: arrowhead for possibility, flat bar for no-go. A dot is a hyperedge: every line that reaches the dot without a terminator is a premise, every line that leaves it with an arrowhead or a flat bar is a conclusion. A filled dot is a possibility statement, a hollow dot a no-go. Colour is provenance as before (teal theorem, copper derived here, red counterexample, grey definition); dashed spokes mark a statement about some states only, dotted spokes a requirement. Click a dot, a spoke or a box. The three signatures that are off by default (requirements, unary records, complements) are the former witness records turned into edges.</p>
+</section>
+
+<section id="tab-algebra" class="sheet" hidden>
+  <div class="mxctl">
+    <label for="wsel" style="font-weight:600">Witness</label>
+    <select id="wsel"></select>
+    <label for="mxmode" style="font-weight:600">Show</label>
+    <select id="mxmode">
+      <option value="full">records and transfer</option>
+      <option value="stored">records only</option>
+    </select>
+  </div>
+  <div class="legend">
+    <span><i class="v-fireall">∀</i>fires on every state of the cluster</span>
+    <span><i class="v-fire">∃</i>fires for some state</span>
+    <span><i class="v-hide">h</i>resource present, hidden by the process</span>
+    <span><i class="v-blind"></i>blind</span>
+    <span><i class="v-mixed">±</i>mixed: fires for some states, provably not for others</span>
+    <span><i class="v-split">|</i>split: depends on a hypothesis</span>
+    <span><i class="v-nal">¬</i>does not always fire</span>
+    <span><i class="v-unk" style="border:1px solid var(--line)"></i>uncharted</span>
+    <span>paler cells are settled by transfer, not by a record of their own</span>
+  </div>
+  <div class="tblwrap"><table class="mx" id="matrix"></table></div>
+  <div class="mxstats" id="mxstats"></div>
+  <div id="cellnote" class="note">Click a cell for its derivation. A verdict is a statement about a state cluster <b>and</b> a process cluster together, so each cell is a hyperedge with two premises. Verdicts move along recorded inclusions: possibility to larger clusters, impossibility to smaller ones.</div>
+  <h3 class="sec">Records retyped in v3</h3>
+  <p class="note" id="rawnote"></p>
+  <div class="tblwrap"><table class="edges" id="retyped"></table></div>
+</section>
+
+<section id="tab-hyper" class="sheet cat" hidden>
+  <p class="note">Every hyperedge with a plain reading, its conditions, the records of v2.6 / v2b it was lifted from, and references. The scope tokens name standing hypotheses; two records with incompatible tokens never apply together. Click an ID to see the hyperedge in the graph.</p>
+  <div id="hypertables"></div>
+</section>
+
+<section id="tab-paths" class="sheet" hidden>
+  <p class="note"><b>A pathway is a hyperpath.</b> A hyperedge can be used when <b>all</b> its premises have been reached. Choose a starting set; the page chains forward and lists what is reached, what is ruled out, and which hyperedges are waiting for one more premise. Chaining is structural: every step is a recorded statement, with its own conditions, and the chain is a candidate pathway. It is a statement about one and the same system only when every step after the first holds for every member of the cluster it starts from; the two-step table below lists the chains that pass this test.</p>
+  <div class="mxctl">
+    <label for="padd" style="font-weight:600">Add a premise</label>
+    <select id="padd"></select>
+    <button class="btn" id="paddbtn">Add</button>
+    <button class="btn" id="pclear">Clear</button>
+    <label class="fl"><input type="checkbox" id="pbin" checked>also follow one-premise edges (containments, pairings, hostings, generations, enablements, the correlation hierarchy)</label>
+  </div>
+  <div class="chips-row" id="ppresets"></div>
+  <div class="chips-row" id="pchips"></div>
+  <div id="pout" class="note"></div>
+  <h3 class="sec">Two-step pathways: create, then detect on every created state</h3>
+  <div class="tblwrap"><table class="edges" id="paths2"></table></div>
+  <h3 class="sec">Created but unseen</h3>
+  <p class="note">A process cluster creates the cluster a witness needs, and no arrangement inside that same process cluster fires the witness.</p>
+  <div class="tblwrap"><table class="edges" id="unseen"></table></div>
+  <h3 class="sec">Transformation and task tuples after transfer</h3>
+  <div class="tblwrap"><table class="edges" id="ttuples"></table></div>
+</section>
+
+<section id="tab-edges" class="sheet cat" hidden>
+  <p class="note">The binary edges of v2.6, unchanged, each with a plain reading, conditions, the technical statement and references. An edge whose content a hyperedge states with the premises explicit carries a link to it.</p>
+  <div id="edgetables"></div>
+</section>
+
+<section id="tab-gaps" class="sheet gaps" hidden>
+  <p class="note">The gap and proposition cards of v2.6, followed by the cards of the hypergraph round (H1, H2, SG8, SG9).</p>
+  <div id="gapcards"></div>
+</section>
+</div>
+
+<script>
+(async function(){
+  const inline = document.getElementById("netdata");
+  let DATA;
+  try{
+    DATA = inline ? JSON.parse(inline.textContent) : await (await fetch("hypergraph_v3.json")).json();
+  }catch(err){
+    document.getElementById("loading").textContent = "The data file hypergraph_v3.json could not be loaded. Reload the page; if it persists, the file is missing next to this page.";
+    return;
+  }
+  document.getElementById("loading").hidden = true;
+  document.getElementById("tab-graph").hidden = false;
+  start(DATA);
+})();
+
+function start(DATA){
+const PLAIN = DATA.plain, HG = DATA.meta.hypergraph, CL = DATA.closure;
+const COLS = ["axiom","model","state","process","witness","effect","task"];
+const COLTITLE = {axiom:"AXIOMS", model:"MODELS", state:"STATE CLUSTERS", process:"PROCESS CLUSTERS", witness:"WITNESSES", effect:"EFFECTS", task:"TASKS"};
+const KINDTXT = {implies:"implies", equiv:"equivalent to", necessary:"necessary for", not_implies:"does not imply",
+  enables:"enables", forbids:"rules out", witness:"witnessed via", hides:"hides", generates:"generates",
+  subset:"contained in (⊂)", pairs:"detects (pairing)", excludes:"⇔¬ (holds iff the other fails)", hosts:"hosts (contains cluster)", open:"open edge toward"};
+const STCLS = {theorem:"thm", partial:"par", counterexample:"cex", derived:"der", open:"opn", example:"exa", conjecture:"opn", definition:"defn"};
+const NEGKINDS = new Set(["forbids","excludes","not_implies","hides"]);
+const polOf = e => (e.kind === "open" || e.status === "open") ? "open" : (NEGKINDS.has(e.kind) ? "neg" : "pos");
+const HNEG = new Set(HG.negative_modalities);
+const hpol = h => HNEG.has(h.mod) ? "neg" : "pos";
+const MODW = HG.modalities;
+const SIGT = {detect:"detection", unary:"unary record", require:"requirement", order:"complement", transform:"transformation", task:"task", logic:"genesis / logic"};
+const SIGORDER = ["detect","transform","task","logic","require","unary","order"];
+const SVGNS = "http://www.w3.org/2000/svg";
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
+const nodeById = {}; DATA.nodes.forEach(n => nodeById[n.id] = n);
+const edgeById = {}; DATA.edges.forEach(e => edgeById[e.id] = e);
+const hyperById = {}; DATA.hyper.forEach(h => hyperById[h.id] = h);
+const byType = {}; COLS.forEach(c => byType[c] = []);
+DATA.nodes.forEach(n => byType[n.type].push(n));
+const lab = id => nodeById[id] ? nodeById[id].label : id;
+const sh = id => nodeById[id] ? (nodeById[id].s || nodeById[id].label) : id;
+const hsym = h => h.mod === "requires" ? "⇒" : (h.mod === "excludes" ? "⇔¬" : (hpol(h) === "neg" ? "⊣" : "→"));
+const htitle = h => h.tail.map(lab).join(" + ") + "  " + hsym(h) + "  " + h.head.map(lab).join(", ");
+const supersededBy = {};
+DATA.hyper.forEach(h => (h.supersedes || []).forEach(i => { (supersededBy[i] = supersededBy[i] || []).push(h.id); }));
+document.getElementById("n-bin").textContent = DATA.edges.length;
+document.getElementById("n-hyp").textContent = DATA.hyper.length;
+
+/* ---------- layout ---------- */
+const COLW = 206, BOXW = 174, BOXH = 40, ROWH = 53, TOP = 58, LEFT = 24;
+const maxRows = Math.max(...COLS.map(c => byType[c].length));
+const W = LEFT*2 + COLS.length*COLW - (COLW-BOXW);
+const H = TOP + maxRows*ROWH + 10;
+const pos = {};
+COLS.forEach((c,ci) => byType[c].forEach((n,i) => { pos[n.id] = {x: LEFT + ci*COLW, y: TOP + i*ROWH, col: ci}; }));
+
+function el(tag, attrs, parent){
+  const e = document.createElementNS(SVGNS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function wrap2(text, maxChars){
+  const words = text.split(" "); const lines = [""];
+  for(const w of words){
+    const cur = lines[lines.length-1];
+    if(cur.length === 0) lines[lines.length-1] = w;
+    else if((cur + " " + w).length <= maxChars) lines[lines.length-1] = cur + " " + w;
+    else lines.push(w);
+  }
+  if(lines.length > 2){ lines.length = 2; lines[1] = lines[1].slice(0, maxChars-1) + "…"; }
+  return lines;
+}
+
+const svg = el("svg", {viewBox:`0 0 ${W} ${H}`, width:W, height:H, role:"img",
+  "aria-label":"Layered hypergraph: axioms, models, state clusters, process clusters, witnesses, effects, tasks"});
+document.getElementById("graphbox").appendChild(svg);
+const defs = el("defs", {}, svg);
+["thm","par","cex","der","opn","exa","defn"].forEach(s => {
+  const m = el("marker", {id:"arr-"+s, viewBox:"0 0 10 10", refX:9, refY:5, markerWidth:7, markerHeight:7, orient:"auto-start-reverse"}, defs);
+  el("path", {d:"M0,0 L10,5 L0,10 z", class:"mk "+s}, m);
+  const t = el("marker", {id:"tack-"+s, viewBox:"0 0 10 10", refX:7, refY:5, markerWidth:8, markerHeight:8, orient:"auto-start-reverse"}, defs);
+  el("rect", {x:5, y:0, width:2.6, height:10, rx:1, class:"mk "+s}, t);
+});
+COLS.forEach((c,ci) => {
+  const t = el("text", {x: LEFT + ci*COLW, y: 26, class:"colhead"}, svg);
+  t.textContent = COLTITLE[c] + " (" + byType[c].length + ")";
+});
+
+let seen = {};
+function curve(aId, bId){
+  const a = pos[aId], b = pos[bId];
+  const ay = a.y + BOXH/2, by = b.y + BOXH/2;
+  if(a.col === b.col){
+    const x = a.x + BOXW, key = aId + "|" + bId;
+    seen[key] = (seen[key]||0) + 1;
+    const bulge = 28 + Math.min(42, Math.abs(by-ay)*0.18) + seen[key]*9;
+    return `M ${x} ${ay} C ${x+bulge} ${ay}, ${x+bulge} ${by}, ${x} ${by}`;
+  }
+  if(b.col > a.col){
+    const sx = a.x + BOXW, tx = b.x, mx = (sx+tx)/2;
+    return `M ${sx} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${tx} ${by}`;
+  }
+  const sx = a.x, tx = b.x + BOXW, mx = (sx+tx)/2;
+  return `M ${sx} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${tx} ${by}`;
+}
+
+/* ---------- binary edges ---------- */
+const edgeLayer = el("g", {}, svg);
+const edgeEls = {};
+DATA.edges.forEach(e => {
+  if(!pos[e.source] || !pos[e.target]) return;
+  const cls = STCLS[e.status] || "exa";
+  const pol = polOf(e);
+  const term = pol === "neg" ? "tack" : "arr";
+  const p = el("path", {d: curve(e.source, e.target), class:"edge "+cls+" k-"+e.kind+" "+pol, "marker-end":`url(#${term}-${cls})`}, edgeLayer);
+  if(e.kind === "equiv" || e.kind === "pairs" || e.kind === "excludes") p.setAttribute("marker-start", `url(#${term}-${cls})`);
+  p.addEventListener("click", ev => { ev.stopPropagation(); selectEdge(e.id); });
+  el("title", {}, p).textContent = e.id + ": " + lab(e.source) + " → " + lab(e.target);
+  edgeEls[e.id] = p;
+});
+
+/* ---------- hyperedges ---------- */
+const hypLayer = el("g", {}, svg);
+const hypEls = {};
+const gapUsed = {};
+const gapX = c => LEFT + c*COLW + BOXW + (COLW-BOXW)/2;
+function spoke(nid, jx, jy, toNode){
+  const p = pos[nid], cy = p.y + BOXH/2;
+  const nx = (p.x + BOXW/2) < jx ? p.x + BOXW : p.x;
+  const mx = (nx + jx)/2;
+  return toNode ? `M ${jx} ${jy} C ${mx} ${jy}, ${mx} ${cy}, ${nx} ${cy}` : `M ${nx} ${cy} C ${mx} ${cy}, ${mx} ${jy}, ${jx} ${jy}`;
+}
+DATA.hyper.forEach(h => {
+  const members = h.tail.concat(h.head);
+  const cls = STCLS[h.status] || "exa";
+  const pol = hpol(h);
+  const term = pol === "neg" ? "tack" : "arr";
+  const g = el("g", {class:`hyp ${cls} ${pol} sig-${h.sig} m-${h.mod}`, tabindex:0, role:"button", "aria-label":"Hyperedge " + h.id + ": " + htitle(h)}, hypLayer);
+  if(members.length === 2){
+    const p = el("path", {d: curve(h.tail[0], h.head[0]), class:"hsp", "marker-end":`url(#${term}-${cls})`}, g);
+    if(h.mod === "excludes") p.setAttribute("marker-start", `url(#${term}-${cls})`);
+  } else {
+    const tc = h.tail.map(n => pos[n].col), hcs = h.head.map(n => pos[n].col);
+    const all = tc.concat(hcs), mn = Math.min(...all), mx = Math.max(...all);
+    let gc;
+    if(mx - mn === 1) gc = mn;
+    else if(Math.max(...tc) < Math.min(...hcs)) gc = Math.max(...tc);
+    else if(Math.max(...hcs) < Math.min(...tc)) gc = Math.min(...tc) - 1;
+    else gc = mx;
+    const jx = gapX(gc);
+    const near = members.filter(n => pos[n].col === gc || pos[n].col === gc + 1);
+    const base = near.length ? near : members;
+    let jy = base.reduce((s,n) => s + pos[n].y + BOXH/2, 0) / base.length;
+    const used = gapUsed[gc] = gapUsed[gc] || [];
+    while(used.some(y => Math.abs(y - jy) < 13)) jy += 13;
+    used.push(jy);
+    h.tail.forEach(n => el("path", {d: spoke(n, jx, jy, false), class:"hsp"}, g));
+    h.head.forEach(n => el("path", {d: spoke(n, jx, jy, true), class:"hsp", "marker-end":`url(#${term}-${cls})`}, g));
+    el("circle", {cx:jx, cy:jy, r:4.3, class:"jn"}, g);
+    el("circle", {cx:jx, cy:jy, r:10, class:"jhit"}, g);
+  }
+  g.addEventListener("click", ev => { ev.stopPropagation(); selectHyper(h.id); });
+  g.addEventListener("keydown", ev => { if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); selectHyper(h.id); } });
+  el("title", {}, g).textContent = h.id + ": " + htitle(h);
+  hypEls[h.id] = g;
+});
+
+/* ---------- nodes ---------- */
+const nodeEls = {};
+DATA.nodes.forEach(n => {
+  const p = pos[n.id];
+  const g = el("g", {class:"node", transform:`translate(${p.x},${p.y})`, tabindex:0, role:"button", "aria-label":n.label}, svg);
+  el("rect", {class:"box", width:BOXW, height:BOXH, rx:7}, g);
+  el("rect", {class:"tag "+n.type, x:0, y:6, width:4, height:BOXH-12, rx:2}, g);
+  const lines = wrap2(n.label, 25);
+  lines.forEach((ln,i) => { el("text", {x:12, y: lines.length===1 ? 24 : 17 + i*14}, g).textContent = ln; });
+  g.addEventListener("click", ev => { ev.stopPropagation(); selectNode(n.id); });
+  g.addEventListener("keydown", ev => { if(ev.key==="Enter" || ev.key===" "){ ev.preventDefault(); selectNode(n.id);} });
+  nodeEls[n.id] = g;
+});
+
+/* ---------- selection and filters ---------- */
+let selected = null;
+const hiddenStatuses = new Set(), hiddenPols = new Set(), hiddenSigs = new Set(["require","unary","order"]);
+let showBin = true, showHyp = true;
+const panel = document.getElementById("panel");
+
+function statusFiltered(e){
+  const s = e.status === "conjecture" ? "open" : e.status;
+  const pol = polOf(e);
+  return !showBin || hiddenStatuses.has(s) || (pol !== "open" && hiddenPols.has(pol));
+}
+function hyperFiltered(h){
+  return !showHyp || hiddenSigs.has(h.sig) || hiddenStatuses.has(h.status) || hiddenPols.has(hpol(h));
+}
+function refreshGraph(){
+  const selNode = selected && selected.type === "node" ? selected.id : null;
+  const selEdgeObj = selected && selected.type === "edge" ? edgeById[selected.id] : null;
+  const selHyp = selected && selected.type === "hyper" ? hyperById[selected.id] : null;
+  const active = selNode || selEdgeObj || selHyp;
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const nb = new Set();
+  DATA.edges.forEach(e => {
+    const p = edgeEls[e.id]; if(!p) return;
+    const hid = statusFiltered(e);
+    p.classList.toggle("hidden-e", hid);
+    const hot = (selNode && (e.source === selNode || e.target === selNode)) || (selEdgeObj && e.id === selEdgeObj.id);
+    p.classList.toggle("hot", !!hot);
+    p.classList.toggle("dim", active ? !hot : false);
+    if(selNode && hot && !hid){ nb.add(e.source); nb.add(e.target); }
+  });
+  DATA.hyper.forEach(h => {
+    const g = hypEls[h.id];
+    const hid = hyperFiltered(h) && !(selHyp && selHyp.id === h.id);
+    g.classList.toggle("hidden-e", hid);
+    const hot = (selNode && (h.tail.includes(selNode) || h.head.includes(selNode))) || (selHyp && selHyp.id === h.id);
+    g.classList.toggle("hot", !!hot);
+    g.classList.toggle("dim", active ? !hot : false);
+    if(selNode && hot && !hid) h.tail.concat(h.head).forEach(n => nb.add(n));
+  });
+  DATA.nodes.forEach(n => {
+    const g = nodeEls[n.id];
+    let faded = false;
+    if(q) faded = !(n.label.toLowerCase().includes(q) || n.def.toLowerCase().includes(q));
+    else if(selNode) faded = !(n.id === selNode || nb.has(n.id));
+    else if(selEdgeObj) faded = !(n.id === selEdgeObj.source || n.id === selEdgeObj.target);
+    else if(selHyp) faded = !(selHyp.tail.includes(n.id) || selHyp.head.includes(n.id));
+    g.classList.toggle("faded", faded);
+    g.classList.toggle("sel", n.id === selNode);
+  });
+}
+function chip(text, cls, title){ return `<span class="chip ${cls||""}"${title ? ` title="${esc(title)}"` : ""}>${esc(text)}</span>`; }
+function scopeChips(sc){ return (sc || []).map(t => chip(t, "sc", HG.scope_tokens[t] || t)).join(""); }
+function refsHtml(refs){ return refs && refs.length ? `<ul class="refs">` + refs.map(r => `<li>${esc(r)}</li>`).join("") + `</ul>` : ""; }
+function nodeLink(id){
+  if(nodeById[id]) return `<span class="nd" data-nid="${esc(id)}">${esc(nodeById[id].label)}</span>`;
+  return `<b>${esc(id)}</b>`;
+}
+function bindLinks(root){
+  root.querySelectorAll(".nd[data-nid]").forEach(s => s.addEventListener("click", () => gotoNode(s.getAttribute("data-nid"))));
+  root.querySelectorAll("[data-eid]").forEach(li => li.addEventListener("click", () => gotoEdge(li.getAttribute("data-eid"))));
+  root.querySelectorAll("[data-hid]").forEach(li => li.addEventListener("click", () => gotoHyper(li.getAttribute("data-hid"))));
+}
+function reqList(arr){
+  return `<ul>` + arr.map(([id, note]) => `<li>${nodeLink(id)}${note ? ` <span class="nt">(${esc(note)})</span>` : ""}</li>`).join("") + `</ul>`;
+}
+const hLi = h => `<li data-hid="${esc(h.id)}"><div class="rel"><b>${esc(htitle(h))}</b></div>
+  <div class="kchips">${chip(SIGT[h.sig])}${chip(MODW[h.mod], hpol(h) === "neg" ? "k-cex" : "k-thm")}${chip(h.status, "k-"+(STCLS[h.status]||"exa"))}${chip(h.id)}</div></li>`;
+
+function renderWelcome(){
+  panel.innerHTML = `<h2>Reading the hypergraph</h2>
+  <p class="def">Left to right: <b>axioms</b> generate <b>models</b>; models host <b>state clusters</b> and <b>process clusters</b>; <b>witnesses</b> are the tests paired with <b>effects</b>, which power <b>tasks</b>. Network v2.6 joins these boxes by ${DATA.edges.length} edges with one premise and one conclusion.</p>
+  <p class="def">Many statements need more than one premise. Detection needs a state <b>and</b> a process: entangled states fire the entanglement witness with incompatible local measurements, and stay invisible to covariant probes. Version 3 records such a statement as one <b>hyperedge</b> with all its premises, ${DATA.hyper.length} of them in seven signatures.</p>
+  <p class="def">Three values, as before: a possibility hyperedge, a no-go hyperedge, or none. No hyperedge on a tuple of nodes means unsettled. Verdicts move along the recorded inclusions between clusters, which settles ${CL.full.charted - CL.stored.charted} further state × process × witness tuples; see <b>Witness algebra</b>. The <b>Hyperpaths</b> tab chains hyperedges into pathways.</p>
+  <p class="def">Select a box for the hyperedges it enters as a premise or leaves as a conclusion, or a dot for its reading, conditions and sources.</p>`;
+}
+function selectNode(id){
+  selected = {type:"node", id};
+  const n = nodeById[id];
+  const inc = DATA.edges.filter(e => (e.source === id || e.target === id) && !statusFiltered(e));
+  const hin = DATA.hyper.filter(h => h.tail.includes(id)), hout = DATA.hyper.filter(h => h.head.includes(id));
+  let html = `<h2>${esc(n.label)}</h2>
+    <div class="kchips">${chip(n.type)}${chip(inc.length + " binary edges")}${chip((hin.length + hout.length) + " hyperedges")}</div>
+    <p class="def">${esc(n.def)}</p>`;
+  const wd = DATA.witnesses[id];
+  if(wd){
+    const pairEdge = DATA.edges.find(e => e.kind === "pairs" && e.source === id);
+    if(pairEdge) html += `<div class="psec"><h3>Detects (paired with)</h3><ul><li>${nodeLink(pairEdge.target)}</li></ul></div>`;
+    html += `<div class="psec"><h3>Witness record: model level</h3>${reqList(wd.requires.model)}</div>`;
+    html += `<div class="psec"><h3>Witness record: state level</h3>${reqList(wd.requires.state)}</div>`;
+    html += `<div class="psec"><h3>Witness record: process level</h3>${reqList(wd.requires.process)}</div>`;
+    if(wd.note) html += `<div class="psec"><h3>Structural note</h3><p class="def" style="margin:0">${esc(wd.note)}</p></div>`;
+  }
+  if(hin.length) html += `<div class="psec"><h3>Premise of ${hin.length} hyperedge${hin.length > 1 ? "s" : ""}</h3></div><ul class="elist">` + hin.map(hLi).join("") + `</ul>`;
+  if(hout.length) html += `<div class="psec"><h3>Conclusion of ${hout.length} hyperedge${hout.length > 1 ? "s" : ""}</h3></div><ul class="elist">` + hout.map(hLi).join("") + `</ul>`;
+  const eLi = e => {
+    const other = e.source === id ? nodeById[e.target] : nodeById[e.source];
+    const pol = polOf(e);
+    const dir = e.source === id ? (pol === "neg" ? "⊣" : "→") : (pol === "neg" ? "⊢" : "←");
+    return `<li data-eid="${esc(e.id)}"><div class="rel"><b>${dir} ${esc(other.label)}</b></div>
+      <div class="kchips">${chip(KINDTXT[e.kind]||e.kind)}${chip(e.status, "k-"+(STCLS[e.status]||"exa"))}${chip(e.id)}</div></li>`;
+  };
+  const negInc = inc.filter(e => polOf(e) === "neg"), posInc = inc.filter(e => polOf(e) === "pos"), opnInc = inc.filter(e => polOf(e) === "open");
+  if(negInc.length) html += `<div class="psec"><h3>Binary no-go edges (⊣)</h3></div><ul class="elist">` + negInc.map(eLi).join("") + `</ul>`;
+  if(posInc.length) html += `<div class="psec"><h3>Binary possibility edges (→)</h3></div><ul class="elist">` + posInc.map(eLi).join("") + `</ul>`;
+  if(opnInc.length) html += `<div class="psec"><h3>Open edges</h3></div><ul class="elist">` + opnInc.map(eLi).join("") + `</ul>`;
+  panel.innerHTML = html;
+  bindLinks(panel);
+  refreshGraph();
+}
+function selectEdge(id){
+  selected = {type:"edge", id};
+  const e = edgeById[id];
+  const s = nodeById[e.source], t = nodeById[e.target];
+  const sym = e.kind === "excludes" ? "⇔¬" : (e.kind === "equiv" || e.kind === "pairs" ? "⇔" : (polOf(e) === "neg" ? "⊣" : "→"));
+  const sup = supersededBy[id] || [];
+  panel.innerHTML = `<button class="back" id="backbtn">← back</button>
+    <h2>${nodeLink(e.source)} <span style="color:var(--muted)">${sym}</span> ${nodeLink(e.target)}</h2>
+    <div class="kchips">${polOf(e) === "neg" ? chip("NO-GO", "k-cex") : (polOf(e) === "pos" ? chip("possibility", "k-thm") : chip("open question", "k-opn"))}${chip("binary edge")}${chip(KINDTXT[e.kind]||e.kind)}${chip(e.status, "k-"+(STCLS[e.status]||"exa"))}${chip(e.id)}</div>
+    ${PLAIN[e.id] ? `<p class="stmt"><b>Reading.</b> ${esc(PLAIN[e.id].r)}${PLAIN[e.id].c ? ` <span class="nt"><b>Conditions:</b> ${esc(PLAIN[e.id].c)}</span>` : ""}</p>` : ""}
+    ${sup.length ? `<div class="psec"><h3>Stated with explicit premises as</h3></div><ul class="elist">` + sup.map(i => hLi(hyperById[i])).join("") + `</ul>` : ""}
+    <p class="stmt" style="color:var(--muted);font-size:12.5px"><b>Technical statement.</b> ${esc(e.statement)}${e.condition ? ` <b>Condition:</b> ${esc(e.condition)}` : ""}</p>
+    ${refsHtml(e.refs)}`;
+  document.getElementById("backbtn").addEventListener("click", () => selectNode(e.source));
+  bindLinks(panel);
+  refreshGraph();
+}
+function selectHyper(id){
+  selected = {type:"hyper", id};
+  const h = hyperById[id];
+  const fromHtml = h.from.map(f => edgeById[f] ? `<span class="chip lnk" data-eid="${esc(f)}">${esc(f)}</span>` : chip(f)).join(" ");
+  panel.innerHTML = `<button class="back" id="backbtn">← back</button>
+    <h2>${h.tail.map(nodeLink).join(` <span style="color:var(--muted)">+</span> `)} <span style="color:var(--muted)">${hsym(h)}</span> ${h.head.map(nodeLink).join(", ")}</h2>
+    <div class="kchips">${hpol(h) === "neg" ? chip("NO-GO", "k-cex") : chip("possibility", "k-thm")}${chip(SIGT[h.sig])}${chip(MODW[h.mod])}${chip(h.status, "k-"+(STCLS[h.status]||"exa"))}${chip(h.id)}${chip(h.tail.length + " premise" + (h.tail.length > 1 ? "s" : "") + " → " + h.head.length + " conclusion" + (h.head.length > 1 ? "s" : ""))}</div>
+    <p class="stmt"><b>Reading.</b> ${esc(h.reading)}</p>
+    ${h.guard ? `<p class="stmt nt"><b>Conditions.</b> ${esc(h.guard)}</p>` : ""}
+    ${h.scope.length ? `<div class="psec"><h3>Scope</h3><div class="kchips">${scopeChips(h.scope)}</div><p class="def" style="margin:0">${h.scope.map(t => esc(HG.scope_tokens[t])).join("; ")}.</p></div>` : ""}
+    ${h.from.length ? `<div class="psec"><h3>Lifted from</h3><div class="kchips">${fromHtml}</div></div>` : ""}
+    ${refsHtml(h.refs)}`;
+  document.getElementById("backbtn").addEventListener("click", () => selectNode(h.tail[0]));
+  bindLinks(panel);
+  refreshGraph();
+}
+function showTab(name){
+  document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", b.getAttribute("data-tab") === name ? "true" : "false"));
+  ["graph","algebra","hyper","paths","edges","gaps"].forEach(t => { document.getElementById("tab-"+t).hidden = (t !== name); });
+}
+function gotoNode(id){ showTab("graph"); selectNode(id); }
+function gotoEdge(id){ showTab("graph"); selectEdge(id); }
+function gotoHyper(id){ showTab("graph"); selectHyper(id); panel.scrollIntoView({block:"nearest"}); }
+
+svg.addEventListener("click", ev => { if(ev.target === svg){ selected = null; renderWelcome(); refreshGraph(); } });
+document.getElementById("search").addEventListener("input", refreshGraph);
+document.querySelectorAll("#tab-graph input[type=checkbox]").forEach(cb => {
+  cb.addEventListener("change", () => {
+    const st = cb.getAttribute("data-st"), pol = cb.getAttribute("data-pol"), sig = cb.getAttribute("data-sig"), layer = cb.getAttribute("data-layer");
+    if(st){ if(cb.checked) hiddenStatuses.delete(st); else hiddenStatuses.add(st); }
+    if(pol){ if(cb.checked) hiddenPols.delete(pol); else hiddenPols.add(pol); }
+    if(sig){ if(cb.checked) hiddenSigs.delete(sig); else hiddenSigs.add(sig); }
+    if(layer === "bin") showBin = cb.checked;
+    if(layer === "hyp") showHyp = cb.checked;
+    refreshGraph();
+  });
+});
+
+/* ---------- witness algebra ---------- */
+(function(){
+  const wsel = document.getElementById("wsel"), mode = document.getElementById("mxmode");
+  const wids = byType.witness.map(n => n.id);
+  wids.forEach(w => { const o = document.createElement("option"); o.value = w; o.textContent = nodeById[w].label; wsel.appendChild(o); });
+  const states = byType.state.map(n => n.id), procs = byType.process.map(n => n.id);
+  const mx = document.getElementById("matrix"), stats = document.getElementById("mxstats"), cellnote = document.getElementById("cellnote");
+  const VCLS = {fires:"v-fire", fires_all:"v-fireall", blind:"v-blind", hidden:"v-hide", mixed:"v-mixed", split:"v-split", not_always:"v-nal", uncharted:"v-unk", conflict:"v-split"};
+  const VGLY = {fires:"∃", fires_all:"∀", blind:"", hidden:"h", mixed:"±", split:"|", not_always:"¬", uncharted:"", conflict:"!"};
+  const VWORD = {fires:"fires for some state of the cluster", fires_all:"fires on every state of the cluster", blind:"blind: never fires",
+    hidden:"hidden: the resource is present and the witness never fires", mixed:"mixed: fires for some states of the cluster, provably not for others",
+    split:"split: opposite verdicts under incompatible hypotheses", not_always:"does not always fire", uncharted:"uncharted", conflict:"conflict between records"};
+  function cellOf(w, s, p){
+    const c = DATA.cells[w][s + "|" + p];
+    if(!c) return {cls:"uncharted", derivs:[], stored:false};
+    if(mode.value === "stored") return {cls: c[1] || "uncharted", derivs: c[2].filter(d => d[4] === 1), stored: !!c[1]};
+    return {cls: c[0], derivs: c[2], stored: !!c[1]};
+  }
+  function render(){
+    const w = wsel.value;
+    let html = `<thead><tr><th></th>` + procs.map(p => `<th>${esc(sh(p))}</th>`).join("") + `</tr></thead><tbody>`;
+    let known = 0, byrec = 0;
+    states.forEach(s => {
+      html += `<tr><th>${esc(sh(s))}</th>`;
+      procs.forEach(p => {
+        const c = cellOf(w, s, p);
+        if(c.cls !== "uncharted"){ known++; if(c.stored) byrec++; }
+        html += `<td class="${VCLS[c.cls]}${c.cls !== "uncharted" && !c.stored ? " derived" : ""}" data-s="${s}" data-p="${p}" role="button" tabindex="0" aria-label="${esc(lab(s))} with ${esc(lab(p))}: ${VWORD[c.cls]}">${VGLY[c.cls]}</td>`;
+      });
+      html += `</tr>`;
+    });
+    mx.innerHTML = html + `</tbody>`;
+    const total = states.length * procs.length;
+    stats.innerHTML = `${esc(lab(w))}: ${known} of ${total} tuples charted (${byrec} by a record, ${known - byrec} by transfer); ${total - known} uncharted.<br>` +
+      `All witnesses: ${CL.full.charted} of ${CL.tuples} charted after transfer, ${CL.stored.charted} by the records alone; ${CL.full.uncharted} uncharted; ${CL.full.conflict || 0} conflicts. ` +
+      `${CL.sorkin_cells} of the charted tuples are the single statement that I3 = 0 in quantum theory. The v2.6 rule on the v2.6 records settles ${CL.v26_rule_settled}.`;
+    mx.querySelectorAll("td").forEach(td => {
+      const show = () => {
+        mx.querySelectorAll("td.cur").forEach(x => x.classList.remove("cur"));
+        td.classList.add("cur");
+        const s = td.getAttribute("data-s"), p = td.getAttribute("data-p"), c = cellOf(wsel.value, s, p);
+        let h = `<b>${esc(lab(s))} + ${esc(lab(p))} → ${esc(lab(wsel.value))}: ${VWORD[c.cls]}.</b>`;
+        if(c.cls === "uncharted") h += ` No record and no transfer reaches this tuple. Exactly one of "some state of the cluster fires the witness inside this process cluster" and "none does" is true: a candidate hyperedge.`;
+        else h += `<ul>` + c.derivs.map(d => {
+          const first = hyperById[d[1][0]];
+          return `<li><span class="chip ${["blind","hidden","not_always"].includes(d[0]) ? "k-cex" : "k-thm"}">${esc(MODW[d[0]])}</span> by ` +
+            d[1].map(i => hyperById[i] ? `<span class="chip lnk" data-hid="${esc(i)}">${esc(i)}</span>` : (edgeById[i] ? `<span class="chip lnk" data-eid="${esc(i)}">${esc(i)}</span>` : chip(i))).join(" + ") +
+            (d[2].length ? ` transferred along ` + d[2].map(i => `<span class="chip lnk" data-eid="${esc(i)}">${esc(i)}</span>`).join(" ") : (d[4] ? ` (recorded)` : ``)) +
+            (d[3].length ? ` ${scopeChips(d[3])}` : ``) + (first ? `<br><span class="nt">${esc(first.reading)}</span>` : ``) + `</li>`;
+        }).join("") + `</ul>`;
+        cellnote.innerHTML = h;
+        bindLinks(cellnote);
+      };
+      td.addEventListener("click", show);
+      td.addEventListener("keydown", ev => { if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); show(); } });
+    });
+  }
+  wsel.addEventListener("change", render);
+  mode.addEventListener("change", render);
+  wsel.value = "w-entw";
+  render();
+  document.getElementById("rawnote").innerHTML = `Reading the v2.6 and v2b records literally (blind and hidden for every state, fires for some state) and applying the transfer rules gives ${CL.raw_conflicts.length} contradictory tuples: ` +
+    CL.raw_conflicts.map(c => `${esc(lab(c.s))} + ${esc(lab(c.p))} → ${esc(lab(c.w))} (${c.pos.map(x => esc(x[0]) + (x[1].length ? " via " + esc(x[1].join("+")) : "")).join(", ")} against ${c.neg.map(x => esc(x[0]) + (x[1].length ? " via " + esc(x[1].join("+")) : "")).join(", ")})`).join("; ") +
+    `. These and five records whose own notes state something narrower are retyped below. Pages 2, 2b and 2.6 keep the original records.`;
+  document.getElementById("retyped").innerHTML = `<thead><tr><th>RECORD</th><th>HOW FOUND</th><th>WHY</th><th>NOW</th></tr></thead><tbody>` +
+    DATA.retyped.map(r => `<tr><td><b>${esc(r.record)}</b></td><td>${esc(r.found)}</td><td>${esc(r.why)}</td><td>${esc(r.now)}</td></tr>`).join("") + `</tbody>`;
+})();
+
+/* ---------- hyperedge catalog ---------- */
+(function(){
+  const host = document.getElementById("hypertables");
+  SIGORDER.forEach(sig => {
+    const hs = DATA.hyper.filter(h => h.sig === sig);
+    if(!hs.length) return;
+    const h3 = document.createElement("h3"); h3.textContent = HG.signatures[sig] + " (" + hs.length + ")"; host.appendChild(h3);
+    const wrapDiv = document.createElement("div"); wrapDiv.className = "tblwrap"; host.appendChild(wrapDiv);
+    const tb = document.createElement("table"); tb.className = "edges";
+    tb.innerHTML = `<thead><tr><th>ID</th><th>HYPEREDGE</th><th>STATUS</th><th>READING · CONDITIONS · SOURCES</th></tr></thead><tbody>` + hs.map(h =>
+      `<tr><td class="id"><span class="chip lnk" data-hid="${esc(h.id)}">${esc(h.id)}</span></td>
+        <td><b>${h.tail.map(t => esc(lab(t))).join(" + ")}</b> ${hsym(h)} <b>${h.head.map(t => esc(lab(t))).join(", ")}</b><br>
+          ${hpol(h) === "neg" ? `<span class="chip k-cex">NO-GO</span> ` : ""}${chip(MODW[h.mod])}</td>
+        <td>${chip(h.status, "k-"+(STCLS[h.status]||"exa"))}</td>
+        <td><b>${esc(h.reading)}</b>${h.guard ? ` <span class="nt">[Conditions: ${esc(h.guard)}]</span>` : ""}
+          ${h.scope.length ? `<div class="kchips" style="margin:6px 0 0">${scopeChips(h.scope)}</div>` : ""}
+          ${h.from.length ? `<div class="nt" style="font-size:12px;margin-top:4px">From: ${h.from.map(esc).join(", ")}</div>` : ""}${refsHtml(h.refs)}</td></tr>`).join("") + `</tbody>`;
+    wrapDiv.appendChild(tb);
+  });
+  bindLinks(host);
+})();
+
+/* ---------- hyperpaths ---------- */
+(function(){
+  const POSMOD = new Set(["fires","fires_all","can_create","achieves","jointly_enable","jointly_generate","jointly_imply","requires"]);
+  const FK = new Set(HG.chain.follow_kinds), FI = new Set(HG.chain.follow_ids), SK = new Set(HG.chain.skip_ids);
+  const BINNEG = new Set(["forbids","excludes"]);
+  const OKST = new Set(["theorem","definition","derived"]);
+  const sel = document.getElementById("padd"), chips = document.getElementById("pchips"), out = document.getElementById("pout");
+  const start = [];
+  COLS.forEach(c => {
+    const og = document.createElement("optgroup"); og.label = COLTITLE[c];
+    byType[c].forEach(n => { const o = document.createElement("option"); o.value = n.id; o.textContent = n.label; og.appendChild(o); });
+    sel.appendChild(og);
+  });
+  const PRESETS = [["s-ent","p-incompset"],["s-ent","p-cov"],["s-coh","p-incoh"],["s-magic","p-clifford"],["s-stab","p-clifford"],["s-gauss","p-nongauss"],
+                   ["ax-symplectic","ax-epirestrict"],["ax-symplectic","ax-moyal","ax-complex","ax-hbar"]];
+  const pre = document.getElementById("ppresets");
+  pre.innerHTML = `<span class="nt" style="font-size:12.5px">Examples:</span> ` + PRESETS.map((p,i) => `<button class="btn small" data-pre="${i}">${p.map(x => esc(sh(x))).join(" + ")}</button>`).join(" ");
+  pre.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { start.length = 0; PRESETS[+b.getAttribute("data-pre")].forEach(x => start.push(x)); run(); }));
+  function rules(followBin){
+    const R = [], N = [];
+    DATA.hyper.forEach(h => {
+      if(POSMOD.has(h.mod)) R.push({id:h.id, tail:h.tail, head:h.head, hyp:true});
+      else if(h.mod !== "not_always" && OKST.has(h.status)) N.push({id:h.id, tail:h.tail, head:h.head, hyp:true});
+    });
+    DATA.edges.forEach(e => {
+      if(!OKST.has(e.status) || supersededBy[e.id] || SK.has(e.id)) return;
+      if((FK.has(e.kind) || FI.has(e.id)) && followBin) R.push({id:e.id, tail:[e.source], head:[e.target], hyp:false});
+      else if(BINNEG.has(e.kind)) N.push({id:e.id, tail:[e.source], head:[e.target], hyp:false});
+    });
+    return {R, N};
+  }
+  function run(){
+    chips.innerHTML = start.length ? start.map((n,i) => `<span class="pchip">${esc(lab(n))}<button data-i="${i}" aria-label="Remove ${esc(lab(n))}">✕</button></span>`).join("") : `<span class="nt" style="font-size:13px">No premise chosen. Pick an example or add nodes.</span>`;
+    chips.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { start.splice(+b.getAttribute("data-i"), 1); run(); }));
+    if(!start.length){ out.innerHTML = ""; return; }
+    const {R, N} = rules(document.getElementById("pbin").checked);
+    const reached = {}; start.forEach(n => reached[n] = {round:0, by:null});
+    let round = 0, changed = true;
+    const steps = [];
+    while(changed){
+      changed = false; round++;
+      const add = {};
+      R.forEach(r => { if(r.tail.every(t => reached[t])) r.head.forEach(hd => { if(!reached[hd] && !add[hd]) add[hd] = {round, by:r}; }); });
+      for(const k in add){ reached[k] = add[k]; steps.push([k, add[k]]); changed = true; }
+    }
+    const ruled = [];
+    N.forEach(r => { if(r.tail.every(t => reached[t])) r.head.forEach(hd => ruled.push([hd, r])); });
+    const blocked = R.filter(r => r.hyp && r.tail.length > 1 && r.tail.some(t => reached[t]) && !r.tail.every(t => reached[t]) && r.tail.some(t => start.includes(t)));
+    const ref = r => r.hyp ? `<span class="chip lnk" data-hid="${esc(r.id)}">${esc(r.id)}</span>` : `<span class="chip lnk" data-eid="${esc(r.id)}">${esc(r.id)}</span>`;
+    const why = r => r.hyp ? esc(hyperById[r.id].reading) : esc((PLAIN[r.id] || {}).r || edgeById[r.id].statement.slice(0, 160));
+    let h = `<h3 class="sec" style="margin-top:14px">Reached (${steps.length})</h3>`;
+    h += steps.length ? `<ul class="rounds">` + steps.map(([n, s]) => `<li><span class="r">step ${s.round}</span>${s.by.tail.map(nodeLink).join(" + ")} → <b>${nodeLink(n)}</b> ${ref(s.by)}<br><span class="nt">${why(s.by)}</span></li>`).join("") + `</ul>` : `<p class="nt">Nothing follows from this set alone.</p>`;
+    h += `<h3 class="sec">Ruled out (${ruled.length})</h3>`;
+    h += ruled.length ? `<ul class="rounds">` + ruled.map(([n, r]) => `<li>${r.tail.map(nodeLink).join(" + ")} ⊣ <b>${nodeLink(n)}</b> ${ref(r)}${reached[n] ? ` <span class="chip k-par">also reached by another route</span>` : ""}${r.hyp && hyperById[r.id].scope.length ? " " + scopeChips(hyperById[r.id].scope) : ""}<br><span class="nt">${why(r)}</span></li>`).join("") + `</ul>` : `<p class="nt">No recorded no-go has all its premises in the reached set.</p>`;
+    h += `<h3 class="sec">Waiting for one more premise (${blocked.length})</h3>`;
+    h += blocked.length ? `<ul class="rounds">` + blocked.map(r => {
+      const miss = r.tail.filter(t => !reached[t]);
+      return `<li>${ref(r)} ${esc(htitle(hyperById[r.id]))}<br><span class="nt">missing:</span> ` + miss.map(m => `<button class="btn small" data-add="${esc(m)}">+ ${esc(lab(m))}</button>`).join(" ") + `</li>`;
+    }).join("") + `</ul>` : `<p class="nt">No hyperedge has some of the chosen premises and lacks others.</p>`;
+    out.innerHTML = h;
+    bindLinks(out);
+    out.querySelectorAll("button[data-add]").forEach(b => b.addEventListener("click", () => { const m = b.getAttribute("data-add"); if(!start.includes(m)) start.push(m); run(); }));
+  }
+  document.getElementById("paddbtn").addEventListener("click", () => { if(!start.includes(sel.value)) start.push(sel.value); run(); });
+  document.getElementById("pclear").addEventListener("click", () => { start.length = 0; run(); });
+  document.getElementById("pbin").addEventListener("change", run);
+  PRESETS[0].forEach(x => start.push(x));
+  run();
+
+  const idc = i => hyperById[i] ? `<span class="chip lnk" data-hid="${esc(i)}">${esc(i)}</span>` : (edgeById[i] ? `<span class="chip lnk" data-eid="${esc(i)}">${esc(i)}</span>` : chip(i));
+  const p2 = document.getElementById("paths2");
+  p2.innerHTML = `<thead><tr><th>STATE + PROCESS</th><th>CREATED STATE</th><th>PROBE</th><th>WITNESS THAT FIRES</th><th>RECORDS</th></tr></thead><tbody>` +
+    CL.paths2.map(q => `<tr><td><b>${esc(lab(q.s1))}</b> + <b>${esc(lab(q.p1))}</b></td><td>→ <b>${esc(lab(q.s2))}</b></td><td>+ <b>${esc(lab(q.p2))}</b></td><td>→ <b>${esc(lab(q.w))}</b></td>
+      <td>${q.by.map(idc).join(" then ")}${q.via.length ? " via " + q.via.map(idc).join(" ") : ""} ${scopeChips(q.scope)}</td></tr>`).join("") + `</tbody>`;
+  const un = document.getElementById("unseen");
+  un.innerHTML = `<thead><tr><th>STATE + PROCESS</th><th>CREATED STATE</th><th>WITNESS THAT STAYS SILENT</th><th>RECORDS</th></tr></thead><tbody>` +
+    CL.unseen.map(q => `<tr><td><b>${esc(lab(q.s1))}</b> + <b>${esc(lab(q.p))}</b></td><td>→ <b>${esc(lab(q.s2))}</b></td><td><b>${esc(lab(q.w))}</b> inside ${esc(lab(q.p))}</td>
+      <td>${q.by.map(idc).join(" ")} ${scopeChips(q.scope)}</td></tr>`).join("") + `</tbody>`;
+  const tt = document.getElementById("ttuples");
+  tt.innerHTML = `<thead><tr><th>STATE + PROCESS</th><th>RELATION</th><th>TARGET</th><th>BY</th></tr></thead><tbody>` +
+    CL.transform.concat(CL.task).map(t => `<tr><td><b>${esc(lab(t.a))}</b> + <b>${esc(lab(t.b))}</b></td><td>${chip(MODW[t.mod], HNEG.has(t.mod) ? "k-cex" : "k-thm")}</td><td><b>${esc(lab(t.c))}</b></td>
+      <td>${t.by.map(idc).join(" ")}${t.via.length ? " transferred along " + t.via.map(idc).join(" ") : " (recorded)"} ${scopeChips(t.scope)}</td></tr>`).join("") + `</tbody>`;
+  [p2, un, tt].forEach(bindLinks);
+})();
+
+/* ---------- binary edge catalog ---------- */
+(function(){
+  const groups = {};
+  DATA.edges.forEach(e => {
+    const g = e.id.replace(/[0-9b]+$/,"").replace(/[0-9]+[a-z]$/,"");
+    (groups[g] = groups[g] || []).push(e);
+  });
+  const names = {GN:"GN · Genesis: Poisson → Moyal, i, ħ, epistemic restriction", MH:"MH · Models host state clusters", U:"U · Round 4: edges generated with the literature searched first (2026-11-01)", R:"R · Round 3: edges generated from uncharted cells (2026-10-23)", A:"A · GPT-level boundaries", B:"B · Correlation hierarchy",
+    C:"C · Negativity, magic, computation", D:"D · Coherence", S:"S · Intra-state structure", P:"P · Process clusters",
+    N:"N · TTS propositions", W:"W · Witness–effect pairings", E:"E · Axioms → effects & models", F:"F · Model rows",
+    G:"G · Thermodynamics", H:"H · Information tasks", I:"I · Open edges"};
+  const host = document.getElementById("edgetables");
+  Object.keys(names).forEach(g => {
+    if(!groups[g]) return;
+    const h = document.createElement("h3"); h.textContent = names[g]; host.appendChild(h);
+    const wrapDiv = document.createElement("div"); wrapDiv.className = "tblwrap"; host.appendChild(wrapDiv);
+    const tb = document.createElement("table"); tb.className = "edges";
+    tb.innerHTML = `<thead><tr><th>ID</th><th>EDGE</th><th>STATUS</th><th>READING · STATEMENT · REFERENCES</th></tr></thead><tbody>` + groups[g].map(e => {
+      const sym = e.kind === "excludes" ? "⇔¬" : (e.kind === "equiv" || e.kind === "pairs" ? "⇔" : (polOf(e) === "neg" ? "⊣" : "→"));
+      const sup = supersededBy[e.id] || [];
+      return `<tr><td class="id"><span class="chip lnk" data-eid="${esc(e.id)}">${esc(e.id)}</span></td>
+        <td><b>${esc(lab(e.source))}</b> ${sym} <b>${esc(lab(e.target))}</b><br>
+          ${polOf(e) === "neg" ? `<span class="chip k-cex">NO-GO</span> ` : ""}${chip(KINDTXT[e.kind]||e.kind)}${sup.length ? `<br><span class="nt" style="font-size:12px">with explicit premises:</span> ` + sup.map(i => `<span class="chip lnk" data-hid="${esc(i)}">${esc(i)}</span>`).join(" ") : ""}</td>
+        <td>${chip(e.status, "k-"+(STCLS[e.status]||"exa"))}</td>
+        <td>${PLAIN[e.id] ? `<b>${esc(PLAIN[e.id].r)}</b>${PLAIN[e.id].c ? ` <span class="nt">[Conditions: ${esc(PLAIN[e.id].c)}]</span>` : ""}<br>` : ""}<span class="nt" style="font-size:12px">${esc(e.statement)}</span>${refsHtml(e.refs)}</td></tr>`;
+    }).join("") + `</tbody>`;
+    wrapDiv.appendChild(tb);
+  });
+  bindLinks(host);
+})();
+
+/* ---------- gaps ---------- */
+(function(){
+  const host = document.getElementById("gapcards");
+  DATA.gaps.forEach(([tag, title, body]) => {
+    const a = document.createElement("article");
+    a.innerHTML = `<div class="tagline${tag.includes("open") ? " open" : ""}">${esc(tag.toUpperCase())}</div><h3>${esc(title)}</h3><p>${esc(body)}</p>`;
+    host.appendChild(a);
+  });
+})();
+
+/* ---------- tabs ---------- */
+document.querySelectorAll("nav.tabs button").forEach(btn => btn.addEventListener("click", () => showTab(btn.getAttribute("data-tab"))));
+
+renderWelcome();
+refreshGraph();
+}
+</script>

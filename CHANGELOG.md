@@ -3,7 +3,33 @@
 Every released version stays online unchanged; a correction is a new version alongside. Content versions
 change the network; presentation variants change only how it is read.
 
-## v2.6 — 2026-11-01 (current; `v26.html`, `data/network_v2.6.json`)
+## v3.0 — 2026-11-26 (current; `v3.html`, `data/hypergraph_v3.json`)
+
+Hypergraph form of v2.6. Nodes (92) and binary edges (156) are those of v2.6, unchanged. Method, rules and proofs:
+`catalog/hypergraph_v3_method.md`; generated list: `catalog/hyperedges_v3.md`; engine: `tools/`.
+
+- **Hyperedges (101 records, seven signatures).** Detection, state + process → witness (36): the pathway rows K1–K18
+  split by modality, K19–K25 lifted from B2, B6, B7, C1, R3, U1, U6, U7, K26–K29 read off the pairings, and four rows of
+  this round. Unary detection (31): the blind lists of the witness records. Requirement arcs, witness → clusters (10).
+  Complements and exclusions (6). Transformation, input state + process → output state (7). Task (4). Genesis and
+  logic with several premises (7). Every record carries a plain reading, conditions, scope tokens and the records it
+  was lifted from.
+- **Transfer calculus.** Possibility moves to larger clusters, no-go to smaller ones, and a requirement together with an
+  exclusion gives blindness. 981 of 3,094 tuples charted (632 by the records alone; the v2.6 rule on the v2.6 records
+  gives 469); 2,113 uncharted; classes: blind 914, hidden 7, fires on every state 19, fires 33, mixed 5, split 2,
+  does not always fire 1; conflicts 0.
+- **Retyped records (7).** Found as contradictions by the calculus: K16 (against K14 with S10), "MagicW blind on
+  Clifford operations" (against K10). Found by reading the note: "Parity blind on Gaussian operations", "CohW blind on
+  incoherent operations", "KCBS blind on stabilizer states", K10 (Parity) and K11 (CHSH), the last two from a universal
+  to an existential no-go. The pages v2, v2b and v2.6 keep the original records.
+- **Rows of this round.** HG1 (a stabilizer state violates KCBS with non-stabilizer rays), HG2 / HG2b (incoherent
+  operations can read coherence out; dephasing-covariant ones cannot), HG3 (homodyne tomography detects Wigner
+  negativity; Lvovsky et al. 2001).
+- **Page.** Same layered form as v2.6; hyperedges drawn as dots with one spoke per premise; a layer toggle returns
+  the v2.6 drawing; hyperedge catalog; forward chaining over hyperedges; witness matrix with derivations.
+- **Cards.** H1, H2, SG8 (clusters to refine, read off the mixed and split tuples), SG9 (uncharted tuples after transfer).
+
+## v2.6 — 2026-11-01 (`v26.html`, `data/network_v2.6.json`)
 
 Round 4, run for the combined paper *The Great Epistemic Network* with the literature searched **before**
 each proof (proofs: `catalog/network_catalog_v2.6_round4.md`).

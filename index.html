@@ -76,10 +76,16 @@ a{color:var(--accent);}
     <span class="go">Open page 1 →</span>
   </a>
   <a class="pagecard" href="v26.html">
-    <span class="no">PAGE 2 · LAYERED · CURRENT (v2.6, 2026-11-01)</span>
+    <span class="no">PAGE 2 · LAYERED (v2.6, 2026-11-01; the binary layer of page 3)</span>
     <h3>Layered network, round 4</h3>
     <p>The v2.4 network plus round 4: edges U1–U7 and U5b generated with the literature searched <i>before</i> each proof (156 signed edges); the kind of A5 corrected; scope notes on D2, R2, N1, GN5, R1, R6; SG1 closed, SG5 closed at the level of models, SG6–SG7 registered. Proofs in <code>catalog/network_catalog_v2.6_round4.md</code>.</p>
     <span class="go">Open page 2 (v2.6) →</span>
+  </a>
+  <a class="pagecard" href="v3.html">
+    <span class="no">PAGE 3 · HYPERGRAPH · CURRENT (v3.0, 2026-11-26)</span>
+    <h3>Hypergraph form</h3>
+    <p>Network v2.6 with <b>hyperedges</b>: a statement that needs several nodes at once is one edge that joins all of them (state + process → witness; input state + process → output state; state + process → task; several axioms → model). The 156 binary edges are unchanged; 101 hyperedge records in seven signatures are added, each with a plain reading, its conditions and the v2.6 records it comes from. Verdicts transfer along recorded cluster inclusions: 981 of 3,094 witness tuples charted (632 by records). Seven records retyped after a consistency check. Method and proofs in <code>catalog/hypergraph_v3_method.md</code>.</p>
+    <span class="go">Open page 3 →</span>
   </a>
   <a class="pagecard" href="v2.html">
     <span class="no">PAGE 2 · LAYERED (v2.4, 2026-10-23, preserved)</span>
@@ -103,6 +109,9 @@ a{color:var(--accent);}
 
 <h2>The generation demo, made directly comparable</h2>
 <p class="note">Earlier the demo compared page 1 (flat form) against page 2 (layered form), which mixes a format change with the generated content. Fixed on page 2b: the <b>same network in the same form</b> is shown before and after the generation round — untick "Round-3 edges" and exactly the automatically generated research (R1–R6, nothing else) disappears; tick it back and the diff returns. Detection is likewise now traversable as pathways rather than bare state–witness links.</p>
+
+<h2>Hypergraph form (page 3)</h2>
+<p class="note">On pages 1 to 2.6 an edge joins two nodes. A statement with two premises was either compressed into such an edge, with the second premise in the prose, or kept in a side table of state × process rows. Page 3 records it as one <b>hyperedge</b>. Three consequences. (1) Opposite edges on one pair are separated by their premises or hypotheses: N1 and U1 become one tuple with the scopes "nondegenerate H" and "degenerate H". (2) A verdict moves along the recorded inclusions between clusters, possibility to larger clusters and no-go to smaller ones; this settles 349 further tuples and re-derives 13 of the 16 state-side blindness records kept from v2.6. (3) The same rules check the records against each other: read literally, the v2.6 and v2b records contradict each other on 3 tuples (K16 against K14 with S10; "MagicW blind on Clifford operations" against K10); page 3 retypes them and five records whose notes state a narrower claim. Untick "hyperedges" on page 3 to see network v2.6 unchanged. The definitions and proofs are AI-generated and await the author's review.</p>
 
 <h2>How the network generates theorems</h2>
 <div class="pipe">
@@ -143,7 +152,7 @@ a{color:var(--accent);}
 </table>
 </div>
 
-<div class="census"><b>Gap census (v2.6, 2026-11-01):</b> 469 / 3,094 witness-matrix cells settled · 2,625 uncharted · 156 edges: 45 no-go · 101 possibility · 10 open · 4,049 of 4,186 node pairs unconnected · named open problems G1–G10, SG1–SG7 (SG1 closed; SG5 closed at the level of models).<br><span style="color:var(--muted)">v2.4 (preserved): 445 / 3,094 settled · 148 edges: 40 no-go · 98 possibility · 10 open. (The figures 35 / 96 / 10 shown here before 2026-11-01 were the v2.3 counts.)</span></div>
+<div class="census"><b>Gap census (v3.0, 2026-11-26):</b> 981 / 3,094 witness tuples charted after transfer (632 by records; 182 of them are the single statement that I3 = 0 in quantum theory) · 2,113 uncharted · 0 conflicts · 5 mixed and 2 split tuples · 156 binary edges + 101 hyperedge records.<br><b>Gap census (v2.6, 2026-11-01):</b> 469 / 3,094 witness-matrix cells settled · 2,625 uncharted · 156 edges: 45 no-go · 101 possibility · 10 open · 4,049 of 4,186 node pairs unconnected · named open problems G1–G10, SG1–SG7 (SG1 closed; SG5 closed at the level of models).<br><span style="color:var(--muted)">v2.4 (preserved): 445 / 3,094 settled · 148 edges: 40 no-go · 98 possibility · 10 open. (The figures 35 / 96 / 10 shown here before 2026-11-01 were the v2.3 counts.)</span></div>
 
 <h2>Still uncharted (examples)</h2>
 <ul class="plain">
@@ -155,6 +164,6 @@ a{color:var(--accent);}
 
 <footer>
   <p><b>Source:</b> <a href="https://github.com/tahmeedhossain/GEN_GPT_Level">github.com/tahmeedhossain/GEN_GPT_Level</a> · <b>live pages:</b> <a href="https://tahmeedhossain.github.io/GEN_GPT_Level/">tahmeedhossain.github.io/GEN_GPT_Level</a></p>
-  <p>Repository layout: <code>index.html</code>, <code>v1.html</code>, <code>v2.html</code> (v2.4), <code>v26.html</code> (v2.6), <code>v1b.html</code>, <code>v2b.html</code> (GitHub-Pages ready) · <code>data/network_v1.json</code>, <code>data/network_v2.json</code> (v2.4), <code>data/network_v2.6.json</code> (machine-readable, per-edge references and signed polarity) · <code>CHANGELOG.md</code> (versions) · <code>catalog/</code> (prose catalogs with proofs) · <code>paper/</code> (LaTeX concept paper). Statuses mark provenance: <i>theorem</i> = literature, cited; <i>derived</i> = proved in the catalogs/paper, novelty pass pending; <i>open</i> = registered problem. Nothing here is a substitute for reading the cited papers.</p>
+  <p>Repository layout: <code>index.html</code>, <code>v1.html</code>, <code>v2.html</code> (v2.4), <code>v26.html</code> (v2.6), <code>v3.html</code> (v3.0), <code>v1b.html</code>, <code>v2b.html</code> (GitHub-Pages ready) · <code>data/network_v1.json</code>, <code>data/network_v2.json</code> (v2.4), <code>data/network_v2.6.json</code>, <code>data/hypergraph_v3.json</code> · <code>tools/</code> (the lift and the transfer engine, with checks) (machine-readable, per-edge references and signed polarity) · <code>CHANGELOG.md</code> (versions) · <code>catalog/</code> (prose catalogs with proofs) · <code>paper/</code> (LaTeX concept paper). Statuses mark provenance: <i>theorem</i> = literature, cited; <i>derived</i> = proved in the catalogs/paper, novelty pass pending; <i>open</i> = registered problem. Nothing here is a substitute for reading the cited papers.</p>
 </footer>
 </div>
