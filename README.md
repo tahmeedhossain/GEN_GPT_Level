@@ -10,12 +10,14 @@ quantum thermodynamics and resource theories — built so that missing knowledge
   forbids, exclusions (X holds iff Y fails), failed implications, hiding relations.
 - **No edge means *unsettled***, never "false" — so the open problems can be enumerated mechanically.
 
-Five interactive pages (open `index.html`, or the live Pages site). The current content version is **v2.6** (2026-11-01);
-earlier versions stay online unchanged, and `CHANGELOG.md` lists what changed in each.
+Six interactive pages (open `index.html`, or the live Pages site). The current version is **v3.0** (2026-11-26), the
+hypergraph form of content version v2.6 (2026-11-01); earlier versions stay online unchanged, and `CHANGELOG.md` lists
+what changed in each.
 
 | Page | Contents |
 |---|---|
-| `v26.html` | **Current (v2.6, 2026-11-01):** the v2.4 layered network plus round 4 — edges U1–U7 and U5b generated with the literature searched *before* each proof (156 edges); the kind of A5 corrected; scope notes on D2, R2, N1, GN5, R1, R6; SG1 closed, SG5 closed at the level of models, SG6–SG7 registered. Proofs: `catalog/network_catalog_v2.6_round4.md`. |
+| `v3.html` | **Current (v3.0, 2026-11-26), hypergraph form:** network v2.6 with hyperedges. A statement that needs several nodes at once is one edge joining all of them: state + process → witness (the former pathway rows), input state + process → output state, state + process → task, several axioms → model, witness → the clusters it requires. 156 binary edges unchanged; 101 hyperedge records, each with a plain reading, conditions, scope and the v2.6 records it comes from. A transfer calculus moves verdicts along recorded cluster inclusions (981 of 3,094 witness tuples charted, 632 by records alone), checks the records against each other (0 conflicts after 7 retyped records) and lists mixed and split tuples. Forward chaining over hyperedges gives pathways. Method and proofs: `catalog/hypergraph_v3_method.md`. |
+| `v26.html` | **v2.6 (2026-11-01), the binary layer of v3:** the v2.4 layered network plus round 4 — edges U1–U7 and U5b generated with the literature searched *before* each proof (156 edges); the kind of A5 corrected; scope notes on D2, R2, N1, GN5, R1, R6; SG1 closed, SG5 closed at the level of models, SG6–SG7 registered. Proofs: `catalog/network_catalog_v2.6_round4.md`. |
 | `v1.html` | Flat graph (2026-10-20): 5 node types, 84 edge records (10 of them registered open problems) with verbatim statements + references; backbone of the two classicality boundaries; gaps G1–G10; propositions P1–P4. |
 | `v1b.html` | **Page 1b (annotated):** identical network to v1 with a plain-language Reading + Conditions on every edge (panel and catalog); v1 unchanged. |
 | `v2b.html` | **Page 2b (pathways + demo):** identical network to v2 plus plain-language readings, state→process→witness pathway overlays/tab/path-finder (combos K11 extended, K18 added), and the Round-3 before/after toggle — the same-form generation demo (141 ↔ 148 edges). v2 unchanged. |
@@ -51,13 +53,18 @@ research agenda as a by-product.
 ```
 index.html            landing page + generated-theorem record (GitHub Pages ready)
 v1.html, v2.html      the network pages v1 and v2.4 (standalone, preserved)
-v26.html              the current network page (v2.6)
+v3.html               the current page (v3.0): hypergraph form of v2.6
+v26.html              the network page v2.6 (binary edges)
 v1b.html, v2b.html    presentation variants of v1 and v2.4 (plain readings, pathways, round-3 toggle)
 data/network_v1.json  machine-readable v1 (nodes, edges, statements, references)
 data/network_v2.json  machine-readable v2.4 (+ witness records, combos, polarity metadata)
 data/network_v2.6.json machine-readable v2.6 (same schema; edges may carry an optional `condition`)
+data/hypergraph_v3.json   machine-readable v3: v2.6 nodes and edges, hyperedges, readings, transfer results
 data/plain_readings.json  plain-language Reading + Conditions for every edge id (used by v1b/v2b)
-catalog/              prose catalogs with full proofs (v1, v2 + Round 3, v2.6 Round 4 + scope corrections)
+catalog/              prose catalogs with full proofs (v1, v2 + Round 3, v2.6 Round 4 + scope corrections);
+                      hypergraph_v3_method.md (definitions, transfer rules, proofs), hyperedges_v3.md (generated list)
+tools/                build_v3.py (lift + outputs), hyperclosure.py (transfer engine), test_hyperclosure.py (checks),
+                      v3_template.html (page template)
 CHANGELOG.md          versions and what changed
 paper/                LaTeX concept paper (main.tex, refs.bib)
 CITATION.cff          citation metadata (fill in author before release)
@@ -77,11 +84,34 @@ Top-level keys of `data/network_v2.json`:
 - `combos`: referenced state × process rows with per-witness verdicts `fires / hidden / blind`
 - `gaps`: named open problems and derived propositions
 
+### Data schema (v3)
+
+`data/hypergraph_v3.json` keeps `nodes` and `edges` of v2.6 unchanged and adds:
+
+- `hyper`: `{id, sig, tail[], head[], mod, status, scope[], guard, reading, from[], supersedes[], refs[]}`
+  - `tail` = joint premises, `head` = conclusions; a binary edge is the case of one premise and one conclusion
+  - `sig ∈ {detect, unary, require, order, transform, task, logic}` (signature)
+  - `mod` (modality) fixes the polarity: `fires`, `fires_all`, `can_create`, `achieves`, `jointly_*`, `requires`
+    are possibility; `blind`, `hidden`, `not_always`, `cannot_create`, `cannot_achieve`, `jointly_exclude`,
+    `excludes`, `forbids` are no-go
+  - `scope`: tokens for standing hypotheses (`meta.hypergraph.scope_tokens`, with incompatible pairs)
+  - `from`: the v2.6 / v2b records the hyperedge was lifted from; `supersedes`: binary edges it restates with
+    explicit premises
+- `cells`: per witness, the charted state × process tuples with class and derivations
+- `closure`: census, raw-mode conflicts, transformation and task tuples, two-step pathways
+- `retyped`: the v2.6 / v2b records whose form changed, with reasons
+
+Rebuild with `python3 tools/build_v3.py`; check with `python3 tools/test_hyperclosure.py`.
+
 **Contributing an edge:** include a precise statement, a reference (or a proof for `derived`),
 a kind, a status, and respect the polarity convention. Closing an uncharted matrix cell
 (gray in the v2 "Witness algebra" tab) is the canonical contribution.
 
 ## Gap census
+
+**v3.0 (2026-11-26):** 981 / 3,094 state × process × witness tuples charted after transfer (632 by the records
+alone; 182 of them are the single statement that I3 = 0 in quantum theory) · 2,113 uncharted · 0 conflicts ·
+5 mixed and 2 split tuples · 156 binary edges + 101 hyperedge records · new cards H1, H2, SG8, SG9.
 
 **v2.6 (2026-11-01):** 469 / 3,094 witness-matrix cells settled · 2,625 uncharted · 156 edges:
 45 no-go · 101 possibility · 10 open · 4,049 of 4,186 node pairs unconnected · named problems
@@ -107,6 +137,11 @@ G1–G10, SG1–SG7 (SG1 closed by U1; SG5 closed at the level of models by U2).
   in v2.6 as appended scope notes (D2, R2, N1, GN5, R1, R6) and as a corrected kind (A5); the released
   v2.4 file and pages keep the original records, by the versioning rule.
 - Composed corollaries name the exact edges they compose, so each is auditable in one step.
+- v3 (2026-11-26): the lift to hyperedges adds no physics except four marked rows (HG1, HG2, HG2b, HG3), which
+  are elementary or cited. Seven records of v2.6 / v2b are retyped; two of them were found as contradictions
+  by the transfer calculus, five by reading their own notes (`catalog/hyperedges_v3.md`, Section 3). The
+  definitions, rules and proofs of `catalog/hypergraph_v3_method.md` are AI-generated and not yet reviewed by
+  the author. Six references added there were checked against Crossref on 2026-11-26.
 - Corrections welcome as issues/PRs; releases record their gap census.
 
 ## Citation
